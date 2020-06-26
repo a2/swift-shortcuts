@@ -1,6 +1,3 @@
-// Remove if unnecessary
-import CSymbols
-
 class AnyActionStorageBase {}
 
 class AnyActionStorage<A: Action>: AnyActionStorageBase {
@@ -100,6 +97,6 @@ import Foundation
 private let makeAnyAction: AnyActionFunction = {
     let symbolName = "_swift_shortcuts_makeAnyAction"
     let handle = dlopen(nil, RTLD_GLOBAL)
-    let pointer = dlsym(handle, symbolName) // SwiftShortcuts_loadAddressForSymbol(symbolName)
+    let pointer = dlsym(handle, symbolName)
     return unsafeBitCast(pointer, to: AnyActionFunction.self)
 }()

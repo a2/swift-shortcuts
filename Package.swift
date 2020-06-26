@@ -18,10 +18,8 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "CSymbols"),
-        .target(
             name: "SwiftShortcuts",
-            dependencies: ["CSymbols"]),
+            dependencies: []),
         .testTarget(
             name: "SwiftShortcutsTests",
             dependencies: ["SwiftShortcuts"]),
