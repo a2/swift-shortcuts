@@ -1,4 +1,4 @@
-protocol Decomposable {
+protocol ActionComponentDecomposable {
     func decompose() -> [ActionComponent]
 }
 
@@ -8,26 +8,26 @@ extension Action {
             let body = self.body
             if let component = body as? ActionComponent {
                 return [component]
-            } else if let decomposable = body as? Decomposable {
+            } else if let decomposable = body as? ActionComponentDecomposable {
                 return decomposable.decompose()
             }
         }
 
-        if let decomposable = self as? Decomposable {
+        if let decomposable = self as? ActionComponentDecomposable {
             return decomposable.decompose()
         }
 
-        fatalError("Action \(self) has Body = Never but is not Decomposable")
+        fatalError("Action \(self) has Body = Never but does not conform to ActionComponentDecomposable")
     }
 }
 
-extension ActionComponent: Decomposable {
+extension ActionComponent: ActionComponentDecomposable {
     func decompose() -> [ActionComponent] {
         [self]
     }
 }
 
-extension AnyAction: Decomposable {
+extension AnyAction: ActionComponentDecomposable {
     func decompose() -> [ActionComponent] {
         if let storage = storage as? AnyActionStorage<ActionComponent> {
             return [storage.action]
@@ -46,19 +46,19 @@ extension AnyAction: Decomposable {
     }
 }
 
-extension EmptyAction: Decomposable {
+extension EmptyAction: ActionComponentDecomposable {
     func decompose() -> [ActionComponent] {
         []
     }
 }
 
-extension ForEach: Decomposable {
+extension ForEach: ActionComponentDecomposable {
     func decompose() -> [ActionComponent] {
         children.flatMap { $0.decompose() }
     }
 }
 
-extension Optional: Decomposable where Wrapped: Action {
+extension Optional: ActionComponentDecomposable where Wrapped: Action {
     func decompose() -> [ActionComponent] {
         switch self {
         case .some(let value):
@@ -69,7 +69,7 @@ extension Optional: Decomposable where Wrapped: Action {
     }
 }
 
-extension TupleAction: Decomposable {
+extension TupleAction: ActionComponentDecomposable {
     func decompose() -> [ActionComponent] {
         let mirror = Mirror(reflecting: self)
         let value = mirror.children[mirror.children.startIndex].value
