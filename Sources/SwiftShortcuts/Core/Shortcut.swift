@@ -1,10 +1,6 @@
 import Foundation
 
-public protocol Shortcut {
-    associatedtype Body: Action
-
-    var body: Body { get }
-
+public protocol Shortcut: Action {
     func build() throws -> Data
 }
 
@@ -58,21 +54,13 @@ struct ShortcutPayload: Encodable {
     let actions: [ActionStep.EncodableWrapper]
 }
 
-extension AnyAction {
-    var actionStep: ActionStep? {
-        (storage as? AnyActionStorage<ActionStep>)?.action
-    }
-}
-
 extension Shortcut {
-    func encodableActionSteps() -> [ActionStep.EncodableWrapper] {
-        let decomposed = body.decompose()
-        return decomposed.map { actionStep in actionStep.encodable() }
-    }
-
     public func build() throws -> Data {
+        let decomposed = body.decompose()
+        let encodableActionSteps = decomposed.map { actionStep in actionStep.encodable() }
+
         let encoder = PropertyListEncoder()
         encoder.outputFormat = .binary
-        return try encoder.encode(ShortcutPayload(actions: encodableActionSteps()))
+        return try encoder.encode(ShortcutPayload(actions: encodableActionSteps))
     }
 }
