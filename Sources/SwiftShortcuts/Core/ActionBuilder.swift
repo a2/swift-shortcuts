@@ -1,4 +1,6 @@
-@_functionBuilder public struct ActionBuilder {
+@_functionBuilder public enum ActionBuilder {}
+
+extension ActionBuilder {
     public static func buildBlock() -> EmptyAction {
         EmptyAction()
     }

@@ -1,22 +1,22 @@
-public struct Comment: Action {
+public struct ShowResult: Action {
+    let text: InterpolatedText
+
     public var body: some Action {
-        ActionStep(identifier: "is.workflow.actions.comment", parameters: Parameters(base: self))
+        ActionStep(identifier: "is.workflow.actions.showresult", parameters: Parameters(base: self))
     }
 
-    let text: String
-
-    public init(_ text: String) {
+    public init(_ text: InterpolatedText) {
         self.text = text
     }
 }
 
-extension Comment {
+extension ShowResult {
     struct Parameters: Encodable {
         enum CodingKeys: String, CodingKey {
-            case text = "WFCommentActionText"
+            case text = "Text"
         }
 
-        let base: Comment
+        let base: ShowResult
 
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)

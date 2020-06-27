@@ -27,6 +27,23 @@ extension EmptyAction: Decomposable {
     }
 }
 
+extension ForEach: Decomposable {
+    func decompose() -> [AnyAction] {
+        children
+    }
+}
+
+extension Optional: Decomposable where Wrapped: Decomposable {
+    func decompose() -> [AnyAction] {
+        switch self {
+        case .some(let value):
+            return value.decompose()
+        case .none:
+            return []
+        }
+    }
+}
+
 extension TupleAction: Decomposable {
     func decompose() -> [AnyAction] {
         let mirror = Mirror(reflecting: self)
