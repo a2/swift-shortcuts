@@ -19,22 +19,22 @@ final class ClapAlongTests: XCTestCase {
 }
 
 struct ClapAlongShortcut: Shortcut {
-    @OutputVariable var updatedText
-
-    @ActionBuilder var body: some Action {
-        Comment("This Shortcut was generated in Swift.")
-        Ask(prompt: "WHAT 👏 DO 👏 YOU 👏 WANT 👏 TO 👏 SAY")
-//        ChangeCase(variable: .lastResult, target: .caseType(.uppercase))
-//        ReplaceText(variable: .lastResult, target: "[\\s]", replacement: " 👏 ", isRegularExpression: true)
-//            .savingOutput(to: $updatedText)
-
-        ChooseFromMenu(items: [
-            MenuItem(label: "Share") {
-                Share(input: updatedText)
-            },
-            MenuItem(label: "Copy to Clipboard") {
-                CopyToClipboard(content: updatedText)
-            },
-        ])
+    var body: some Action {
+        ActionGroup {
+            Comment("This Shortcut was generated in Swift.")
+            Ask(prompt: "WHAT 👏 DO 👏 YOU 👏 WANT 👏 TO 👏 SAY")
+                .usingResult { providedInput in ChangeCase(variable: providedInput, target: .caseType(.uppercase)) }
+                .usingResult { changedCaseText in ReplaceText(variable: changedCaseText, target: "[\\s]", replacement: " 👏 ", isRegularExpression: true) }
+                .usingResult { updatedText in
+                    ChooseFromMenu(items: [
+                        MenuItem(label: "Share") {
+                            Share(input: updatedText)
+                        },
+                        MenuItem(label: "Copy to Clipboard") {
+                            CopyToClipboard(content: updatedText)
+                        },
+                    ])
+                }
+        }
     }
 }

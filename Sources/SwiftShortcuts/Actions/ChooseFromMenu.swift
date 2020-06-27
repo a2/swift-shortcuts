@@ -31,15 +31,17 @@ public struct ChooseFromMenu: Action {
 
     let identifier = "is.workflow.actions.choosefrommenu"
 
-    @ActionBuilder public var body: some Action {
-        ControlFlowAction(identifier: identifier, groupingIdentifier: groupingIdentifier, mode: .start, userInfo: StartUserInfo(prompt: prompt, menuItems: items.map(\.label)))
+    public var body: some Action {
+        ActionGroup {
+            ControlFlowAction(identifier: identifier, groupingIdentifier: groupingIdentifier, mode: .start, userInfo: StartUserInfo(prompt: prompt, menuItems: items.map(\.label)))
 
-        ForEach(items) { item in
-            ControlFlowAction(identifier: identifier, groupingIdentifier: groupingIdentifier, mode: .middle, userInfo: MiddleUserInfo(menuItemTitle: item.label))
-            item.action
+            ForEach(items) { item in
+                ControlFlowAction(identifier: identifier, groupingIdentifier: groupingIdentifier, mode: .middle, userInfo: MiddleUserInfo(menuItemTitle: item.label))
+                item.action
+            }
+
+            ControlFlowAction(identifier: identifier, groupingIdentifier: groupingIdentifier, mode: .end)
         }
-
-        ControlFlowAction(identifier: identifier, groupingIdentifier: groupingIdentifier, mode: .end)
     }
 
     let prompt: String

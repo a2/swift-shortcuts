@@ -33,26 +33,30 @@ final class BatteryLevelTests: XCTestCase {
 struct BatteryLevelShortcut: Shortcut {
     @OutputVariable var batteryLevel
 
-    @ActionBuilder var body: some Action {
-        Comment("This Shortcut was generated in Swift.")
-        BatteryLevel()
-            .savingOutput(to: $batteryLevel)
-        If(batteryLevel < 20) {
-            SetLowPowerMode(true)
-            ShowResult("Your battery level is \(batteryLevel)%; you might want to charge soon.")
-        } else: {
-            ShowResult("Your battery level is \(batteryLevel)%; you're probably fine for now.")
+    var body: some Action {
+        ActionGroup {
+            Comment("This Shortcut was generated in Swift.")
+            BatteryLevel()
+                .savingOutput(to: $batteryLevel)
+            If(batteryLevel < 20) {
+                SetLowPowerMode(true)
+                ShowResult("Your battery level is \(batteryLevel)%; you might want to charge soon.")
+            } else: {
+                ShowResult("Your battery level is \(batteryLevel)%; you're probably fine for now.")
+            }
         }
     }
 }
 
 struct BatteryLevelWithResultShortcut: Shortcut {
-    @ActionBuilder var body: some Action {
-        Comment("This Shortcut was generated in Swift.")
-        BatteryLevel().usingResult { batteryLevel in
-            If(batteryLevel < 20) {
-                SetLowPowerMode(true)
-                ShowResult("Your battery level is low. Turning on Low Power Mode...")
+    var body: some Action {
+        ActionGroup {
+            Comment("This Shortcut was generated in Swift.")
+            BatteryLevel().usingResult { batteryLevel in
+                If(batteryLevel < 20) {
+                    SetLowPowerMode(true)
+                    ShowResult("Your battery level is low. Turning on Low Power Mode...")
+                }
             }
         }
     }
