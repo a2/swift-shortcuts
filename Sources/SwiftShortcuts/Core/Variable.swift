@@ -17,8 +17,8 @@ public class Variable: Encodable {
         self.value = value
     }
 
-    public init(name: String? = nil) {
-        self.value = Attachment(type: .actionOutput, outputName: name, outputUUID: UUID())
+    public init(name: String? = nil, uuid: UUID = UUID()) {
+        self.value = Attachment(type: .actionOutput, outputName: name, outputUUID: uuid)
     }
 
     public func withDateFormat(_ dateFormat: Aggrandizement.DateFormatStyle) -> Variable {
