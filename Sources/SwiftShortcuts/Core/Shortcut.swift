@@ -51,16 +51,16 @@ struct ShortcutPayload: Encodable {
         "WFStringContentItem",
         "WFURLContentItem",
     ]
-    let actions: [ActionStep.EncodableWrapper]
+    let actions: [ActionComponentWrapper]
 }
 
 extension Shortcut {
     public func build() throws -> Data {
         let decomposed = body.decompose()
-        let encodableActionSteps = decomposed.map { actionStep in actionStep.encodable() }
+        let encodableActionComponents = decomposed.map { actionStep in actionStep.encodable() }
 
         let encoder = PropertyListEncoder()
         encoder.outputFormat = .binary
-        return try encoder.encode(ShortcutPayload(actions: encodableActionSteps))
+        return try encoder.encode(ShortcutPayload(actions: encodableActionComponents))
     }
 }

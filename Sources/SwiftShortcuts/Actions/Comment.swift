@@ -1,6 +1,6 @@
 public struct Comment: Action {
     public var body: some Action {
-        ActionStep(identifier: "is.workflow.actions.comment", parameters: Parameters(base: self))
+        ActionComponent(identifier: "is.workflow.actions.comment", parameters: Parameters(base: self))
     }
 
     let text: String

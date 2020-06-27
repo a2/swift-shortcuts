@@ -53,12 +53,12 @@ private let makeAnyAction: AnyActionFunction = {
     return unsafeBitCast(pointer, to: AnyActionFunction.self)
 }()
 
-// MARK: - [ActionStep] from Any
+// MARK: - [ActionComponent] from Any
 
-private protocol ActionStepsConvertible {}
+private protocol ActionComponentsConvertible {}
 
-extension ActionStepsConvertible {
-    static func actionSteps(from action: Any) -> [ActionStep]? {
+extension ActionComponentsConvertible {
+    static func actionCompontents(from action: Any) -> [ActionComponent]? {
         guard let witnessTable = _conformsToProtocol(Self.self, actionMetadata.protocolDescriptorVector) else {
             return nil
         }
@@ -69,20 +69,20 @@ extension ActionStepsConvertible {
 }
 
 @_silgen_name("_swift_shortcuts_decompose")
-public func _decompose<A: Action>(action: A) -> [ActionStep] {
+public func _decompose<A: Action>(action: A) -> [ActionComponent] {
     if A.Body.self == Never.self {
         return action.decompose()
     }
 
     let body = action.body
-    if let actionStep = body as? ActionStep {
-        return [actionStep]
+    if let component = body as? ActionComponent {
+        return [component]
     } else {
         return _decompose(action: body)
     }
 }
 
-private typealias DecomposeFunction = @convention(thin) (UnsafeRawPointer, ProtocolConformanceRecord) -> [ActionStep]
+private typealias DecomposeFunction = @convention(thin) (UnsafeRawPointer, ProtocolConformanceRecord) -> [ActionComponent]
 
 private let decompose: DecomposeFunction = {
     let symbolName = "_swift_shortcuts_decompose"
@@ -91,15 +91,11 @@ private let decompose: DecomposeFunction = {
     return unsafeBitCast(pointer, to: DecomposeFunction.self)
 }()
 
-func actionSteps(from value: Any) -> [ActionStep]? {
+func actionComponents(from value: Any) -> [ActionComponent]? {
     // Synthesize a fake protocol conformance record to ActionStepsConvertible
     let conformance = ProtocolConformanceRecord(type: type(of: value), witnessTable: 0)
-    let type = unsafeBitCast(conformance, to: ActionStepsConvertible.Type.self)
-    guard let actionSteps = type.actionSteps(from: value) else {
-        return nil
-    }
-
-    return actionSteps
+    let type = unsafeBitCast(conformance, to: ActionComponentsConvertible.Type.self)
+    return type.actionCompontents(from: value)
 }
 
 // MARK: - Protocol Runtime Information

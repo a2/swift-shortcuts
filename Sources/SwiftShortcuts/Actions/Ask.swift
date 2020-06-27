@@ -3,7 +3,7 @@ public struct Ask: Action {
     let defaultAnswer: InterpolatedText?
 
     public var body: some Action {
-        ActionStep(identifier: "is.workflow.actions.ask", parameters: Parameters(base: self))
+        ActionComponent(identifier: "is.workflow.actions.ask", parameters: Parameters(base: self))
     }
 
     public init(prompt: InterpolatedText, defaultAnswer: InterpolatedText? = nil) {

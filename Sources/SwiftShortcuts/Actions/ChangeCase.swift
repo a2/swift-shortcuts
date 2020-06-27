@@ -19,7 +19,7 @@ public struct ChangeCase: Action {
     let target: Target
 
     public var body: some Action {
-        ActionStep(identifier: "is.workflow.actions.text.changecase", parameters: Parameters(base: self))
+        ActionComponent(identifier: "is.workflow.actions.text.changecase", parameters: Parameters(base: self))
     }
 
     public init(text: InterpolatedText, target: Target) {

@@ -6,7 +6,7 @@ public struct ReplaceText: Action {
     let isRegularExpression: Bool
 
     public var body: some Action {
-        ActionStep(identifier: "is.workflow.actions.text.replace", parameters: Parameters(base: self))
+        ActionComponent(identifier: "is.workflow.actions.text.replace", parameters: Parameters(base: self))
     }
 
     public init(text: InterpolatedText, target: InterpolatedText, replacement: InterpolatedText, isCaseSensitive: Bool = true, isRegularExpression: Bool = false) {

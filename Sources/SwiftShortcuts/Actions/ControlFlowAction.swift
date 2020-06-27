@@ -30,7 +30,7 @@ struct ControlFlowAction: Action {
     let userInfo: AnyEncodable?
 
     var body: some Action {
-        ActionStep(identifier: identifier, parameters: Parameters(base: self))
+        ActionComponent(identifier: identifier, parameters: Parameters(base: self))
     }
 
     init(identifier: String, groupingIdentifier: UUID, mode: Mode) {

@@ -16,7 +16,7 @@ public struct SavedOutputAction<Base>: Action where Base: Action {
 
         let last = decomposed[decomposed.count - 1]
         let newParameters = Parameters(base: last.parameters, variable: variable)
-        let newLast = ActionStep(identifier: last.identifier, parameters: newParameters)
+        let newLast = ActionComponent(identifier: last.identifier, parameters: newParameters)
         decomposed[decomposed.count - 1] = newLast
 
         return AnyAction(ForEach(decomposed, builder: { $0 }))

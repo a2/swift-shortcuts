@@ -5,7 +5,7 @@ public struct SetLowPowerMode: Action {
     }
 
     public var body: some Action {
-        ActionStep(identifier: "is.workflow.actions.lowpowermode.set", parameters: Parameters(base: self))
+        ActionComponent(identifier: "is.workflow.actions.lowpowermode.set", parameters: Parameters(base: self))
     }
 
     let operation: Operation

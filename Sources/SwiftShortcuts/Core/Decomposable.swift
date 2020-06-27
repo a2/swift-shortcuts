@@ -1,13 +1,13 @@
 protocol Decomposable {
-    func decompose() -> [ActionStep]
+    func decompose() -> [ActionComponent]
 }
 
 extension Action {
-    func decompose() -> [ActionStep] {
+    func decompose() -> [ActionComponent] {
         if Body.self != Never.self {
             let body = self.body
-            if let actionStep = body as? ActionStep {
-                return [actionStep]
+            if let component = body as? ActionComponent {
+                return [component]
             } else if let decomposable = body as? Decomposable {
                 return decomposable.decompose()
             }
@@ -21,15 +21,15 @@ extension Action {
     }
 }
 
-extension ActionStep: Decomposable {
-    func decompose() -> [ActionStep] {
+extension ActionComponent: Decomposable {
+    func decompose() -> [ActionComponent] {
         [self]
     }
 }
 
 extension AnyAction: Decomposable {
-    func decompose() -> [ActionStep] {
-        if let storage = storage as? AnyActionStorage<ActionStep> {
+    func decompose() -> [ActionComponent] {
+        if let storage = storage as? AnyActionStorage<ActionComponent> {
             return [storage.action]
         }
 
@@ -38,28 +38,28 @@ extension AnyAction: Decomposable {
         let storageMirror = Mirror(reflecting: storage)
         let storedValue = storageMirror.children[storageMirror.children.startIndex].value
 
-        guard let actionStep = storedValue as? ActionStep else {
-            return actionSteps(from: storedValue) ?? []
+        guard let component = storedValue as? ActionComponent else {
+            return actionComponents(from: storedValue) ?? []
         }
 
-        return [actionStep]
+        return [component]
     }
 }
 
 extension EmptyAction: Decomposable {
-    func decompose() -> [ActionStep] {
+    func decompose() -> [ActionComponent] {
         []
     }
 }
 
 extension ForEach: Decomposable {
-    func decompose() -> [ActionStep] {
+    func decompose() -> [ActionComponent] {
         children.flatMap { $0.decompose() }
     }
 }
 
 extension Optional: Decomposable where Wrapped: Action {
-    func decompose() -> [ActionStep] {
+    func decompose() -> [ActionComponent] {
         switch self {
         case .some(let value):
             return value.decompose()
@@ -70,7 +70,7 @@ extension Optional: Decomposable where Wrapped: Action {
 }
 
 extension TupleAction: Decomposable {
-    func decompose() -> [ActionStep] {
+    func decompose() -> [ActionComponent] {
         let mirror = Mirror(reflecting: self)
         let value = mirror.children[mirror.children.startIndex].value
         let valueMirror = Mirror(reflecting: value)

@@ -1,6 +1,6 @@
 public struct Share: Action {
     public var body: some Action {
-        ActionStep(identifier: "is.workflow.actions.share", parameters: Parameters(base: self))
+        ActionComponent(identifier: "is.workflow.actions.share", parameters: Parameters(base: self))
     }
 
     let input: Variable
