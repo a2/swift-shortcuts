@@ -15,10 +15,6 @@ public struct AnyAction: Action {
     public var body: Never { fatalError() }
 
     public init<Base>(_ base: Base) where Base: Action {
-        if Base.Body.self == ActionStep.self {
-            self.storage = AnyActionStorage(base.body)
-        } else {
-            self.storage = AnyActionStorage(base)
-        }
+        self.storage = AnyActionStorage(base)
     }
 }
