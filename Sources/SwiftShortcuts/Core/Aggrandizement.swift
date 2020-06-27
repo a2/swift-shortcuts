@@ -118,26 +118,24 @@ public enum Aggrandizement {
         }
     }
 
-    // TODO: Change this to a struct with static var conveniences
-    public enum PropertyName: Encodable {
-        case fileSize
-        case fileExtension
-        case name
-        case custom(String)
+    public struct PropertyName: RawRepresentable, Encodable {
+        public let rawValue: String
+
+        public init(rawValue: String) {
+            self.rawValue = rawValue
+        }
+
+        public init(_ rawValue: String) {
+            self.rawValue = rawValue
+        }
+
+        public static var fileSize: PropertyName { PropertyName("File Size") }
+        public static var fileExtension: PropertyName { PropertyName("File Extension") }
+        public static var name: PropertyName { PropertyName("Name") }
 
         public func encode(to encoder: Encoder) throws {
             var container = encoder.singleValueContainer()
-
-            switch self {
-            case .fileSize:
-                try container.encode("File Size")
-            case .fileExtension:
-                try container.encode("File Extension")
-            case .name:
-                try container.encode("Name")
-            case .custom(let propertyName):
-                try container.encode(propertyName)
-            }
+            try container.encode(rawValue)
         }
     }
 
