@@ -13,9 +13,8 @@ final class BatteryLevelTests: XCTestCase {
         print(reconstructed as? NSDictionary ?? [:])
     }
 
-    func testBuildWithLastResult() throws {
-        /*
-        let shortcut = BatteryLevelWithLastResultShortcut()
+    func testBuildWithResult() throws {
+        let shortcut = BatteryLevelWithResultShortcut()
         let data = try shortcut.build()
 
         var format: PropertyListSerialization.PropertyListFormat = .binary
@@ -23,12 +22,11 @@ final class BatteryLevelTests: XCTestCase {
 
         XCTAssertEqual(format, .binary)
         print(reconstructed as? NSDictionary ?? [:])
-        */
     }
 
     static var allTests = [
         ("testBuild", testBuild),
-        ("testBuildWithLastResult", testBuildWithLastResult),
+        ("testBuildWithResult", testBuildWithResult),
     ]
 }
 
@@ -48,41 +46,14 @@ struct BatteryLevelShortcut: Shortcut {
     }
 }
 
-/*
-struct BatteryLevelWithLastResultShortcut: Shortcut {
+struct BatteryLevelWithResultShortcut: Shortcut {
     @ActionBuilder var body: some Action {
         Comment("This Shortcut was generated in Swift.")
-        BatteryLevel()
-        If(.lastResult < 20) {
-            SetLowPowerMode(true)
-            ShowResult("Your battery level is low. Turning on Low Power Mode...")
-        }
-    }
-}
-
-struct BatteryLevelWithLastResultShortcut2: Shortcut {
-    @ActionBuilder var body: some Action {
-        Comment("This Shortcut was generated in Swift.")
-        BatteryLevel().withResult { lastResult in
-            If(lastResult < 20) {
+        BatteryLevel().usingResult { batteryLevel in
+            If(batteryLevel < 20) {
                 SetLowPowerMode(true)
                 ShowResult("Your battery level is low. Turning on Low Power Mode...")
             }
         }
     }
 }
-
-struct BatteryLevelWithLastResultShortcut3: Shortcut {
-    @ActionBuilder var body: some Action {
-        Comment("This Shortcut was generated in Swift.")
-        ResultReader { variable in
-            BatteryLevel()
-                .savingOutput(to: variable)
-            If(variable < 20) {
-                SetLowPowerMode(true)
-                ShowResult("Your battery level is low. Turning on Low Power Mode...")
-            }
-        }
-    }
-}
-*/

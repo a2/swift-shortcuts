@@ -1,29 +1,35 @@
 extension Action {
     public func savingOutput(to outputVariable: OutputVariable) -> SavedOutputAction<Self> {
-        return SavedOutputAction(base: self, outputVariable: outputVariable)
+        SavedOutputAction(base: self, outputVariable: outputVariable)
     }
 }
 
 public struct SavedOutputAction<Base>: Action where Base: Action {
     let base: Base
-    let outputVariable: OutputVariable
+    let variable: Variable
 
     public var body: some Action {
         var decomposed = base.decompose()
-        guard let last = decomposed.last else {
+        guard !decomposed.isEmpty else {
             return AnyAction(EmptyAction())
         }
 
-        let newParameters = Parameters(base: last.parameters, variable: outputVariable)
+        let last = decomposed[decomposed.count - 1]
+        let newParameters = Parameters(base: last.parameters, variable: variable)
         let newLast = ActionStep(identifier: last.identifier, parameters: newParameters)
         decomposed[decomposed.count - 1] = newLast
 
         return AnyAction(ForEach(decomposed, builder: { $0 }))
     }
 
+    init(base: Base, variable: Variable) {
+        self.base = base
+        self.variable = variable
+    }
+
     public init(base: Base, outputVariable: OutputVariable) {
         self.base = base
-        self.outputVariable = outputVariable
+        self.variable = outputVariable.wrappedValue
     }
 }
 
@@ -35,9 +41,9 @@ extension SavedOutputAction {
         }
 
         let base: AnyEncodable
-        let variable: OutputVariable
+        let variable: Variable
 
-        init(base: AnyEncodable, variable: OutputVariable) {
+        init(base: AnyEncodable, variable: Variable) {
             self.base = base
             self.variable = variable
         }
@@ -46,8 +52,8 @@ extension SavedOutputAction {
             try base.encode(to: encoder)
 
             var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encodeIfPresent(variable.wrappedValue.value.outputName, forKey: .customOutputName)
-            try container.encodeIfPresent(variable.wrappedValue.value.outputUUID, forKey: .uuid)
+            try container.encodeIfPresent(variable.value.outputName, forKey: .customOutputName)
+            try container.encodeIfPresent(variable.value.outputUUID, forKey: .uuid)
         }
     }
 }
