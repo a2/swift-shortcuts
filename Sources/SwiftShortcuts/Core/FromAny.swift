@@ -40,7 +40,7 @@ extension AnyActionConvertible {
 }
 
 @_silgen_name("_swift_shortcuts_makeAnyAction")
-func _makeAnyAction<A: Action>(from action: A) -> AnyAction {
+public func _makeAnyAction<A: Action>(from action: A) -> AnyAction {
     return AnyAction(action)
 }
 
@@ -69,7 +69,7 @@ extension ActionStepsConvertible {
 }
 
 @_silgen_name("_swift_shortcuts_decompose")
-func _decompose<A: Action>(action: A) -> [ActionStep] {
+public func _decompose<A: Action>(action: A) -> [ActionStep] {
     if A.Body.self == Never.self {
         return action.decompose()
     }
