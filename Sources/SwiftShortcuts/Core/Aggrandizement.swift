@@ -1,163 +1,163 @@
-public enum Aggrandizement {
-    public enum DateFormatStyle {
-        case none(TimeFormatStyle)
-        case short(TimeFormatStyle)
-        case medium(TimeFormatStyle)
-        case long(TimeFormatStyle)
-        case rfc2822
-        case iso8601(includeTime: Bool)
-        case relative(TimeFormatStyle)
-        case custom(String)
-        case howLongAgoUntil
-    }
+public enum DateFormatStyle {
+    case none(TimeFormatStyle)
+    case short(TimeFormatStyle)
+    case medium(TimeFormatStyle)
+    case long(TimeFormatStyle)
+    case rfc2822
+    case iso8601(includeTime: Bool)
+    case relative(TimeFormatStyle)
+    case custom(String)
+    case howLongAgoUntil
+}
 
-    public enum TimeFormatStyle: Encodable {
-        case none
-        case short
-        case medium
-        case long
+public enum TimeFormatStyle: Encodable {
+    case none
+    case short
+    case medium
+    case long
 
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.singleValueContainer()
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
 
-            switch self {
-            case .none:
-                try container.encode("None")
-            case .short:
-                try container.encode("Short")
-            case .medium:
-                try container.encode("Medium")
-            case .long:
-                try container.encode("Long")
-            }
+        switch self {
+        case .none:
+            try container.encode("None")
+        case .short:
+            try container.encode("Short")
+        case .medium:
+            try container.encode("Medium")
+        case .long:
+            try container.encode("Long")
         }
     }
+}
 
-    public enum CoercionItemClass: Encodable {
-        case anything
-        case appStoreApp
-        case article
-        case boolean
-        case contact
-        case date
-        case dictionary
-        case emailAddress
-        case file
-        case image
-        case iTunesMedia
-        case iTunesProduct
-        case location
-        case mapsLink
-        case media
-        case number
-        case pdf
-        case phoneNumber
-        case photoMedia
-        case place
-        case richText
-        case safariWebPage
-        case text
-        case url
-        case vCard
+public enum CoercionItemClass: Encodable {
+    case anything
+    case appStoreApp
+    case article
+    case boolean
+    case contact
+    case date
+    case dictionary
+    case emailAddress
+    case file
+    case image
+    case iTunesMedia
+    case iTunesProduct
+    case location
+    case mapsLink
+    case media
+    case number
+    case pdf
+    case phoneNumber
+    case photoMedia
+    case place
+    case richText
+    case safariWebPage
+    case text
+    case url
+    case vCard
 
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.singleValueContainer()
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
 
-            switch self {
-            case .anything:
-                try container.encode("WFContentItem")
-            case .appStoreApp:
-                try container.encode("WFAppStoreAppContentItem")
-            case .article:
-                try container.encode("WFArticleContentItem")
-            case .boolean:
-                try container.encode("WFBooleanContentItem")
-            case .contact:
-                try container.encode("WFContactContentItem")
-            case .date:
-                try container.encode("WFDateContentItem")
-            case .dictionary:
-                try container.encode("WFDictionaryContentItem")
-            case .emailAddress:
-                try container.encode("WFEmailAddressContentItem")
-            case .file:
-                try container.encode("WFGenericFileContentItem")
-            case .image:
-                try container.encode("WFImageContentItem")
-            case .iTunesMedia:
-                try container.encode("WFMPMediaContentItem")
-            case .iTunesProduct:
-                try container.encode("WFiTunesProductContentItem")
-            case .location:
-                try container.encode("WFLocationContentItem")
-            case .mapsLink:
-                try container.encode("WFDCMapsLinkContentItem")
-            case .media:
-                try container.encode("WFAVAssetContentItem")
-            case .number:
-                try container.encode("WFNumberContentItem")
-            case .pdf:
-                try container.encode("WFPDFContentItem")
-            case .phoneNumber:
-                try container.encode("WFPhoneNumberContentItem")
-            case .photoMedia:
-                try container.encode("WFPhotoMediaContentItem")
-            case .place:
-                try container.encode("WFMKMapItemContentItem")
-            case .richText:
-                try container.encode("WFRichTextContentItem")
-            case .safariWebPage:
-                try container.encode("WFSafariWebPageContentItem")
-            case .text:
-                try container.encodeNil()
-            case .url:
-                try container.encode("WFURLContentItem")
-            case .vCard:
-                try container.encode("WFVCardContentItem")
-            }
+        switch self {
+        case .anything:
+            try container.encode("WFContentItem")
+        case .appStoreApp:
+            try container.encode("WFAppStoreAppContentItem")
+        case .article:
+            try container.encode("WFArticleContentItem")
+        case .boolean:
+            try container.encode("WFBooleanContentItem")
+        case .contact:
+            try container.encode("WFContactContentItem")
+        case .date:
+            try container.encode("WFDateContentItem")
+        case .dictionary:
+            try container.encode("WFDictionaryContentItem")
+        case .emailAddress:
+            try container.encode("WFEmailAddressContentItem")
+        case .file:
+            try container.encode("WFGenericFileContentItem")
+        case .image:
+            try container.encode("WFImageContentItem")
+        case .iTunesMedia:
+            try container.encode("WFMPMediaContentItem")
+        case .iTunesProduct:
+            try container.encode("WFiTunesProductContentItem")
+        case .location:
+            try container.encode("WFLocationContentItem")
+        case .mapsLink:
+            try container.encode("WFDCMapsLinkContentItem")
+        case .media:
+            try container.encode("WFAVAssetContentItem")
+        case .number:
+            try container.encode("WFNumberContentItem")
+        case .pdf:
+            try container.encode("WFPDFContentItem")
+        case .phoneNumber:
+            try container.encode("WFPhoneNumberContentItem")
+        case .photoMedia:
+            try container.encode("WFPhotoMediaContentItem")
+        case .place:
+            try container.encode("WFMKMapItemContentItem")
+        case .richText:
+            try container.encode("WFRichTextContentItem")
+        case .safariWebPage:
+            try container.encode("WFSafariWebPageContentItem")
+        case .text:
+            try container.encodeNil()
+        case .url:
+            try container.encode("WFURLContentItem")
+        case .vCard:
+            try container.encode("WFVCardContentItem")
         }
     }
+}
 
-    public struct PropertyName: RawRepresentable, Encodable {
-        public let rawValue: String
+public struct PropertyName: RawRepresentable, Encodable {
+    public let rawValue: String
 
-        public init(rawValue: String) {
-            self.rawValue = rawValue
-        }
-
-        public init(_ rawValue: String) {
-            self.rawValue = rawValue
-        }
-
-        public static var fileSize: PropertyName { PropertyName("File Size") }
-        public static var fileExtension: PropertyName { PropertyName("File Extension") }
-        public static var name: PropertyName { PropertyName("Name") }
-
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.singleValueContainer()
-            try container.encode(rawValue)
-        }
+    public init(rawValue: String) {
+        self.rawValue = rawValue
     }
 
-    public enum PropertyUserInfo: Encodable {
-        case fileSize
-        case fileExtension
-        case number(Number)
-
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.singleValueContainer()
-
-            switch self {
-            case .fileSize:
-                try container.encode("WFFileSizeProperty")
-            case .fileExtension:
-                try container.encode("WFFileExtensionProperty")
-            case .number(let number):
-                try container.encode(number)
-            }
-        }
+    public init(_ rawValue: String) {
+        self.rawValue = rawValue
     }
 
+    public static var fileSize: PropertyName { PropertyName("File Size") }
+    public static var fileExtension: PropertyName { PropertyName("File Extension") }
+    public static var name: PropertyName { PropertyName("Name") }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(rawValue)
+    }
+}
+
+public enum PropertyUserInfo: Encodable {
+    case fileSize
+    case fileExtension
+    case number(Number)
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+
+        switch self {
+        case .fileSize:
+            try container.encode("WFFileSizeProperty")
+        case .fileExtension:
+            try container.encode("WFFileExtensionProperty")
+        case .number(let number):
+            try container.encode(number)
+        }
+    }
+}
+
+enum Aggrandizement {
     case coercion(class: CoercionItemClass)
     case dateFormat(DateFormatStyle)
     case dictionaryValue(key: String?)
@@ -208,7 +208,7 @@ extension Aggrandizement: Encodable {
         case userInfo = "PropertyUserInfo"
     }
 
-    public func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         switch self {
         case .coercion(let coercionClass):
             var container = encoder.container(keyedBy: CoercionCodingKeys.self)

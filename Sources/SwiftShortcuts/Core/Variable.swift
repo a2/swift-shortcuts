@@ -10,8 +10,8 @@ public class Variable: Encodable {
         case serializationType = "WFSerializationType"
     }
 
-    var value: Attachment
-    var serializationType = SerializationType.textTokenAttachment
+    let value: Attachment
+    let serializationType = SerializationType.textTokenAttachment
 
     init(value: Attachment) {
         self.value = value
@@ -21,13 +21,13 @@ public class Variable: Encodable {
         self.value = Attachment(type: .actionOutput, outputName: name, outputUUID: uuid)
     }
 
-    public func withDateFormat(_ dateFormat: Aggrandizement.DateFormatStyle) -> Variable {
+    public func withDateFormat(_ dateFormat: DateFormatStyle) -> Variable {
         var newValue = value
         newValue.aggrandizements = [.coercion(class: .date), .dateFormat(dateFormat)]
         return Variable(value: newValue)
     }
 
-    public func withPropertyName(_ propertyName: Aggrandizement.PropertyName, userInfo: Aggrandizement.PropertyUserInfo) -> Variable {
+    public func withPropertyName(_ propertyName: PropertyName, userInfo: PropertyUserInfo) -> Variable {
         var newValue = value
         newValue.aggrandizements = [.property(name: propertyName, userInfo: userInfo)]
         return Variable(value: newValue)
@@ -39,7 +39,7 @@ public class Variable: Encodable {
         return Variable(value: newValue)
     }
 
-    public func withType(_ type: Aggrandizement.CoercionItemClass) -> Variable {
+    public func withType(_ type: CoercionItemClass) -> Variable {
         var newValue = value
         newValue.aggrandizements = [.coercion(class: type)]
         return Variable(value: newValue)
