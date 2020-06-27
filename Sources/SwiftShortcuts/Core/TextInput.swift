@@ -3,17 +3,6 @@ enum TextInput {
     case interpolatedText(InterpolatedText)
 }
 
-extension TextInput: VariableContainer {
-    var inputVariables: [Variable] {
-        switch self {
-        case .variable(let variable):
-            return [variable]
-        case .interpolatedText(let interpolatedText):
-            return interpolatedText.inputVariables
-        }
-    }
-}
-
 extension TextInput: Encodable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()

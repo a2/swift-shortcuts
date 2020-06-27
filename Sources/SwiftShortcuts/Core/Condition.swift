@@ -46,12 +46,6 @@ extension Condition: Encodable {
     }
 }
 
-extension Condition: VariableContainer {
-    public var inputVariables: [Variable] {
-        lhs.inputVariables + (rhs?.inputVariables ?? [])
-    }
-}
-
 extension Condition.LeftOperand: Encodable {
     enum CodingKeys: String, CodingKey {
         case type = "Type"
@@ -68,15 +62,6 @@ extension Condition.LeftOperand: Encodable {
         case .variable(let variable):
             try container.encode(OperandType.variable, forKey: .type)
             try container.encode(variable, forKey: .variable)
-        }
-    }
-}
-
-extension Condition.LeftOperand: VariableContainer {
-    var inputVariables: [Variable] {
-        switch self {
-        case .variable(let variable):
-            return [variable]
         }
     }
 }
@@ -108,19 +93,6 @@ extension Condition.RightOperand: Encodable {
     }
 }
 
-extension Condition.RightOperand: VariableContainer {
-    var inputVariables: [Variable] {
-        switch self {
-        case .variable(let variable):
-            return [variable]
-        case .number:
-            return []
-        case .range(let lhs, let rhs):
-            return lhs.inputVariables + rhs.inputVariables
-        }
-    }
-}
-
 extension Condition.RightRangeOperand: Encodable {
     enum CodingKeys: String, CodingKey {
         case type = "Type"
@@ -140,17 +112,6 @@ extension Condition.RightRangeOperand: Encodable {
         case .number(let number):
             var container = encoder.singleValueContainer()
             try container.encode(number)
-        }
-    }
-}
-
-extension Condition.RightRangeOperand: VariableContainer {
-    var inputVariables: [Variable] {
-        switch self {
-        case .variable(let variable):
-            return [variable]
-        case .number:
-            return []
         }
     }
 }
