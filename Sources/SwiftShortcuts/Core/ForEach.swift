@@ -1,10 +1,10 @@
-public struct ForEach: Action {
-    let children: [AnyAction]
+public struct ForEach<Data, Content>: Action where Data: Collection, Content: Action {
+    let children: [Content]
 
     public typealias Body = Never
     public var body: Never { fatalError() }
 
-    public init<C, Content>(_ collection: C, @ActionBuilder builder: (C.Element) -> Content) where C: Collection, Content: Action {
-        self.children = collection.map { item in AnyAction(builder(item)) }
+    public init(_ collection: Data, @ActionBuilder builder: (Data.Element) -> Content) {
+        self.children = collection.map(builder)
     }
 }
