@@ -17,7 +17,7 @@ extension Action {
             return decomposable.decompose()
         }
 
-        fatalError()
+        fatalError("Action \(self) has Body = Never but is not Decomposable")
     }
 }
 
