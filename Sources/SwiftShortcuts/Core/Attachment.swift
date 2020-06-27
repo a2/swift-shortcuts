@@ -7,7 +7,6 @@ struct Attachment {
         case clipboard
         case currentDate
         case shortcutInput
-        case lastResult
 
         func encode(to encoder: Encoder) throws {
             var container = encoder.singleValueContainer()
@@ -23,8 +22,6 @@ struct Attachment {
                 try container.encode("CurrentDate")
             case .shortcutInput:
                 try container.encode("ExtensionInput")
-            case .lastResult:
-                fatalError("Attempted to encode a `Variable.lastResult`. Declare variable dependencies with the VariableDependency property wrapper and register them in the ActionContext.")
             }
         }
     }

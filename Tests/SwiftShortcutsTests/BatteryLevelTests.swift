@@ -14,6 +14,7 @@ final class BatteryLevelTests: XCTestCase {
     }
 
     func testBuildWithLastResult() throws {
+        /*
         let shortcut = BatteryLevelWithLastResultShortcut()
         let data = try shortcut.build()
 
@@ -22,6 +23,7 @@ final class BatteryLevelTests: XCTestCase {
 
         XCTAssertEqual(format, .binary)
         print(reconstructed as? NSDictionary ?? [:])
+        */
     }
 
     static var allTests = [
@@ -46,6 +48,7 @@ struct BatteryLevelShortcut: Shortcut {
     }
 }
 
+/*
 struct BatteryLevelWithLastResultShortcut: Shortcut {
     @ActionBuilder var body: some Action {
         Comment("This Shortcut was generated in Swift.")
@@ -82,3 +85,4 @@ struct BatteryLevelWithLastResultShortcut3: Shortcut {
         }
     }
 }
+*/

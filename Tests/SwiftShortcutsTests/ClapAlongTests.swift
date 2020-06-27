@@ -24,9 +24,9 @@ struct ClapAlongShortcut: Shortcut {
     @ActionBuilder var body: some Action {
         Comment("This Shortcut was generated in Swift.")
         Ask(prompt: "WHAT 👏 DO 👏 YOU 👏 WANT 👏 TO 👏 SAY")
-        ChangeCase(variable: .lastResult, target: .caseType(.uppercase))
-        ReplaceText(variable: .lastResult, target: "[\\s]", replacement: " 👏 ", isRegularExpression: true)
-            .savingOutput(to: $updatedText)
+//        ChangeCase(variable: .lastResult, target: .caseType(.uppercase))
+//        ReplaceText(variable: .lastResult, target: "[\\s]", replacement: " 👏 ", isRegularExpression: true)
+//            .savingOutput(to: $updatedText)
 
         ChooseFromMenu(items: [
             MenuItem(label: "Share") {

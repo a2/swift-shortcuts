@@ -45,20 +45,10 @@ public class Variable: Encodable {
         return Variable(value: newValue)
     }
 
-    func copyProperties(from variable: Variable) {
-        value = variable.value
-        serializationType = variable.serializationType
-    }
-
     public func encode(to encoder: Encoder) throws {
-        switch value.type {
-        case .lastResult:
-            fatalError("Attempted to encode a `Variable.lastResult`. Declare variable dependencies with the VariableDependency property wrapper and register them in the ActionContext.")
-        default:
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(value, forKey: .value)
-            try container.encode(serializationType, forKey: .serializationType)
-        }
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(value, forKey: .value)
+        try container.encode(serializationType, forKey: .serializationType)
     }
 }
 
@@ -77,10 +67,6 @@ extension Variable {
 
     public class var shortcutInput: Variable {
         Variable(value: Attachment(type: .shortcutInput))
-    }
-
-    public class var lastResult: Variable {
-        Variable(value: Attachment(type: .lastResult))
     }
 }
 

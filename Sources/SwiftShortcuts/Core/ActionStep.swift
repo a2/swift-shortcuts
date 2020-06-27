@@ -20,24 +20,22 @@ public struct ActionStep: Action {
 }
 
 extension ActionStep {
-    struct EncodableWrapper {
+    struct EncodableWrapper: Encodable {
+        enum CodingKeys: String, CodingKey {
+            case identifier = "WFWorkflowActionIdentifier"
+            case parameters = "WFWorkflowActionParameters"
+        }
+
         let actionStep: ActionStep
 
         init(_ actionStep: ActionStep) {
             self.actionStep = actionStep
         }
-    }
-}
 
-extension ActionStep.EncodableWrapper: Encodable {
-    enum CodingKeys: String, CodingKey {
-        case identifier = "WFWorkflowActionIdentifier"
-        case parameters = "WFWorkflowActionParameters"
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(actionStep.identifier, forKey: .identifier)
-        try container.encode(actionStep.parameters, forKey: .parameters)
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(actionStep.identifier, forKey: .identifier)
+            try container.encode(actionStep.parameters, forKey: .parameters)
+        }
     }
 }

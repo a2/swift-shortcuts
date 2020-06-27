@@ -58,27 +58,21 @@ struct ShortcutPayload: Encodable {
     let actions: [ActionStep.EncodableWrapper]
 }
 
+extension AnyAction {
+    var actionStep: ActionStep? {
+        (storage as? AnyActionStorage<ActionStep>)?.action
+    }
+}
+
 extension Shortcut {
+    func encodableActionSteps() -> [ActionStep.EncodableWrapper] {
+        let decomposed = body.decompose()
+        return decomposed.map { actionStep in actionStep.encodable() }
+    }
+
     public func build() throws -> Data {
-        let body = self.body
-
-        let actions: [AnyAction]
-        if let decomposable = body as? Decomposable {
-            actions = decomposable.decompose()
-        } else {
-            actions = [AnyAction(body)]
-        }
-
-        let actionSteps: [ActionStep.EncodableWrapper] = actions.map { action in
-            let mirror = Mirror(reflecting: action)
-            let storage = mirror.children[mirror.children.startIndex].value
-            let storageMirror = Mirror(reflecting: storage)
-            let action = storageMirror.children[storageMirror.children.startIndex].value
-            return (action as! ActionStep).encodable()
-        }
-
         let encoder = PropertyListEncoder()
         encoder.outputFormat = .binary
-        return try encoder.encode(ShortcutPayload(actions: actionSteps))
+        return try encoder.encode(ShortcutPayload(actions: encodableActionSteps()))
     }
 }
