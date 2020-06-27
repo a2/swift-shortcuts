@@ -22,17 +22,17 @@ public struct If: Action {
         }
     }
 
-    public init<TrueContent>(_ condition: Condition, groupingIdentifier: UUID = UUID(), @ActionBuilder if: () -> TrueContent) where TrueContent: Action {
+    public init<TrueContent>(_ condition: Condition, groupingIdentifier: UUID = UUID(), @ActionBuilder then ifTrue: () -> TrueContent) where TrueContent: Action {
         self.condition = condition
-        self.ifTrue = AnyAction(`if`())
+        self.ifTrue = AnyAction(ifTrue())
         self.ifFalse = nil
         self.groupingIdentifier = groupingIdentifier
     }
 
-    public init<TrueContent, FalseContent>(_ condition: Condition, groupingIdentifier: UUID = UUID(), @ActionBuilder if: () -> TrueContent, @ActionBuilder else: () -> FalseContent) where TrueContent: Action, FalseContent: Action {
+    public init<TrueContent, FalseContent>(_ condition: Condition, groupingIdentifier: UUID = UUID(), @ActionBuilder then ifTrue: () -> TrueContent, @ActionBuilder else ifFalse: () -> FalseContent) where TrueContent: Action, FalseContent: Action {
         self.condition = condition
-        self.ifTrue = AnyAction(`if`())
-        self.ifFalse = AnyAction(`else`())
+        self.ifTrue = AnyAction(ifTrue())
+        self.ifFalse = AnyAction(ifFalse())
         self.groupingIdentifier = groupingIdentifier
     }
 }
