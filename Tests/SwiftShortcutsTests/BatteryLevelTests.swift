@@ -31,19 +31,19 @@ final class BatteryLevelTests: XCTestCase {
 }
 
 struct BatteryLevelShortcut: Shortcut {
-    @OutputVariable var batteryLevel
+    @OutputVariable var batteryLevel: Variable
 
     var body: some Action {
         ActionGroup {
             Comment("This Shortcut was generated in Swift.")
             BatteryLevel()
                 .savingOutput(to: $batteryLevel)
-            If(batteryLevel < 20) {
+            If(batteryLevel < 20, then: {
                 SetLowPowerMode(true)
                 ShowResult("Your battery level is \(batteryLevel)%; you might want to charge soon.")
-            } else: {
+            }, else: {
                 ShowResult("Your battery level is \(batteryLevel)%; you're probably fine for now.")
-            }
+            })
         }
     }
 }

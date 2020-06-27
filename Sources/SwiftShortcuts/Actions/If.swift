@@ -13,9 +13,11 @@ public struct If: Action {
             ControlFlowAction(identifier: identifier, groupingIdentifier: groupingIdentifier, mode: .start, userInfo: condition)
             ifTrue
 
-            if let ifFalse = ifFalse {
-                ControlFlowAction(identifier: identifier, groupingIdentifier: groupingIdentifier, mode: .middle)
-                ifFalse
+            ifFalse.map { content in
+                ActionGroup {
+                    ControlFlowAction(identifier: identifier, groupingIdentifier: groupingIdentifier, mode: .middle)
+                    content
+                }
             }
 
             ControlFlowAction(identifier: identifier, groupingIdentifier: groupingIdentifier, mode: .end)
