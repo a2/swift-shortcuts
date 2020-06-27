@@ -58,7 +58,7 @@ extension ForEach: Decomposable {
     }
 }
 
-extension Optional: Decomposable where Wrapped: Decomposable {
+extension Optional: Decomposable where Wrapped: Action {
     func decompose() -> [ActionStep] {
         switch self {
         case .some(let value):
