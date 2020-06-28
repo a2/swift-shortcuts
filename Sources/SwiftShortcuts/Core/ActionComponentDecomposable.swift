@@ -35,10 +35,8 @@ extension AnyAction: ActionComponentDecomposable {
             return [storage.action]
         }
 
-        let mirror = Mirror(reflecting: self)
-        let storage = mirror.children[mirror.children.startIndex].value
-        let storageMirror = Mirror(reflecting: storage)
-        let storedValue = storageMirror.children[storageMirror.children.startIndex].value
+        let mirror = Mirror(reflecting: storage)
+        let storedValue = mirror.children[mirror.children.startIndex].value
 
         guard let component = storedValue as? ActionComponent else {
             return actionComponents(from: storedValue) ?? []
@@ -73,9 +71,7 @@ extension Optional: ActionComponentDecomposable where Wrapped: Action {
 
 extension TupleAction: ActionComponentDecomposable {
     func decompose() -> [ActionComponent] {
-        let mirror = Mirror(reflecting: self)
-        let value = mirror.children[mirror.children.startIndex].value
-        let valueMirror = Mirror(reflecting: value)
-        return valueMirror.children.flatMap { _, value in AnyAction(_fromValue: value)!.decompose() }
+        let mirror = Mirror(reflecting: value)
+        return mirror.children.flatMap { _, value in AnyAction(_fromValue: value)!.decompose() }
     }
 }
