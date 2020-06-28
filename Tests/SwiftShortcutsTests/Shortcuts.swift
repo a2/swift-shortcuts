@@ -8,7 +8,7 @@ struct BatteryLevelShortcut: Shortcut {
             Comment("This Shortcut was generated in Swift.")
             BatteryLevel()
                 .savingOutput(to: $batteryLevel)
-            If(batteryLevel < 20, then: {
+            If(batteryLevel < Number(20), then: {
                 SetLowPowerMode(true)
                 ShowResult("Your battery level is \(batteryLevel)%; you might want to charge soon.")
             }, else: {
@@ -23,7 +23,7 @@ struct BatteryLevelWithResultShortcut: Shortcut {
         ShortcutGroup {
             Comment("This Shortcut was generated in Swift.")
             BatteryLevel().usingResult { batteryLevel in
-                If(batteryLevel < 20) {
+                If(batteryLevel < Number(20)) {
                     SetLowPowerMode(true)
                     ShowResult("Your battery level is low. Turning on Low Power Mode...")
                 }

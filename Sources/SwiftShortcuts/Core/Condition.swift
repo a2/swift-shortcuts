@@ -1,169 +1,261 @@
-public struct Condition {
-    enum Operation: Int, Encodable {
-        case `is` = 4
-        case isNot = 5
-        case hasAnyValue = 100
-        case doesNotHaveAnyValue = 101
-        case isGreaterThan = 2
-        case isGreaterThanOrEqualTo = 3
-        case isLessThan = 0
-        case isLessThanOrEqualTo = 1
-        case isBetween = 1003
-    }
+public enum Condition {
+    case `is`(Variable, ConditionOperand)
+    case isNot(Variable, ConditionOperand)
 
-    enum LeftOperand {
-        case variable(Variable)
-    }
+    case hasAnyValue(Variable)
+    case doesNotHaveAnyValue(Variable)
 
-    enum RightRangeOperand {
-        case variable(Variable)
-        case number(Number)
-    }
+    case contains(Variable, InterpolatedText)
+    case doesNotContain(Variable, InterpolatedText)
+    case beginsWith(Variable, InterpolatedText)
+    case endsWith(Variable, InterpolatedText)
 
-    enum RightOperand {
-        case variable(Variable)
-        case number(Number)
-        case range(RightRangeOperand, RightRangeOperand)
-    }
-
-    let lhs: LeftOperand
-    let operation: Operation
-    let rhs: RightOperand?
+    case isGreaterThan(Variable, ConditionNumberOperand)
+    case isGreaterThanOrEqualTo(Variable, ConditionNumberOperand)
+    case isLessThan(Variable, ConditionNumberOperand)
+    case isLessThanOrEqualTo(Variable, ConditionNumberOperand)
+    case isBetween(Variable, ConditionNumberOperand, ConditionNumberOperand)
 }
 
 extension Condition: Encodable {
     enum CodingKeys: String, CodingKey {
         case input = "WFInput"
         case condition = "WFCondition"
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-
-        try container.encode(lhs, forKey: .input)
-        try container.encode(operation, forKey: .condition)
-        try rhs?.encode(to: encoder)
-    }
-}
-
-extension Condition.LeftOperand: Encodable {
-    enum CodingKeys: String, CodingKey {
-        case type = "Type"
-        case variable = "Variable"
-    }
-
-    enum OperandType: String, Encodable {
-        case variable = "Variable"
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        switch self {
-        case .variable(let variable):
-            try container.encode(OperandType.variable, forKey: .type)
-            try container.encode(variable, forKey: .variable)
-        }
-    }
-}
-
-extension Condition.RightOperand: Encodable {
-    enum CodingKeys: String, CodingKey {
         case serializationType = "WFSerializationType"
+        case conditionalActionString = "WFConditionalActionString"
         case numberValue = "WFNumberValue"
         case anotherNumber = "WFAnotherNumber"
     }
 
-    enum SerializationType: String, Encodable {
-        case tokenTextAttachment = "WFTextTokenAttachment"
-    }
-
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(lhs, forKey: .input)
+        try container.encode(operation, forKey: .condition)
 
         switch self {
-        case .variable(let variable):
-            try variable.encode(to: encoder)
-            try container.encode(SerializationType.tokenTextAttachment, forKey: .serializationType)
-        case .number(let number):
-            try container.encode(number, forKey: .numberValue)
-        case .range(let lhs, let rhs):
-            try container.encode(lhs, forKey: .numberValue)
-            try container.encode(rhs, forKey: .anotherNumber)
+        case .is(_, let rhs),
+             .isNot(_, let rhs):
+            try rhs.encode(to: encoder)
+
+        case .hasAnyValue, .doesNotHaveAnyValue:
+            break
+
+        case .contains(_, let rhs),
+             .doesNotContain(_, let rhs),
+             .beginsWith(_, let rhs),
+             .endsWith(_, let rhs):
+            let operand = ConditionOperand.interpolatedText(rhs)
+            try operand.encode(to: encoder)
+
+        case .isGreaterThan(_, let rhs),
+             .isGreaterThanOrEqualTo(_, let rhs),
+             .isLessThan(_, let rhs),
+             .isLessThanOrEqualTo(_, let rhs):
+            try rhs.baseOperand.encode(to: encoder)
+
+        case .isBetween(_, let lowerBound, let upperBound):
+            try container.encode(lowerBound.baseOperand, forKey: .numberValue)
+            try container.encode(upperBound.baseOperand, forKey: .anotherNumber)
+        }
+    }
+
+    var lhs: Variable {
+        switch self {
+        case .is(let variable, _),
+             .isNot(let variable, _),
+             .hasAnyValue(let variable),
+             .doesNotHaveAnyValue(let variable),
+             .contains(let variable, _),
+             .doesNotContain(let variable, _),
+             .beginsWith(let variable, _),
+             .endsWith(let variable, _),
+             .isGreaterThan(let variable, _),
+             .isGreaterThanOrEqualTo(let variable, _),
+             .isLessThan(let variable, _),
+             .isLessThanOrEqualTo(let variable, _),
+             .isBetween(let variable, _, _):
+            return variable
+        }
+    }
+
+    var operation: Int {
+        switch self {
+        case .`is`:
+            return 4
+        case .isNot:
+            return 5
+        case .hasAnyValue:
+            return 100
+        case .doesNotHaveAnyValue:
+            return 101
+        case .contains:
+            return 99
+        case .doesNotContain:
+            return 999
+        case .beginsWith:
+            return 8
+        case .endsWith:
+            return 9
+        case .isGreaterThan:
+            return 2
+        case .isGreaterThanOrEqualTo:
+            return 3
+        case .isLessThan:
+            return 0
+        case .isLessThanOrEqualTo:
+            return 1
+        case .isBetween:
+            return 1003
         }
     }
 }
 
-extension Condition.RightRangeOperand: Encodable {
+// MARK: - ConditionOperand
+
+public enum ConditionOperand: Encodable {
     enum CodingKeys: String, CodingKey {
         case type = "Type"
         case variable = "Variable"
+        case numberValue = "WFNumberValue"
+        case conditionalActionString = "WFConditionalActionString"
     }
 
     enum OperandType: String, Encodable {
         case variable = "Variable"
     }
 
-    func encode(to encoder: Encoder) throws {
+    case variable(Variable)
+    case number(Number)
+    case interpolatedText(InterpolatedText)
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
         switch self {
         case .variable(let variable):
-            var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(OperandType.variable, forKey: .type)
-            try container.encode(variable.value, forKey: .variable)
+            try container.encode(variable, forKey: .variable)
         case .number(let number):
-            var container = encoder.singleValueContainer()
-            try container.encode(number)
+            try container.encode(number, forKey: .numberValue)
+        case .interpolatedText(let interpolatedText):
+            try container.encode(interpolatedText, forKey: .conditionalActionString)
         }
     }
 }
 
-public func > (lhs: Variable, rhs: Number) -> Condition {
-    Condition(lhs: .variable(lhs), operation: .isGreaterThan, rhs: .number(rhs))
+public protocol ConditionOperandConvertible {
+    var conditionOperand: ConditionOperand { get }
 }
 
-public func > (lhs: Variable, rhs: Variable) -> Condition {
-    Condition(lhs: .variable(lhs), operation: .isGreaterThan, rhs: .variable(rhs))
+extension Number: ConditionOperandConvertible {
+    public var conditionOperand: ConditionOperand { .number(self) }
 }
 
-public func >= (lhs: Variable, rhs: Number) -> Condition {
-    Condition(lhs: .variable(lhs), operation: .isGreaterThanOrEqualTo, rhs: .number(rhs))
+extension Variable: ConditionOperandConvertible {
+    public var conditionOperand: ConditionOperand { .variable(self) }
 }
 
-public func >= (lhs: Variable, rhs: Variable) -> Condition {
-    Condition(lhs: .variable(lhs), operation: .isGreaterThanOrEqualTo, rhs: .variable(rhs))
+extension InterpolatedText: ConditionOperandConvertible {
+    public var conditionOperand: ConditionOperand { .interpolatedText(self) }
 }
 
-public func < (lhs: Variable, rhs: Number) -> Condition {
-    Condition(lhs: .variable(lhs), operation: .isLessThan, rhs: .number(rhs))
+// MARK: - ConditionNumericOperand
+
+public enum ConditionNumberOperand {
+    case variable(Variable)
+    case number(Number)
+
+    var baseOperand: ConditionOperand {
+        switch self {
+        case .variable(let variable):
+            return .variable(variable)
+        case .number(let number):
+            return .number(number)
+        }
+    }
 }
 
-public func < (lhs: Variable, rhs: Variable) -> Condition {
-    Condition(lhs: .variable(lhs), operation: .isLessThan, rhs: .variable(rhs))
+public protocol ConditionNumberOperandConvertible {
+    var conditionNumberOperand: ConditionNumberOperand { get }
 }
 
-public func <= (lhs: Variable, rhs: Number) -> Condition {
-    Condition(lhs: .variable(lhs), operation: .isLessThanOrEqualTo, rhs: .number(rhs))
+extension Number: ConditionNumberOperandConvertible {
+    public var conditionNumberOperand: ConditionNumberOperand { .number(self) }
 }
 
-public func <= (lhs: Variable, rhs: Variable) -> Condition {
-    Condition(lhs: .variable(lhs), operation: .isLessThanOrEqualTo, rhs: .variable(rhs))
+extension Variable: ConditionNumberOperandConvertible {
+    public var conditionNumberOperand: ConditionNumberOperand { .variable(self) }
+}
+
+// MARK: - ConditionTextOperand
+
+public enum ConditionTextOperand {
+    case interpolatedText(InterpolatedText)
+
+    var baseOperand: ConditionOperand {
+        switch self {
+        case .interpolatedText(let interpolatedText):
+            return .interpolatedText(interpolatedText)
+        }
+    }
+}
+
+public protocol ConditionTextOperandConvertible {
+    var conditionTextOperand: ConditionTextOperand { get }
+}
+
+extension Variable: ConditionTextOperandConvertible {
+    public var conditionTextOperand: ConditionTextOperand { .interpolatedText("\(self)") }
+}
+
+extension InterpolatedText: ConditionTextOperandConvertible {
+    public var conditionTextOperand: ConditionTextOperand { .interpolatedText(self) }
+}
+
+// MARK: - Functions
+
+public func == (lhs: Variable, rhs: ConditionOperandConvertible) -> Condition {
+    .is(lhs, rhs.conditionOperand)
+}
+
+public func != (lhs: Variable, rhs: ConditionOperandConvertible) -> Condition {
+    .isNot(lhs, rhs.conditionOperand)
+}
+
+public func > (lhs: Variable, rhs: ConditionNumberOperandConvertible) -> Condition {
+    .isGreaterThan(lhs, rhs.conditionNumberOperand)
+}
+
+public func >= (lhs: Variable, rhs: ConditionNumberOperandConvertible) -> Condition {
+    .isGreaterThanOrEqualTo(lhs, rhs.conditionNumberOperand)
+}
+
+public func < (lhs: Variable, rhs: ConditionNumberOperandConvertible) -> Condition {
+    .isLessThan(lhs, rhs.conditionNumberOperand)
+}
+
+public func <= (lhs: Variable, rhs: ConditionNumberOperandConvertible) -> Condition {
+    .isLessThanOrEqualTo(lhs, rhs.conditionNumberOperand)
 }
 
 public func ~= (lhs: Variable, rhs: ClosedRange<Number>) -> Condition {
-    Condition(lhs: .variable(lhs), operation: .isBetween, rhs: .range(.number(rhs.lowerBound), .number(rhs.upperBound)))
+    .isBetween(lhs, .number(rhs.lowerBound), .number(rhs.upperBound))
 }
 
-public func ~= (lhs: Variable, rhs: (lowerBound: Number, upperBound: Number)) -> Condition {
-    Condition(lhs: .variable(lhs), operation: .isBetween, rhs: .range(.number(rhs.lowerBound), .number(rhs.upperBound)))
+public func ~= (lhs: Variable, rhs: (lowerBound: ConditionNumberOperandConvertible, upperBound: ConditionNumberOperandConvertible)) -> Condition {
+    .isBetween(lhs, rhs.lowerBound.conditionNumberOperand, rhs.upperBound.conditionNumberOperand)
 }
 
-public func ~= (lhs: Variable, rhs: (lowerBound: Variable, upperBound: Number)) -> Condition {
-    Condition(lhs: .variable(lhs), operation: .isBetween, rhs: .range(.variable(rhs.lowerBound), .number(rhs.upperBound)))
-}
+extension Variable {
+    public func hasAnyValue() -> Condition { .hasAnyValue(self) }
 
-public func ~= (lhs: Variable, rhs: (lowerBound: Number, upperBound: Variable)) -> Condition {
-    Condition(lhs: .variable(lhs), operation: .isBetween, rhs: .range(.number(rhs.lowerBound), .variable(rhs.upperBound)))
-}
+    public func doesNotHaveAnyValue() -> Condition { .doesNotHaveAnyValue(self) }
 
-public func ~= (lhs: Variable, rhs: (lowerBound: Variable, upperBound: Variable)) -> Condition {
-    Condition(lhs: .variable(lhs), operation: .isBetween, rhs: .range(.variable(rhs.lowerBound), .variable(rhs.upperBound)))
+    public func contains(_ text: InterpolatedText) -> Condition { .contains(self, text) }
+
+    public func doesNotContain(_ text: InterpolatedText) -> Condition { .doesNotContain(self, text) }
+
+    public func hasPrefix(_ text: InterpolatedText) -> Condition { .beginsWith(self, text) }
+
+    public func hasSuffix(_ text: InterpolatedText) -> Condition { .endsWith(self, text) }
 }
