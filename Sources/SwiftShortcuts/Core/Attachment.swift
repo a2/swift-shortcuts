@@ -7,6 +7,7 @@ struct Attachment {
         case clipboard
         case currentDate
         case shortcutInput
+        case variable
 
         func encode(to encoder: Encoder) throws {
             var container = encoder.singleValueContainer()
@@ -22,6 +23,8 @@ struct Attachment {
                 try container.encode("CurrentDate")
             case .shortcutInput:
                 try container.encode("ExtensionInput")
+            case .variable:
+                try container.encode("Variable")
             }
         }
     }
