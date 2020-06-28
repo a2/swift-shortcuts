@@ -9,4 +9,3 @@ public struct AnyEncodable: Encodable {
         try encodeFunction(encoder)
     }
 }
-
