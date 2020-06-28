@@ -8,22 +8,6 @@ public struct Calculate: Shortcut {
     public init(_ calculation: Calculation) {
         self.calculation = calculation
     }
-
-    public init(lhs: Number, operation: Calculation.Operation, rhs: Number) {
-        self.calculation = Calculation(lhs: .number(lhs), operation: operation, rhs: .number(rhs))
-    }
-
-    public init(lhs: Variable, operation: Calculation.Operation, rhs: Number) {
-        self.calculation = Calculation(lhs: .variable(lhs), operation: operation, rhs: .number(rhs))
-    }
-
-    public init(lhs: Number, operation: Calculation.Operation, rhs: Variable) {
-        self.calculation = Calculation(lhs: .number(lhs), operation: operation, rhs: .variable(rhs))
-    }
-
-    public init(lhs: Variable, operation: Calculation.Operation, rhs: Variable) {
-        self.calculation = Calculation(lhs: .variable(lhs), operation: operation, rhs: .variable(rhs))
-    }
 }
 
 extension Calculate {
@@ -34,38 +18,57 @@ extension Calculate {
             case rhs = "WFMathOperand"
         }
 
+        enum OperandNames: String, Encodable {
+            case add = "+"
+            case subtract = "-"
+            case multiply = "×"
+            case divide = "÷"
+        }
+
         let base: Calculate
 
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(base.calculation.lhs, forKey: .lhs)
-            try container.encode(base.calculation.operation, forKey: .operation)
-            try container.encode(base.calculation.rhs, forKey: .rhs)
+
+            switch base.calculation {
+            case .add(let lhs, let rhs):
+                try container.encode(lhs, forKey: .lhs)
+                try container.encode(OperandNames.add, forKey: .operation)
+                try container.encode(rhs, forKey: .rhs)
+            case .subtract(let lhs, let rhs):
+                try container.encode(lhs, forKey: .lhs)
+                try container.encode(OperandNames.subtract, forKey: .operation)
+                try container.encode(rhs, forKey: .rhs)
+            case .multiply(let lhs, let rhs):
+                try container.encode(lhs, forKey: .lhs)
+                try container.encode(OperandNames.multiply, forKey: .operation)
+                try container.encode(rhs, forKey: .rhs)
+            case .divide(let lhs, let rhs):
+                try container.encode(lhs, forKey: .lhs)
+                try container.encode(OperandNames.divide, forKey: .operation)
+                try container.encode(rhs, forKey: .rhs)
+            case .askEachTime(let lhs, let rhs):
+                try container.encode(lhs, forKey: .lhs)
+                try container.encode(Variable.askEachTime, forKey: .operation)
+                try container.encodeIfPresent(rhs, forKey: .rhs)
+            }
         }
     }
 }
 
-public struct Calculation {
-    enum Operand {
-        case variable(Variable)
-        case number(Number)
-    }
-
-    public enum Operation {
-        case add
-        case subtract
-        case multiply
-        case divide
-        case askEachTime
-    }
-
-    let lhs: Operand
-    let operation: Operation
-    let rhs: Operand
+public enum Calculation {
+    case add(CalculationOperand, CalculationOperand)
+    case subtract(CalculationOperand, CalculationOperand)
+    case multiply(CalculationOperand, CalculationOperand)
+    case divide(CalculationOperand, CalculationOperand)
+    case askEachTime(CalculationOperand, CalculationOperand?)
 }
 
-extension Calculation.Operand: Encodable {
-    func encode(to encoder: Encoder) throws {
+public enum CalculationOperand: Encodable {
+    case variable(Variable)
+    case number(Number)
+
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
 
         switch self {
@@ -77,93 +80,30 @@ extension Calculation.Operand: Encodable {
     }
 }
 
-extension Calculation.Operation: Encodable {
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-
-        switch self {
-        case .add:
-            try container.encode("+")
-        case .subtract:
-            try container.encode("-")
-        case .multiply:
-            try container.encode("×")
-        case .divide:
-            try container.encode("÷")
-        case .askEachTime:
-            try container.encode(Variable.askEachTime)
-        }
-    }
+public protocol CalculationOperandConvertible {
+    var calculationOperand: CalculationOperand { get }
 }
 
-// MARK: - Add
-
-public func + (lhs: Number, rhs: Number) -> Calculation {
-    Calculation(lhs: .number(lhs), operation: .add, rhs: .number(rhs))
+extension Number: CalculationOperandConvertible {
+    public var calculationOperand: CalculationOperand { .number(self) }
 }
 
-public func + (lhs: Variable, rhs: Number) -> Calculation {
-    Calculation(lhs: .variable(lhs), operation: .add, rhs: .number(rhs))
+extension Variable: CalculationOperandConvertible {
+    public var calculationOperand: CalculationOperand { .variable(self) }
 }
 
-public func + (lhs: Number, rhs: Variable) -> Calculation {
-    Calculation(lhs: .number(lhs), operation: .add, rhs: .variable(rhs))
+public func + (lhs: CalculationOperandConvertible, rhs: CalculationOperandConvertible) -> Calculation {
+    .add(rhs.calculationOperand, rhs.calculationOperand)
 }
 
-public func + (lhs: Variable, rhs: Variable) -> Calculation {
-    Calculation(lhs: .variable(lhs), operation: .add, rhs: .variable(rhs))
+public func - (lhs: CalculationOperandConvertible, rhs: CalculationOperandConvertible) -> Calculation {
+    .subtract(lhs.calculationOperand, rhs.calculationOperand)
 }
 
-// MARK: - Subtract
-
-public func - (lhs: Number, rhs: Number) -> Calculation {
-    Calculation(lhs: .number(lhs), operation: .add, rhs: .number(rhs))
+public func * (lhs: CalculationOperandConvertible, rhs: CalculationOperandConvertible) -> Calculation {
+    .multiply(lhs.calculationOperand, rhs.calculationOperand)
 }
 
-public func - (lhs: Variable, rhs: Number) -> Calculation {
-    Calculation(lhs: .variable(lhs), operation: .subtract, rhs: .number(rhs))
-}
-
-public func - (lhs: Number, rhs: Variable) -> Calculation {
-    Calculation(lhs: .number(lhs), operation: .subtract, rhs: .variable(rhs))
-}
-
-public func - (lhs: Variable, rhs: Variable) -> Calculation {
-    Calculation(lhs: .variable(lhs), operation: .subtract, rhs: .variable(rhs))
-}
-
-// MARK: - Multiply
-
-public func * (lhs: Number, rhs: Number) -> Calculation {
-    Calculation(lhs: .number(lhs), operation: .multiply, rhs: .number(rhs))
-}
-
-public func * (lhs: Variable, rhs: Number) -> Calculation {
-    Calculation(lhs: .variable(lhs), operation: .multiply, rhs: .number(rhs))
-}
-
-public func * (lhs: Number, rhs: Variable) -> Calculation {
-    Calculation(lhs: .number(lhs), operation: .multiply, rhs: .variable(rhs))
-}
-
-public func * (lhs: Variable, rhs: Variable) -> Calculation {
-    Calculation(lhs: .variable(lhs), operation: .multiply, rhs: .variable(rhs))
-}
-
-// MARK: - Divide
-
-public func / (lhs: Number, rhs: Number) -> Calculation {
-    Calculation(lhs: .number(lhs), operation: .divide, rhs: .number(rhs))
-}
-
-public func / (lhs: Variable, rhs: Number) -> Calculation {
-    Calculation(lhs: .variable(lhs), operation: .divide, rhs: .number(rhs))
-}
-
-public func / (lhs: Number, rhs: Variable) -> Calculation {
-    Calculation(lhs: .number(lhs), operation: .divide, rhs: .variable(rhs))
-}
-
-public func / (lhs: Variable, rhs: Variable) -> Calculation {
-    Calculation(lhs: .variable(lhs), operation: .divide, rhs: .variable(rhs))
+public func / (lhs: CalculationOperandConvertible, rhs: CalculationOperandConvertible) -> Calculation {
+    .divide(lhs.calculationOperand, rhs.calculationOperand)
 }
