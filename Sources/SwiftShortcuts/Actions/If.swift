@@ -13,11 +13,9 @@ public struct If: Shortcut {
             ControlFlowAction(identifier: identifier, groupingIdentifier: groupingIdentifier, mode: .start, userInfo: condition)
             ifTrue
 
-            ifFalse.map { content in
-                ShortcutGroup {
-                    ControlFlowAction(identifier: identifier, groupingIdentifier: groupingIdentifier, mode: .middle)
-                    content
-                }
+            if let ifFalse = ifFalse {
+                ControlFlowAction(identifier: identifier, groupingIdentifier: groupingIdentifier, mode: .middle)
+                ifFalse
             }
 
             ControlFlowAction(identifier: identifier, groupingIdentifier: groupingIdentifier, mode: .end)

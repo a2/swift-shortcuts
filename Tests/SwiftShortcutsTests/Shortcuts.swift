@@ -1,19 +1,19 @@
 import SwiftShortcuts
 
 struct BatteryLevelShortcut: Shortcut {
-    @OutputVariable var batteryLevel: Variable
+    @OutputVariable var batteryLevel
 
     var body: some Shortcut {
         ShortcutGroup {
             Comment("This Shortcut was generated in Swift.")
             BatteryLevel()
                 .savingOutput(to: $batteryLevel)
-            If(batteryLevel < Number(20), then: {
+            If(batteryLevel < Number(20)) {
                 SetLowPowerMode(true)
                 ShowResult("Your battery level is \(batteryLevel)%; you might want to charge soon.")
-            }, else: {
+            } else: {
                 ShowResult("Your battery level is \(batteryLevel)%; you're probably fine for now.")
-            })
+            }
         }
     }
 }
@@ -54,7 +54,7 @@ struct ClapAlongShortcut: Shortcut {
 }
 
 struct RepeatWithCalculationResultShortcut: Shortcut {
-    @OutputVariable var calculationResult: Variable
+    @OutputVariable var calculationResult
 
     var body: some Shortcut {
         ShortcutGroup {
