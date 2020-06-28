@@ -8,6 +8,22 @@ public struct Calculate: Action {
     public init(_ calculation: Calculation) {
         self.calculation = calculation
     }
+
+    public init(lhs: Number, operation: Calculation.Operation, rhs: Number) {
+        self.calculation = Calculation(lhs: .number(lhs), operation: operation, rhs: .number(rhs))
+    }
+
+    public init(lhs: Variable, operation: Calculation.Operation, rhs: Number) {
+        self.calculation = Calculation(lhs: .variable(lhs), operation: operation, rhs: .number(rhs))
+    }
+
+    public init(lhs: Number, operation: Calculation.Operation, rhs: Variable) {
+        self.calculation = Calculation(lhs: .number(lhs), operation: operation, rhs: .variable(rhs))
+    }
+
+    public init(lhs: Variable, operation: Calculation.Operation, rhs: Variable) {
+        self.calculation = Calculation(lhs: .variable(lhs), operation: operation, rhs: .variable(rhs))
+    }
 }
 
 extension Calculate {
@@ -35,11 +51,12 @@ public struct Calculation {
         case number(Number)
     }
 
-    enum Operation {
+    public enum Operation {
         case add
         case subtract
         case multiply
         case divide
+        case askEachTime
     }
 
     let lhs: Operand
@@ -61,7 +78,7 @@ extension Calculation.Operand: Encodable {
 }
 
 extension Calculation.Operation: Encodable {
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
 
         switch self {
