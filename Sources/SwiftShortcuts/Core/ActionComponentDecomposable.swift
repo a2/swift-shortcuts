@@ -10,6 +10,8 @@ extension Action {
                 return [component]
             } else if let decomposable = body as? ActionComponentDecomposable {
                 return decomposable.decompose()
+            } else {
+                return body.decompose()
             }
         }
 
