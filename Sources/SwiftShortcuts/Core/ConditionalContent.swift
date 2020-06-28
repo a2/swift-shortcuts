@@ -1,4 +1,4 @@
-public struct ConditionalContent<TrueContent, FalseContent>: Shortcut where TrueContent: Shortcut, FalseContent: Shortcut {
+public struct _ConditionalContent<TrueContent, FalseContent>: Shortcut where TrueContent: Shortcut, FalseContent: Shortcut {
     enum Storage {
         case trueContent(TrueContent)
         case falseContent(FalseContent)

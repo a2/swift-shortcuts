@@ -46,7 +46,7 @@ extension AnyShortcut: ActionDecomposable {
     }
 }
 
-extension ConditionalContent: ActionDecomposable {
+extension _ConditionalContent: ActionDecomposable {
     func decompose() -> [Action] {
         switch storage {
         case .trueContent(let content):

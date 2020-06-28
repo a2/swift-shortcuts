@@ -13,12 +13,12 @@ extension ShortcutBuilder {
         content
     }
 
-    public static func buildEither<TrueContent, FalseContent>(first: TrueContent) -> ConditionalContent<TrueContent, FalseContent> where TrueContent: Shortcut, FalseContent: Shortcut {
-        ConditionalContent(storage: .trueContent(first))
+    public static func buildEither<TrueContent, FalseContent>(first: TrueContent) -> _ConditionalContent<TrueContent, FalseContent> where TrueContent: Shortcut, FalseContent: Shortcut {
+        _ConditionalContent(storage: .trueContent(first))
     }
 
-    public static func buildEither<TrueContent, FalseContent>(second: FalseContent) -> ConditionalContent<TrueContent, FalseContent> where TrueContent: Shortcut, FalseContent: Shortcut {
-        ConditionalContent(storage: .falseContent(second))
+    public static func buildEither<TrueContent, FalseContent>(second: FalseContent) -> _ConditionalContent<TrueContent, FalseContent> where TrueContent: Shortcut, FalseContent: Shortcut {
+        _ConditionalContent(storage: .falseContent(second))
     }
 
     public static func buildBlock<C0, C1>(_ c0: C0, _ c1: C1) -> TupleShortcut<(C0, C1)> where C0: Shortcut, C1: Shortcut {
