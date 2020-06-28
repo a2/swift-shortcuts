@@ -1,6 +1,6 @@
-public struct Comment: Action {
-    public var body: some Action {
-        ActionComponent(identifier: "is.workflow.actions.comment", parameters: Parameters(base: self))
+public struct Comment: Shortcut {
+    public var body: some Shortcut {
+        Action(identifier: "is.workflow.actions.comment", parameters: Parameters(base: self))
     }
 
     let text: String

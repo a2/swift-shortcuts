@@ -1,9 +1,9 @@
-public struct Ask: Action {
+public struct Ask: Shortcut {
     let prompt: InterpolatedText
     let defaultAnswer: InterpolatedText?
 
-    public var body: some Action {
-        ActionComponent(identifier: "is.workflow.actions.ask", parameters: Parameters(base: self))
+    public var body: some Shortcut {
+        Action(identifier: "is.workflow.actions.ask", parameters: Parameters(base: self))
     }
 
     public init(prompt: InterpolatedText, defaultAnswer: InterpolatedText? = nil) {

@@ -1,25 +1,25 @@
-extension Action {
-    public func savingOutput(to outputVariable: OutputVariable) -> SavedOutputAction<Self> {
-        SavedOutputAction(base: self, outputVariable: outputVariable)
+extension Shortcut {
+    public func savingOutput(to outputVariable: OutputVariable) -> SavedOutputShortcut<Self> {
+        SavedOutputShortcut(base: self, outputVariable: outputVariable)
     }
 }
 
-public struct SavedOutputAction<Base>: Action where Base: Action {
+public struct SavedOutputShortcut<Base>: Shortcut where Base: Shortcut {
     let base: Base
     let variable: Variable
 
-    public var body: some Action {
+    public var body: some Shortcut {
         var decomposed = base.decompose()
         guard !decomposed.isEmpty else {
-            return AnyAction(EmptyAction())
+            return AnyShortcut(EmptyShortcut())
         }
 
         let last = decomposed[decomposed.count - 1]
         let newParameters = Parameters(base: last.parameters, variable: variable)
-        let newLast = ActionComponent(identifier: last.identifier, parameters: newParameters)
+        let newLast = Action(identifier: last.identifier, parameters: newParameters)
         decomposed[decomposed.count - 1] = newLast
 
-        return AnyAction(ForEach(decomposed, builder: { $0 }))
+        return AnyShortcut(ForEach(decomposed, builder: { $0 }))
     }
 
     init(base: Base, variable: Variable) {
@@ -33,7 +33,7 @@ public struct SavedOutputAction<Base>: Action where Base: Action {
     }
 }
 
-extension SavedOutputAction {
+extension SavedOutputShortcut {
     struct Parameters: Encodable {
         enum CodingKeys: String, CodingKey {
             case customOutputName = "CustomOutputName"

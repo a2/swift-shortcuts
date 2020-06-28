@@ -3,8 +3,8 @@ import SwiftShortcuts
 struct BatteryLevelShortcut: Shortcut {
     @OutputVariable var batteryLevel: Variable
 
-    var body: some Action {
-        ActionGroup {
+    var body: some Shortcut {
+        ShortcutGroup {
             Comment("This Shortcut was generated in Swift.")
             BatteryLevel()
                 .savingOutput(to: $batteryLevel)
@@ -19,8 +19,8 @@ struct BatteryLevelShortcut: Shortcut {
 }
 
 struct BatteryLevelWithResultShortcut: Shortcut {
-    var body: some Action {
-        ActionGroup {
+    var body: some Shortcut {
+        ShortcutGroup {
             Comment("This Shortcut was generated in Swift.")
             BatteryLevel().usingResult { batteryLevel in
                 If(batteryLevel < 20) {
@@ -33,8 +33,8 @@ struct BatteryLevelWithResultShortcut: Shortcut {
 }
 
 struct ClapAlongShortcut: Shortcut {
-    var body: some Action {
-        ActionGroup {
+    var body: some Shortcut {
+        ShortcutGroup {
             Comment("This Shortcut was generated in Swift.")
             Ask(prompt: "WHAT 👏 DO 👏 YOU 👏 WANT 👏 TO 👏 SAY")
                 .usingResult { providedInput in ChangeCase(variable: providedInput, target: .caseType(.uppercase)) }
@@ -56,8 +56,8 @@ struct ClapAlongShortcut: Shortcut {
 struct RepeatWithCalculationResultShortcut: Shortcut {
     @OutputVariable var calculationResult: Variable
 
-    var body: some Action {
-        ActionGroup {
+    var body: some Shortcut {
+        ShortcutGroup {
             Repeat(count: 5) { index in
                 Calculate(calculationResult + index)
                     .savingOutput(to: $calculationResult)

@@ -1,12 +1,12 @@
-public struct ReplaceText: Action {
+public struct ReplaceText: Shortcut {
     let text: InterpolatedText
     let target: InterpolatedText
     let replacement: InterpolatedText
     let isCaseSensitive: Bool
     let isRegularExpression: Bool
 
-    public var body: some Action {
-        ActionComponent(identifier: "is.workflow.actions.text.replace", parameters: Parameters(base: self))
+    public var body: some Shortcut {
+        Action(identifier: "is.workflow.actions.text.replace", parameters: Parameters(base: self))
     }
 
     public init(text: InterpolatedText, target: InterpolatedText, replacement: InterpolatedText, isCaseSensitive: Bool = true, isRegularExpression: Bool = false) {

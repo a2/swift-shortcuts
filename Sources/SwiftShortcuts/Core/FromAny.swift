@@ -1,14 +1,14 @@
 import Foundation
 
-// MARK: - AnyAction from Any
+// MARK: - AnyShortcut from Any
 
-extension AnyAction {
+extension AnyShortcut {
     init?(_fromValue value: Any) {
-        // Synthesize a fake protocol conformance record to AnyActionConvertible
+        // Synthesize a fake protocol conformance record to AnyShortcutConvertible
         let conformance = ProtocolConformanceRecord(type: type(of: value), witnessTable: 0)
-        let type = unsafeBitCast(conformance, to: AnyActionConvertible.Type.self)
+        let type = unsafeBitCast(conformance, to: AnyShortcutConvertible.Type.self)
 
-        guard let action = type.anyAction(from: value) else {
+        guard let action = type.anyShortcut(from: value) else {
             return nil
         }
 
@@ -20,69 +20,69 @@ extension AnyAction {
 
 private let actionMetadata: ProtocolMetadata = {
     let module = "SwiftShortcuts"
-    let name = "Action"
+    let name = "Shortcut"
     let postfix = "_p"
     let mangled = "\(module.count)\(module)\(name.count)\(name)\(postfix)"
     return ProtocolMetadata(type: _typeByName(mangled)!)
 }()
 
-private protocol AnyActionConvertible {}
+private protocol AnyShortcutConvertible {}
 
-extension AnyActionConvertible {
-    static func anyAction(from action: Any) -> AnyAction? {
+extension AnyShortcutConvertible {
+    static func anyShortcut(from action: Any) -> AnyShortcut? {
         guard let witnessTable = _conformsToProtocol(Self.self, actionMetadata.protocolDescriptorVector) else {
             return nil
         }
 
         let conformanceRecord = ProtocolConformanceRecord(type: Self.self, witnessTable: Int(bitPattern: witnessTable))
-        return withUnsafePointer(to: action as! Self) { pointer in makeAnyAction(pointer, conformanceRecord) }
+        return withUnsafePointer(to: action as! Self) { pointer in makeAnyShortcut(pointer, conformanceRecord) }
     }
 }
 
-@_silgen_name("_swift_shortcuts_makeAnyAction")
-public func _makeAnyAction<A: Action>(from action: A) -> AnyAction {
-    return AnyAction(action)
+@_silgen_name("_swift_shortcuts_makeAnyShortcut")
+public func _makeAnyShortcut<S: Shortcut>(from shortcut: S) -> AnyShortcut {
+    return AnyShortcut(shortcut)
 }
 
-private typealias AnyActionFunction = @convention(thin) (UnsafeRawPointer, ProtocolConformanceRecord) -> AnyAction
+private typealias AnyShortcutFunction = @convention(thin) (UnsafeRawPointer, ProtocolConformanceRecord) -> AnyShortcut
 
-private let makeAnyAction: AnyActionFunction = {
-    let symbolName = "_swift_shortcuts_makeAnyAction"
+private let makeAnyShortcut: AnyShortcutFunction = {
+    let symbolName = "_swift_shortcuts_makeAnyShortcut"
     let handle = dlopen(nil, RTLD_GLOBAL)
     let pointer = dlsym(handle, symbolName)
-    return unsafeBitCast(pointer, to: AnyActionFunction.self)
+    return unsafeBitCast(pointer, to: AnyShortcutFunction.self)
 }()
 
 // MARK: - [ActionComponent] from Any
 
-private protocol ActionComponentsConvertible {}
+private protocol ActionsConvertible {}
 
-extension ActionComponentsConvertible {
-    static func actionCompontents(from action: Any) -> [ActionComponent]? {
+extension ActionsConvertible {
+    static func actions(from shortcut: Any) -> [Action]? {
         guard let witnessTable = _conformsToProtocol(Self.self, actionMetadata.protocolDescriptorVector) else {
             return nil
         }
 
         let conformanceRecord = ProtocolConformanceRecord(type: Self.self, witnessTable: Int(bitPattern: witnessTable))
-        return withUnsafePointer(to: action as! Self) { pointer in decompose(pointer, conformanceRecord) }
+        return withUnsafePointer(to: shortcut as! Self) { pointer in decompose(pointer, conformanceRecord) }
     }
 }
 
 @_silgen_name("_swift_shortcuts_decompose")
-public func _decompose<A: Action>(action: A) -> [ActionComponent] {
-    if A.Body.self == Never.self {
-        return action.decompose()
+public func _decompose<S: Shortcut>(shortcut: S) -> [Action] {
+    if S.Body.self == Never.self {
+        return shortcut.decompose()
     }
 
-    let body = action.body
-    if let component = body as? ActionComponent {
+    let body = shortcut.body
+    if let component = body as? Action {
         return [component]
     } else {
-        return _decompose(action: body)
+        return _decompose(shortcut: body)
     }
 }
 
-private typealias DecomposeFunction = @convention(thin) (UnsafeRawPointer, ProtocolConformanceRecord) -> [ActionComponent]
+private typealias DecomposeFunction = @convention(thin) (UnsafeRawPointer, ProtocolConformanceRecord) -> [Action]
 
 private let decompose: DecomposeFunction = {
     let symbolName = "_swift_shortcuts_decompose"
@@ -91,11 +91,11 @@ private let decompose: DecomposeFunction = {
     return unsafeBitCast(pointer, to: DecomposeFunction.self)
 }()
 
-func actionComponents(from value: Any) -> [ActionComponent]? {
+func actionComponents(from value: Any) -> [Action]? {
     // Synthesize a fake protocol conformance record to ActionStepsConvertible
     let conformance = ProtocolConformanceRecord(type: type(of: value), witnessTable: 0)
-    let type = unsafeBitCast(conformance, to: ActionComponentsConvertible.Type.self)
-    return type.actionCompontents(from: value)
+    let type = unsafeBitCast(conformance, to: ActionsConvertible.Type.self)
+    return type.actions(from: value)
 }
 
 // MARK: - Protocol Runtime Information

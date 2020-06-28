@@ -1,4 +1,4 @@
-public struct TupleAction<T>: Action {
+public struct TupleShortcut<T>: Shortcut {
     public typealias Body = Never
     public var body: Never { fatalError() }
 

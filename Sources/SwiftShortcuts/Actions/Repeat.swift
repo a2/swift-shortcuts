@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Repeat: Action {
+public struct Repeat: Shortcut {
     enum Mode: Encodable {
         enum CodingKeys: String, CodingKey {
             case count = "WFRepeatCount"
@@ -31,29 +31,29 @@ public struct Repeat: Action {
         }
     }
 
-    let content: AnyAction
+    let content: AnyShortcut
     let groupingIdentifier: UUID
     let mode: Mode
 
-    public var body: some Action {
-        ActionGroup {
+    public var body: some Shortcut {
+        ShortcutGroup {
             ControlFlowAction(identifier: mode.identifier, groupingIdentifier: groupingIdentifier, mode: .start, userInfo: mode)
             content
             ControlFlowAction(identifier: mode.identifier, groupingIdentifier: groupingIdentifier, mode: .end)
         }
     }
 
-    public init<Content>(count: Int, groupingIdentifier: UUID = UUID(), @ActionBuilder builder: (_ repeatIndex: Variable) -> Content) where Content: Action {
+    public init<Content>(count: Int, groupingIdentifier: UUID = UUID(), @ShortcutBuilder builder: (_ repeatIndex: Variable) -> Content) where Content: Shortcut {
         let repeatIndex = Variable(value: Attachment(type: .variable, variableName: "Repeat Index"))
-        self.content = AnyAction(builder(repeatIndex))
+        self.content = AnyShortcut(builder(repeatIndex))
         self.groupingIdentifier = groupingIdentifier
         self.mode = .count(count)
     }
 
-    public init<Content>(iterating variable: Variable, groupingIdentifier: UUID = UUID(), @ActionBuilder builder: (_ repeatIndex: Variable, _ repeatItem: Variable) -> Content) where Content: Action {
+    public init<Content>(iterating variable: Variable, groupingIdentifier: UUID = UUID(), @ShortcutBuilder builder: (_ repeatIndex: Variable, _ repeatItem: Variable) -> Content) where Content: Shortcut {
         let repeatIndex = Variable(value: Attachment(type: .variable, variableName: "Repeat Index"))
         let repeatItem = Variable(value: Attachment(type: .variable, variableName: "Repeat Item"))
-        self.content = AnyAction(builder(repeatIndex, repeatItem))
+        self.content = AnyShortcut(builder(repeatIndex, repeatItem))
         self.groupingIdentifier = groupingIdentifier
         self.mode = .each(variable)
     }

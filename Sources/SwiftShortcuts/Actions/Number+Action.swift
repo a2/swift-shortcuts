@@ -1,6 +1,6 @@
-extension Number: Action {
-    public var body: some Action {
-        ActionComponent(identifier: "is.workflow.actions.number", parameters: Parameters(base: self))
+extension Number: Shortcut {
+    public var body: some Shortcut {
+        Action(identifier: "is.workflow.actions.number", parameters: Parameters(base: self))
     }
 }
 

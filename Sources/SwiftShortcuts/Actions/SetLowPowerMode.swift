@@ -1,11 +1,11 @@
-public struct SetLowPowerMode: Action {
+public struct SetLowPowerMode: Shortcut {
     public enum Operation {
         case set(Bool)
         case toggle
     }
 
-    public var body: some Action {
-        ActionComponent(identifier: "is.workflow.actions.lowpowermode.set", parameters: Parameters(base: self))
+    public var body: some Shortcut {
+        Action(identifier: "is.workflow.actions.lowpowermode.set", parameters: Parameters(base: self))
     }
 
     let operation: Operation

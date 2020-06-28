@@ -1,8 +1,8 @@
-public struct Calculate: Action {
+public struct Calculate: Shortcut {
     let calculation: Calculation
 
-    public var body: some Action {
-        ActionComponent(identifier: "is.workflow.actions.math", parameters: Parameters(base: self))
+    public var body: some Shortcut {
+        Action(identifier: "is.workflow.actions.math", parameters: Parameters(base: self))
     }
 
     public init(_ calculation: Calculation) {

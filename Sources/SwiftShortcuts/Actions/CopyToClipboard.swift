@@ -1,10 +1,10 @@
-public struct CopyToClipboard: Action {
+public struct CopyToClipboard: Shortcut {
     let content: Variable
     let isLocalOnly: Bool
     let expiration: String
 
-    public var body: some Action {
-        ActionComponent(identifier: "is.workflow.actions.setclipboard", parameters: Parameters(base: self))
+    public var body: some Shortcut {
+        Action(identifier: "is.workflow.actions.setclipboard", parameters: Parameters(base: self))
     }
 
     public init(content: Variable, isLocalOnly: Bool = false, expiration: String = "") {

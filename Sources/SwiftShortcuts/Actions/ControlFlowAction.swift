@@ -1,6 +1,6 @@
 import Foundation
 
-struct ControlFlowAction: Action {
+struct ControlFlowAction: Shortcut {
     struct Parameters: Encodable {
         enum CodingKeys: String, CodingKey {
             case groupingIdentifier = "GroupingIdentifier"
@@ -29,8 +29,8 @@ struct ControlFlowAction: Action {
     let mode: Mode
     let userInfo: AnyEncodable?
 
-    var body: some Action {
-        ActionComponent(identifier: identifier, parameters: Parameters(base: self))
+    var body: some Shortcut {
+        Action(identifier: identifier, parameters: Parameters(base: self))
     }
 
     init(identifier: String, groupingIdentifier: UUID, mode: Mode) {

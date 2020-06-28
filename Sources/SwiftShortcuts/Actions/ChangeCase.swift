@@ -1,4 +1,4 @@
-public struct ChangeCase: Action {
+public struct ChangeCase: Shortcut {
     public enum Target: Encodable {
         case caseType(TextCase)
         case askEachTime
@@ -18,8 +18,8 @@ public struct ChangeCase: Action {
     let text: TextInput
     let target: Target
 
-    public var body: some Action {
-        ActionComponent(identifier: "is.workflow.actions.text.changecase", parameters: Parameters(base: self))
+    public var body: some Shortcut {
+        Action(identifier: "is.workflow.actions.text.changecase", parameters: Parameters(base: self))
     }
 
     public init(text: InterpolatedText, target: Target) {

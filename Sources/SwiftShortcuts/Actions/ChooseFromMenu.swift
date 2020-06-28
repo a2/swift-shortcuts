@@ -2,15 +2,15 @@ import Foundation
 
 public struct MenuItem {
     let label: String
-    let action: AnyAction
+    let action: AnyShortcut
 
-    public init<Content>(label: String, @ActionBuilder action: () -> Content) where Content: Action {
+    public init<Content>(label: String, @ShortcutBuilder action: () -> Content) where Content: Shortcut {
         self.label = label
-        self.action = AnyAction(action())
+        self.action = AnyShortcut(action())
     }
 }
 
-public struct ChooseFromMenu: Action {
+public struct ChooseFromMenu: Shortcut {
     struct StartUserInfo: Encodable {
         enum CodingKeys: String, CodingKey {
             case prompt = "WFMenuPrompt"
@@ -31,8 +31,8 @@ public struct ChooseFromMenu: Action {
 
     let identifier = "is.workflow.actions.choosefrommenu"
 
-    public var body: some Action {
-        ActionGroup {
+    public var body: some Shortcut {
+        ShortcutGroup {
             ControlFlowAction(identifier: identifier, groupingIdentifier: groupingIdentifier, mode: .start, userInfo: StartUserInfo(prompt: prompt, menuItems: items.map(\.label)))
 
             ForEach(items) { item in

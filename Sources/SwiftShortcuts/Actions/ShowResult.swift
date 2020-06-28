@@ -1,8 +1,8 @@
-public struct ShowResult: Action {
+public struct ShowResult: Shortcut {
     let text: InterpolatedText
 
-    public var body: some Action {
-        ActionComponent(identifier: "is.workflow.actions.showresult", parameters: Parameters(base: self))
+    public var body: some Shortcut {
+        Action(identifier: "is.workflow.actions.showresult", parameters: Parameters(base: self))
     }
 
     public init(_ text: InterpolatedText) {
