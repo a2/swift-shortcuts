@@ -206,24 +206,12 @@ public struct FileSize: Encodable {
     }
 }
 
-enum InterpolatedTextValues: Encodable {
+struct InterpolatedTextWrapper: Encodable {
     enum CodingKeys: String, CodingKey {
-        case string = "String"
+        case text = "String"
     }
 
-    case interpolatedText(InterpolatedText)
-    case anything
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-
-        switch self {
-        case .interpolatedText(let interpolatedText):
-            try container.encode(interpolatedText, forKey: .string)
-        case .anything:
-            try container.encode("", forKey: .string)
-        }
-    }
+    let text: InterpolatedText
 }
 
 public enum DateFilterValue: Encodable {
@@ -326,10 +314,6 @@ public struct TimeSpanValue: Encodable {
 
 // MARK: - Filters
 
-public protocol FileFilterConvertible: Encodable {
-    var fileFilter: FileFilter { get }
-}
-
 public struct FileFilter: Encodable {
     enum CodingKeys: String, CodingKey {
         case `operator` = "Operator"
@@ -359,180 +343,142 @@ public struct FileFilter: Encodable {
     }
 }
 
-public struct FileSizeFilter: FileFilterConvertible {
-    static let property = "File Size"
+public protocol FileFilterProperty {
+    associatedtype Value
+    static var propertyName: String { get }
+}
 
+public protocol FileFilterConvertible {
+    var fileFilter: FileFilter { get }
+}
+
+public struct FileFiltering<Property>: FileFilterConvertible where Property: FileFilterProperty {
     public let fileFilter: FileFilter
 
+    init(fileFilter: FileFilter) {
+        self.fileFilter = fileFilter
+    }
+}
+
+extension FileFiltering where Property.Value == InterpolatedText? {
+    public init(is text: InterpolatedText?) {
+        let values = InterpolatedTextWrapper(text: text ?? "")
+        self.fileFilter = FileFilter(operator: 4, values: values, isRemovable: true, property: Property.propertyName)
+    }
+
+    public init(isNot text: InterpolatedText?) {
+        let values = InterpolatedTextWrapper(text: text ?? "")
+        self.fileFilter = FileFilter(operator: 5, values: values, isRemovable: true, property: Property.propertyName)
+    }
+
+    public init(contains text: InterpolatedText?) {
+        let values = InterpolatedTextWrapper(text: text ?? "")
+        self.fileFilter = FileFilter(operator: 99, values: values, isRemovable: true, property: Property.propertyName)
+    }
+
+    public init(doesNotContain text: InterpolatedText?) {
+        let values = InterpolatedTextWrapper(text: text ?? "")
+        self.fileFilter = FileFilter(operator: 999, values: values, isRemovable: true, property: Property.propertyName)
+    }
+
+    public init(beginsWith text: InterpolatedText?) {
+        let values = InterpolatedTextWrapper(text: text ?? "")
+        self.fileFilter = FileFilter(operator: 8, values: values, isRemovable: true, property: Property.propertyName)
+    }
+
+    public init(endsWith text: InterpolatedText?) {
+        let values = InterpolatedTextWrapper(text: text ?? "")
+        self.fileFilter = FileFilter(operator: 9, values: values, isRemovable: true, property: Property.propertyName)
+    }
+}
+
+extension FileFiltering where Property.Value == FileSize {
     public init(isExactly fileSize: FileSize) {
-        self.fileFilter = FileFilter(operator: 4, values: fileSize, isRemovable: true, property: Self.property)
+        self.fileFilter = FileFilter(operator: 4, values: fileSize, isRemovable: true, property: Property.propertyName)
     }
 
     public init(isNotExactly fileSize: FileSize) {
-        self.fileFilter = FileFilter(operator: 5, values: fileSize, isRemovable: true, property: Self.property)
+        self.fileFilter = FileFilter(operator: 5, values: fileSize, isRemovable: true, property: Property.propertyName)
     }
 
     public init(isLargerThan fileSize: FileSize) {
-        self.fileFilter = FileFilter(operator: 2, values: fileSize, isRemovable: true, property: Self.property)
+        self.fileFilter = FileFilter(operator: 2, values: fileSize, isRemovable: true, property: Property.propertyName)
     }
 
     public init(isLargerThanOrEqualTo fileSize: FileSize) {
-        self.fileFilter = FileFilter(operator: 3, values: fileSize, isRemovable: true, property: Self.property)
+        self.fileFilter = FileFilter(operator: 3, values: fileSize, isRemovable: true, property: Property.propertyName)
     }
 
     public init(isSmallerThan fileSize: FileSize) {
-        self.fileFilter = FileFilter(operator: 0, values: fileSize, isRemovable: true, property: Self.property)
+        self.fileFilter = FileFilter(operator: 0, values: fileSize, isRemovable: true, property: Property.propertyName)
     }
 
     public init(isSmallerThanOrEqualTo fileSize: FileSize) {
-        self.fileFilter = FileFilter(operator: 1, values: fileSize, isRemovable: true, property: Self.property)
+        self.fileFilter = FileFilter(operator: 1, values: fileSize, isRemovable: true, property: Property.propertyName)
     }
 }
 
-public struct FileExtensionFilter: FileFilterConvertible {
-    static let property = "File Extension"
-
-    public let fileFilter: FileFilter
-
-    public init(is text: InterpolatedText?) {
-        let values = text.map(InterpolatedTextValues.interpolatedText) ?? .anything
-        self.fileFilter = FileFilter(operator: 4, values: values, isRemovable: true, property: Self.property)
-    }
-
-    public init(isNot text: InterpolatedText?) {
-        let values = text.map(InterpolatedTextValues.interpolatedText) ?? .anything
-        self.fileFilter = FileFilter(operator: 5, values: values, isRemovable: true, property: Self.property)
-    }
-
-    public init(contains text: InterpolatedText?) {
-        let values = text.map(InterpolatedTextValues.interpolatedText) ?? .anything
-        self.fileFilter = FileFilter(operator: 99, values: values, isRemovable: true, property: Self.property)
-    }
-
-    public init(doesNotContain text: InterpolatedText?) {
-        let values = text.map(InterpolatedTextValues.interpolatedText) ?? .anything
-        self.fileFilter = FileFilter(operator: 999, values: values, isRemovable: true, property: Self.property)
-    }
-
-    public init(beginsWith text: InterpolatedText?) {
-        let values = text.map(InterpolatedTextValues.interpolatedText) ?? .anything
-        self.fileFilter = FileFilter(operator: 8, values: values, isRemovable: true, property: Self.property)
-    }
-
-    public init(endsWith text: InterpolatedText?) {
-        let values = text.map(InterpolatedTextValues.interpolatedText) ?? .anything
-        self.fileFilter = FileFilter(operator: 9, values: values, isRemovable: true, property: Self.property)
-    }
-}
-
-public struct CreationDateFilter: FileFilterConvertible {
-    static let property = "Creation Date"
-
-    public let fileFilter: FileFilter
-
-    init(fileFilter: FileFilter) {
-        self.fileFilter = fileFilter
-    }
-
+extension FileFiltering where Property.Value == DateFilterValueConvertible {
     public init(isExactly value: DateFilterValueConvertible) {
-        self.fileFilter = FileFilter(operator: 4, values: DateValues(date: value.dateFilterValue), isRemovable: true, property: Self.property)
+        self.fileFilter = FileFilter(operator: 4, values: DateValues(date: value.dateFilterValue), isRemovable: true, property: Property.propertyName)
     }
 
     public init(isNotExactly value: DateFilterValueConvertible) {
-        self.fileFilter = FileFilter(operator: 5, values: DateValues(date: value.dateFilterValue), isRemovable: true, property: Self.property)
+        self.fileFilter = FileFilter(operator: 5, values: DateValues(date: value.dateFilterValue), isRemovable: true, property: Property.propertyName)
     }
 
     public init(isAfter value: DateFilterValueConvertible) {
-        self.fileFilter = FileFilter(operator: 2, values: DateValues(date: value.dateFilterValue), isRemovable: true, property: Self.property)
+        self.fileFilter = FileFilter(operator: 2, values: DateValues(date: value.dateFilterValue), isRemovable: true, property: Property.propertyName)
     }
 
     public init(isBefore value: DateFilterValueConvertible) {
-        self.fileFilter = FileFilter(operator: 0, values: DateValues(date: value.dateFilterValue), isRemovable: true, property: Self.property)
+        self.fileFilter = FileFilter(operator: 0, values: DateValues(date: value.dateFilterValue), isRemovable: true, property: Property.propertyName)
     }
 
     public static var isToday: Self {
-        Self(fileFilter: FileFilter(operator: 1002, values: EmptyParameters(), isRemovable: true, property: property))
+        Self(fileFilter: FileFilter(operator: 1002, values: EmptyParameters(), isRemovable: true, property: Property.propertyName))
     }
 
     public init(isBetween startValue: DateFilterValueConvertible, and endValue: DateFilterValueConvertible) {
-        self.fileFilter = FileFilter(operator: 1003, values: DateValues(date: startValue.dateFilterValue, anotherDate: endValue.dateFilterValue), isRemovable: true, property: Self.property)
+        self.fileFilter = FileFilter(operator: 1003, values: DateValues(date: startValue.dateFilterValue, anotherDate: endValue.dateFilterValue), isRemovable: true, property: Property.propertyName)
     }
 
     public init(isInTheLast timeSpan: TimeSpanValue) {
-        self.fileFilter = FileFilter(operator: 1001, values: timeSpan, isRemovable: true, property: Self.property)
+        self.fileFilter = FileFilter(operator: 1001, values: timeSpan, isRemovable: true, property: Property.propertyName)
     }
 }
 
-public struct LastModifiedDateFilter: FileFilterConvertible {
-    static let property = "Last Modified Date"
-
-    public let fileFilter: FileFilter
-
-    init(fileFilter: FileFilter) {
-        self.fileFilter = fileFilter
-    }
-
-    public init(isExactly value: DateFilterValueConvertible) {
-        self.fileFilter = FileFilter(operator: 4, values: DateValues(date: value.dateFilterValue), isRemovable: true, property: Self.property)
-    }
-
-    public init(isNotExactly value: DateFilterValueConvertible) {
-        self.fileFilter = FileFilter(operator: 5, values: DateValues(date: value.dateFilterValue), isRemovable: true, property: Self.property)
-    }
-
-    public init(isAfter value: DateFilterValueConvertible) {
-        self.fileFilter = FileFilter(operator: 2, values: DateValues(date: value.dateFilterValue), isRemovable: true, property: Self.property)
-    }
-
-    public init(isBefore value: DateFilterValueConvertible) {
-        self.fileFilter = FileFilter(operator: 0, values: DateValues(date: value.dateFilterValue), isRemovable: true, property: Self.property)
-    }
-
-    public static var isToday: Self {
-        Self(fileFilter: FileFilter(operator: 1002, values: EmptyParameters(), isRemovable: true, property: property))
-    }
-
-    public init(isBetween startValue: DateFilterValueConvertible, and endValue: DateFilterValueConvertible) {
-        self.fileFilter = FileFilter(operator: 1003, values: DateValues(date: startValue.dateFilterValue, anotherDate: endValue.dateFilterValue), isRemovable: true, property: Self.property)
-    }
-
-    public init(isInTheLast timeSpan: TimeSpanValue) {
-        self.fileFilter = FileFilter(operator: 1001, values: timeSpan, isRemovable: true, property: Self.property)
-    }
+public struct NameProperty: FileFilterProperty {
+    public typealias Value = InterpolatedText?
+    public static let propertyName = "Name"
 }
 
-public struct NameFilter: FileFilterConvertible {
-    static let property = "Name"
+public typealias NameFilter = FileFiltering<NameProperty>
 
-    public let fileFilter: FileFilter
-
-    public init(is text: InterpolatedText?) {
-        let values = text.map(InterpolatedTextValues.interpolatedText) ?? .anything
-        self.fileFilter = FileFilter(operator: 4, values: values, isRemovable: true, property: Self.property)
-    }
-
-    public init(isNot text: InterpolatedText?) {
-        let values = text.map(InterpolatedTextValues.interpolatedText) ?? .anything
-        self.fileFilter = FileFilter(operator: 5, values: values, isRemovable: true, property: Self.property)
-    }
-
-    public init(contains text: InterpolatedText?) {
-        let values = text.map(InterpolatedTextValues.interpolatedText) ?? .anything
-        self.fileFilter = FileFilter(operator: 99, values: values, isRemovable: true, property: Self.property)
-    }
-
-    public init(doesNotContain text: InterpolatedText?) {
-        let values = text.map(InterpolatedTextValues.interpolatedText) ?? .anything
-        self.fileFilter = FileFilter(operator: 999, values: values, isRemovable: true, property: Self.property)
-    }
-
-    public init(beginsWith text: InterpolatedText?) {
-        let values = text.map(InterpolatedTextValues.interpolatedText) ?? .anything
-        self.fileFilter = FileFilter(operator: 8, values: values, isRemovable: true, property: Self.property)
-    }
-
-    public init(endsWith text: InterpolatedText?) {
-        let values = text.map(InterpolatedTextValues.interpolatedText) ?? .anything
-        self.fileFilter = FileFilter(operator: 9, values: values, isRemovable: true, property: Self.property)
-    }
+public struct FileExtensionProperty: FileFilterProperty {
+    public typealias Value = InterpolatedText?
+    public static let propertyName = "File Extension"
 }
+
+public typealias FileExtensionFilter = FileFiltering<FileExtensionProperty>
+
+public struct FileSizeProperty: FileFilterProperty {
+    public typealias Value = FileSize
+    public static let propertyName = "File Size"
+}
+
+public typealias FileSizeFilter = FileFiltering<FileSizeProperty>
+
+public struct CreationDateProperty: FileFilterProperty {
+    public typealias Value = DateFilterValueConvertible
+    public static let propertyName = "Creation Date"
+}
+
+public typealias CreationDateFilter = FileFiltering<CreationDateProperty>
+
+public struct LastModifiedDateProperty: FileFilterProperty {
+    public typealias Value = DateFilterValueConvertible
+    public static let propertyName = "Last Modified Date"
+}
+
+public typealias LastModifiedDateFilter = FileFiltering<LastModifiedDateProperty>
