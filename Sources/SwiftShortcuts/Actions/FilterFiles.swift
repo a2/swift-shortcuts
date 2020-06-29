@@ -19,9 +19,12 @@ public struct FilterFiles: Shortcut {
 }
 
 public enum FilterSet {
-    case one(FileFilterConvertible)
     case all([FileFilterConvertible])
     case any([FileFilterConvertible])
+
+    public static func single(_ value: FileFilterConvertible) -> FilterSet {
+        .all([value])
+    }
 }
 
 extension FilterFiles {
@@ -85,9 +88,6 @@ extension FilterFiles {
 
             if let filters = base.filters {
                 switch filters {
-                case .one(let filter):
-                    try valueContainer.encode(1, forKey: .filterOperator)
-                    try valueContainer.encode([filter.fileFilter], forKey: .filters)
                 case .all(let filters):
                     try valueContainer.encode(1, forKey: .filterOperator)
                     try valueContainer.encode(filters.map(\.fileFilter), forKey: .filters)
