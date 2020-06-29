@@ -1,4 +1,4 @@
-public enum DateFormatStyle {
+public enum DateFormatStyle: Hashable {
     case none(TimeFormatStyle)
     case short(TimeFormatStyle)
     case medium(TimeFormatStyle)
@@ -10,7 +10,7 @@ public enum DateFormatStyle {
     case howLongAgoUntil
 }
 
-public enum TimeFormatStyle: Encodable {
+public enum TimeFormatStyle: Hashable, Encodable {
     case none
     case short
     case medium
@@ -32,7 +32,7 @@ public enum TimeFormatStyle: Encodable {
     }
 }
 
-public enum CoercionItemClass: Encodable {
+public enum CoercionItemClass: Hashable, Encodable {
     case anything
     case appStoreApp
     case article
@@ -117,7 +117,7 @@ public enum CoercionItemClass: Encodable {
     }
 }
 
-public struct PropertyName: RawRepresentable, Encodable {
+public struct PropertyName: RawRepresentable, Hashable, Encodable {
     public let rawValue: String
 
     public init(rawValue: String) {
@@ -138,7 +138,7 @@ public struct PropertyName: RawRepresentable, Encodable {
     }
 }
 
-public enum PropertyUserInfo: Encodable {
+public enum PropertyUserInfo: Hashable, Encodable {
     case fileSize
     case fileExtension
     case number(Number)
@@ -157,7 +157,7 @@ public enum PropertyUserInfo: Encodable {
     }
 }
 
-enum Aggrandizement {
+enum Aggrandizement: Hashable {
     case coercion(class: CoercionItemClass)
     case dateFormat(DateFormatStyle)
     case dictionaryValue(key: String?)

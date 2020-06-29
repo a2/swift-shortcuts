@@ -26,7 +26,7 @@ struct ShortcutPayload: Encodable {
     let clientVersion = "1080.4"
     let minimumClientVersion: Number = 900
     let minimumClientVersionString = "900"
-    let workflowTypes = ["WatchKit", "NCWidget"]
+    let workflowTypes = [/*"ActionExtension",*/ "WatchKit", "NCWidget"]
     let icon = Icon(startColor: 0xFF4351FF, imageData: nil, glyphNumber: 0xE877)
     let inputContentItemClasses = [
         "WFAppStoreAppContentItem",

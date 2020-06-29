@@ -1,7 +1,7 @@
 import Foundation
 
-public struct Number {
-    enum Storage {
+public struct Number: Hashable {
+    enum Storage: Hashable {
         case signed(Int64)
         case unsigned(UInt64)
         case float(Float)
@@ -98,6 +98,21 @@ extension Number: ExpressibleByFloatLiteral {
 extension Number: ExpressibleByIntegerLiteral {
     public init(integerLiteral value: Int64) {
         self.storage = .signed(value)
+    }
+}
+
+extension Number: CustomStringConvertible {
+    public var description: String {
+        switch storage {
+        case .signed(let value):
+            return String(describing: value)
+        case .unsigned(let value):
+            return String(describing: value)
+        case .float(let value):
+            return String(describing: value)
+        case .double(let value):
+            return String(describing: value)
+        }
     }
 }
 

@@ -1,13 +1,8 @@
 import Foundation
 
-public class Variable: Encodable {
-    enum SerializationType: String, Encodable {
+public class Variable {
+    enum SerializationType: String, Hashable, Encodable {
         case textTokenAttachment = "WFTextTokenAttachment"
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case value = "Value"
-        case serializationType = "WFSerializationType"
     }
 
     let value: Attachment
@@ -43,6 +38,26 @@ public class Variable: Encodable {
         var newValue = value
         newValue.aggrandizements = [.coercion(class: type)]
         return Variable(value: newValue)
+    }
+}
+
+extension Variable: Equatable {
+    public static func == (lhs: Variable, rhs: Variable) -> Bool {
+        lhs.serializationType == rhs.serializationType && lhs.value == rhs.value
+    }
+}
+
+extension Variable: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(value)
+        hasher.combine(serializationType)
+    }
+}
+
+extension Variable: Encodable {
+    enum CodingKeys: String, CodingKey {
+        case value = "Value"
+        case serializationType = "WFSerializationType"
     }
 
     public func encode(to encoder: Encoder) throws {

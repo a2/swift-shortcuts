@@ -1,6 +1,6 @@
 import Foundation
 
-struct Attachment {
+struct Attachment: Hashable {
     enum SourceType: Encodable {
         case actionOutput
         case askEachTime

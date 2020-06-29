@@ -1,6 +1,6 @@
 import Foundation
 
-public struct InterpolatedText {
+public struct InterpolatedText: Hashable {
     public let string: String
     public let variablesByRange: [Range<String.Index>: Variable]
 }
@@ -28,6 +28,15 @@ extension InterpolatedText: ExpressibleByStringInterpolation {
             string.append(Self.objectReplacementCharacter)
             variablesByRange[lowerBound ..< string.endIndex] = variable
         }
+
+        public mutating func appendInterpolation<T>(literal value: T) {
+            string.append(String(describing: value))
+        }
+    }
+
+    public init(_ string: String) {
+        self.string = string
+        self.variablesByRange = [:]
     }
 
     public init(stringLiteral value: String) {

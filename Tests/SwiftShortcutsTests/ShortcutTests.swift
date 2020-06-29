@@ -23,10 +23,16 @@ final class ShortcutTests: XCTestCase {
         assertSnapshot(matching: shortcut.payload, as: .plist)
     }
 
+    func testShortenWithSmallCatShortcut() throws {
+        let shortcut = ShortenWithSmallCatShortcut(makeUUID: UUID.incrementing)
+        assertSnapshot(matching: shortcut.payload, as: .plist)
+    }
+
     static var allTests = [
         ("testBatteryLevelShortcut", testBatteryLevelShortcut),
         ("testBatteryLevelWithResultShortcut", testBatteryLevelWithResultShortcut),
         ("testClapAlongShortcut", testClapAlongShortcut),
         ("testRepeatWithCalculationResultShortcut", testRepeatWithCalculationResultShortcut),
+        ("testShortenWithSmallCatShortcut", testShortenWithSmallCatShortcut),
     ]
 }

@@ -159,6 +159,10 @@ extension InterpolatedText: ConditionOperandConvertible {
     public var conditionOperand: ConditionOperand { .interpolatedText(self) }
 }
 
+extension String: ConditionOperandConvertible {
+    public var conditionOperand: ConditionOperand { .interpolatedText(InterpolatedText(self)) }
+}
+
 // MARK: - ConditionNumericOperand
 
 public enum ConditionNumberOperand {

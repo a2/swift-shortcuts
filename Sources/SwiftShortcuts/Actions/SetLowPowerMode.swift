@@ -2,6 +2,7 @@ public struct SetLowPowerMode: Shortcut {
     public enum Operation {
         case set(Bool)
         case toggle
+        case askEachTime
     }
 
     public var body: some Shortcut {
@@ -43,6 +44,8 @@ extension SetLowPowerMode {
                 try container.encode(onValue, forKey: .onValue)
             case .toggle:
                 try container.encode(OperationType.toggle, forKey: .operation)
+            case .askEachTime:
+                try container.encode(Variable.askEachTime, forKey: .operation)
             }
         }
     }
