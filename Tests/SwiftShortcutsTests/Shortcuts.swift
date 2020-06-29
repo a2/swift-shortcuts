@@ -124,7 +124,7 @@ struct ShortenWithSmallCatShortcut: Shortcut {
                     }
                 }
                 .usingResult(uuid: makeUUID()) { ifResult in
-                    URLEncode(input: ifResult)
+                    URLEncode(input: "\(ifResult)")
                 }
                 .savingOutput(to: $url)
 
@@ -149,7 +149,7 @@ struct ShortenWithSmallCatShortcut: Shortcut {
                 "entry[value]": "\(url)",
                 "utf8": "✓",
             ])).usingResult(uuid: makeUUID()) { contents in
-                GetURLsFromInput(input: contents)
+                GetURLsFromInput(input: "\(contents)")
             }.usingResult(uuid: makeUUID()) { urls in
                 FilterFiles(input: urls, filters: .all([
                     NameFilter(beginsWith: "http://small.cat/"),

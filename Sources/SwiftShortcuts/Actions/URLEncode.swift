@@ -5,14 +5,14 @@ public struct URLEncode: Shortcut {
         case askEachTime
     }
 
+    let input: InterpolatedText
     let operation: Operation
-    let input: Variable
 
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.urlencode", parameters: Parameters(base: self))
     }
 
-    public init(input: Variable, operation: Operation = .encode) {
+    public init(input: InterpolatedText, operation: Operation = .encode) {
         self.operation = operation
         self.input = input
     }

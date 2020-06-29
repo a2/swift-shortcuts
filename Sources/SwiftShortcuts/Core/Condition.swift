@@ -29,7 +29,7 @@ extension Condition: Encodable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(lhs, forKey: .input)
+        try container.encode(ConditionOperand.variable(lhs), forKey: .input)
         try container.encode(operation, forKey: .condition)
 
         switch self {

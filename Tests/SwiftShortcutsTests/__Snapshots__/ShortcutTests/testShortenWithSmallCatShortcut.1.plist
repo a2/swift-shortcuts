@@ -38,15 +38,20 @@
 				<integer>0</integer>
 				<key>WFInput</key>
 				<dict>
-					<key>Value</key>
+					<key>Type</key>
+					<string>Variable</string>
+					<key>Variable</key>
 					<dict>
-						<key>OutputUUID</key>
-						<string>00000000-0000-0000-0000-000000000002</string>
-						<key>Type</key>
-						<string>ActionOutput</string>
+						<key>Value</key>
+						<dict>
+							<key>OutputUUID</key>
+							<string>00000000-0000-0000-0000-000000000002</string>
+							<key>Type</key>
+							<string>ActionOutput</string>
+						</dict>
+						<key>WFSerializationType</key>
+						<string>WFTextTokenAttachment</string>
 					</dict>
-					<key>WFSerializationType</key>
-					<string>WFTextTokenAttachment</string>
 				</dict>
 			</dict>
 		</dict>
@@ -112,13 +117,21 @@
 				<dict>
 					<key>Value</key>
 					<dict>
-						<key>OutputUUID</key>
-						<string>00000000-0000-0000-0000-000000000004</string>
-						<key>Type</key>
-						<string>ActionOutput</string>
+						<key>attachmentsByRange</key>
+						<dict>
+							<key>{0, 1}</key>
+							<dict>
+								<key>OutputUUID</key>
+								<string>00000000-0000-0000-0000-000000000004</string>
+								<key>Type</key>
+								<string>ActionOutput</string>
+							</dict>
+						</dict>
+						<key>string</key>
+						<string>￼</string>
 					</dict>
 					<key>WFSerializationType</key>
-					<string>WFTextTokenAttachment</string>
+					<string>WFTextTokenString</string>
 				</dict>
 			</dict>
 		</dict>
@@ -252,11 +265,9 @@
 				<string>00000000-0000-0000-0000-000000000006</string>
 				<key>WFFormValues</key>
 				<dict>
-					<key>WFItemType</key>
-					<integer>1</integer>
-					<key>WFValue</key>
+					<key>Value</key>
 					<dict>
-						<key>Value</key>
+						<key>WFDictionaryFieldValueItems</key>
 						<array>
 							<dict>
 								<key>WFItemType</key>
@@ -319,9 +330,9 @@
 								<string>✓</string>
 							</dict>
 						</array>
-						<key>WFSerializationType</key>
-						<string>WFDictionaryFieldValue</string>
 					</dict>
+					<key>WFSerializationType</key>
+					<string>WFDictionaryFieldValue</string>
 				</dict>
 				<key>WFHTTPBodyType</key>
 				<string>Form</string>
@@ -354,13 +365,21 @@
 				<dict>
 					<key>Value</key>
 					<dict>
-						<key>OutputUUID</key>
-						<string>00000000-0000-0000-0000-000000000006</string>
-						<key>Type</key>
-						<string>ActionOutput</string>
+						<key>attachmentsByRange</key>
+						<dict>
+							<key>{0, 1}</key>
+							<dict>
+								<key>OutputUUID</key>
+								<string>00000000-0000-0000-0000-000000000006</string>
+								<key>Type</key>
+								<string>ActionOutput</string>
+							</dict>
+						</dict>
+						<key>string</key>
+						<string>￼</string>
 					</dict>
 					<key>WFSerializationType</key>
-					<string>WFTextTokenAttachment</string>
+					<string>WFTextTokenString</string>
 				</dict>
 			</dict>
 		</dict>
@@ -406,23 +425,23 @@
 								</dict>
 							</dict>
 						</array>
-						<key>WFContentItemInputParameter</key>
-						<dict>
-							<key>Value</key>
-							<dict>
-								<key>OutputUUID</key>
-								<string>00000000-0000-0000-0000-000000000007</string>
-								<key>Type</key>
-								<string>ActionOutput</string>
-							</dict>
-							<key>WFSerializationType</key>
-							<string>WFTextTokenAttachment</string>
-						</dict>
 						<key>WFContentItemLimitNumber</key>
 						<integer>1</integer>
 					</dict>
 					<key>WFSerializationType</key>
 					<string>WFContentPredicateTableTemplate</string>
+				</dict>
+				<key>WFContentItemInputParameter</key>
+				<dict>
+					<key>Value</key>
+					<dict>
+						<key>OutputUUID</key>
+						<string>00000000-0000-0000-0000-000000000007</string>
+						<key>Type</key>
+						<string>ActionOutput</string>
+					</dict>
+					<key>WFSerializationType</key>
+					<string>WFTextTokenAttachment</string>
 				</dict>
 			</dict>
 		</dict>

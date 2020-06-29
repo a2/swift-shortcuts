@@ -35,15 +35,20 @@
 				<integer>0</integer>
 				<key>WFInput</key>
 				<dict>
-					<key>Value</key>
+					<key>Type</key>
+					<string>Variable</string>
+					<key>Variable</key>
 					<dict>
-						<key>OutputUUID</key>
-						<string>00000000-0000-0000-0000-000000000000</string>
-						<key>Type</key>
-						<string>ActionOutput</string>
+						<key>Value</key>
+						<dict>
+							<key>OutputUUID</key>
+							<string>00000000-0000-0000-0000-000000000000</string>
+							<key>Type</key>
+							<string>ActionOutput</string>
+						</dict>
+						<key>WFSerializationType</key>
+						<string>WFTextTokenAttachment</string>
 					</dict>
-					<key>WFSerializationType</key>
-					<string>WFTextTokenAttachment</string>
 				</dict>
 				<key>WFNumberValue</key>
 				<integer>20</integer>

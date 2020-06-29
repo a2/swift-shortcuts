@@ -28,6 +28,7 @@ extension FilterFiles {
     struct Parameters: Encodable {
         enum CodingKeys: String, CodingKey {
             case contentItemFilter = "WFContentItemFilter"
+            case input = "WFContentItemInputParameter"
         }
 
         enum SerializationType: String, Encodable {
@@ -40,7 +41,6 @@ extension FilterFiles {
         }
 
         enum ValueCodingKeys: String, CodingKey {
-            case input = "WFContentItemInputParameter"
             case limit = "WFContentItemLimitNumber"
             case filters = "WFActionParameterFilterTemplates"
             case filterOperator = "WFActionParameterFilterPrefix"
@@ -53,12 +53,12 @@ extension FilterFiles {
 
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(base.input, forKey: .input)
 
             var contentItemFilter = container.nestedContainer(keyedBy: ContentItemFilterCodingKeys.self, forKey: .contentItemFilter)
             try contentItemFilter.encode(SerializationType.contentPredicateTableTemplate, forKey: .serializationType)
 
             var valueContainer = contentItemFilter.nestedContainer(keyedBy: ValueCodingKeys.self, forKey: .value)
-            try valueContainer.encode(base.input, forKey: .input)
             try valueContainer.encodeIfPresent(base.limit, forKey: .limit)
 
             if let sortOrder = base.sortOrder {

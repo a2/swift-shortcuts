@@ -1,11 +1,11 @@
 public struct GetURLsFromInput: Shortcut {
-    let input: Variable
+    let input: InterpolatedText
 
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.detect.link", parameters: Parameters(base: self))
     }
 
-    public init(input: Variable) {
+    public init(input: InterpolatedText) {
         self.input = input
     }
 }

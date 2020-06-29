@@ -28,7 +28,11 @@ extension DictionaryValue: Encodable {
     }
 
     enum DictionaryCodingKeys: String, CodingKey {
-        case value = "WFDictionaryFieldValueItems"
+        case value = "Value"
+    }
+
+    enum DictionaryValueCodingKeys: String, CodingKey {
+        case items = "WFDictionaryFieldValueItems"
     }
 
     enum SerializationType: String, Encodable {
@@ -50,6 +54,31 @@ extension DictionaryValue: Encodable {
 
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(key, forKey: .key)
+        }
+    }
+
+    struct InnerDictionary: Encodable {
+        enum CodingKeys: String, CodingKey {
+            case value = "Value"
+            case serializationType = "WFSerializationType"
+        }
+
+        enum NestedCodingKeys: String, CodingKey {
+            case items = "WFDictionaryFieldValueItems"
+        }
+
+        let dictionary: [(key: InterpolatedText, value: DictionaryValue)]
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(SerializationType.dictionaryFieldValue, forKey: .serializationType)
+
+            if dictionary.isEmpty {
+                _ = container.nestedUnkeyedContainer(forKey: .value)
+            } else {
+                var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .value)
+                try nestedContainer.encode(dictionary.map(KeyValue.init), forKey: .items)
+            }
         }
     }
 
@@ -77,10 +106,7 @@ extension DictionaryValue: Encodable {
             try nestedContainer.encode(array, forKey: .value)
         case .dictionary(let dictionary):
             try container.encode(ItemType.dictionary, forKey: .itemType)
-
-            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .value)
-            try nestedContainer.encode(SerializationType.dictionaryFieldValue, forKey: .serializationType)
-            try nestedContainer.encode(dictionary.map(KeyValue.init), forKey: .value)
+            try container.encode(InnerDictionary(dictionary: dictionary), forKey: .value)
         }
     }
 }
@@ -124,32 +150,5 @@ extension DictionaryValue: ExpressibleByStringLiteral {
 extension DictionaryValue: ExpressibleByStringInterpolation {
     public init(stringInterpolation: InterpolatedText.StringInterpolation) {
         self = .string(InterpolatedText(stringInterpolation: stringInterpolation))
-    }
-}
-
-public struct GetDictionary: Shortcut {
-    let value: [(key: InterpolatedText, value: DictionaryValue)]
-
-    public var body: some Shortcut {
-        Action(identifier: "is.workflow.actions.dictionary", parameters: Parameters(base: self))
-    }
-
-    public init(_ value: KeyValuePairs<InterpolatedText, DictionaryValue>) {
-        self.value = Array(value)
-    }
-}
-
-extension GetDictionary {
-    struct Parameters: Encodable {
-        enum CodingKeys: String, CodingKey {
-            case items = "WFItems"
-        }
-
-        let base: GetDictionary
-
-        func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(DictionaryValue.dictionary(base.value), forKey: .items)
-        }
     }
 }
