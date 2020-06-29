@@ -5,27 +5,27 @@ import XCTest
 final class ShortcutTests: XCTestCase {
     func testBatteryLevelShortcut() throws {
         let shortcut = BatteryLevelShortcut(makeUUID: UUID.incrementing)
-        assertSnapshot(matching: shortcut.payload, as: .plist)
+        assertSnapshot(matching: shortcut, as: .shortcut)
     }
 
     func testBatteryLevelWithResultShortcut() throws {
         let shortcut = BatteryLevelWithResultShortcut(makeUUID: UUID.incrementing)
-        assertSnapshot(matching: shortcut.payload, as: .plist)
+        assertSnapshot(matching: shortcut, as: .shortcut)
     }
 
     func testClapAlongShortcut() throws {
         let shortcut = ClapAlongShortcut(makeUUID: UUID.incrementing)
-        assertSnapshot(matching: shortcut.payload, as: .plist)
+        assertSnapshot(matching: shortcut, as: .shortcut)
     }
 
     func testRepeatWithCalculationResultShortcut() throws {
         let shortcut = RepeatWithCalculationResultShortcut(makeUUID: UUID.incrementing)
-        assertSnapshot(matching: shortcut.payload, as: .plist)
+        assertSnapshot(matching: shortcut, as: .shortcut)
     }
 
     func testShortenWithSmallCatShortcut() throws {
         let shortcut = ShortenWithSmallCatShortcut(makeUUID: UUID.incrementing)
-        assertSnapshot(matching: shortcut.payload, as: .plist)
+        assertSnapshot(matching: shortcut, as: .shortcut)
     }
 
     static var allTests = [
