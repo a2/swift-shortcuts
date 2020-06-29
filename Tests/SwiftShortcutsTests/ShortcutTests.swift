@@ -3,27 +3,32 @@ import XCTest
 @testable import SwiftShortcuts
 
 final class ShortcutTests: XCTestCase {
-    func testBatteryLevelShortcut() throws {
+    func testBatteryLevelShortcut() {
         let shortcut = BatteryLevelShortcut(makeUUID: UUID.incrementing)
         assertSnapshot(matching: shortcut, as: .shortcut)
     }
 
-    func testBatteryLevelWithResultShortcut() throws {
+    func testBatteryLevelWithResultShortcut() {
         let shortcut = BatteryLevelWithResultShortcut(makeUUID: UUID.incrementing)
         assertSnapshot(matching: shortcut, as: .shortcut)
     }
 
-    func testClapAlongShortcut() throws {
+    func testClapAlongShortcut() {
         let shortcut = ClapAlongShortcut(makeUUID: UUID.incrementing)
         assertSnapshot(matching: shortcut, as: .shortcut)
     }
 
-    func testRepeatWithCalculationResultShortcut() throws {
+    func testDictionaryShortcut() {
+        let shortcut = DictionaryShortcut(makeUUID: UUID.incrementing)
+        assertSnapshot(matching: shortcut, as: .shortcut)
+    }
+
+    func testRepeatWithCalculationResultShortcut() {
         let shortcut = RepeatWithCalculationResultShortcut(makeUUID: UUID.incrementing)
         assertSnapshot(matching: shortcut, as: .shortcut)
     }
 
-    func testShortenWithSmallCatShortcut() throws {
+    func testShortenWithSmallCatShortcut() {
         let shortcut = ShortenWithSmallCatShortcut(makeUUID: UUID.incrementing)
         assertSnapshot(matching: shortcut, as: .shortcut)
     }
@@ -32,6 +37,7 @@ final class ShortcutTests: XCTestCase {
         ("testBatteryLevelShortcut", testBatteryLevelShortcut),
         ("testBatteryLevelWithResultShortcut", testBatteryLevelWithResultShortcut),
         ("testClapAlongShortcut", testClapAlongShortcut),
+        ("testDictionaryShortcut", testDictionaryShortcut),
         ("testRepeatWithCalculationResultShortcut", testRepeatWithCalculationResultShortcut),
         ("testShortenWithSmallCatShortcut", testShortenWithSmallCatShortcut),
     ]

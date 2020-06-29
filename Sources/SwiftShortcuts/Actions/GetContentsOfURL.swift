@@ -90,10 +90,10 @@ extension GetContentsOfURL {
                 switch requestBody {
                 case .json(let dictionary):
                     try container.encode(BodyType.json, forKey: .bodyType)
-                    try container.encode(DictionaryValue.InnerDictionary(dictionary: dictionary), forKey: .jsonValues)
+                    try container.encode(OuterDictionary(dictionary: dictionary), forKey: .jsonValues)
                 case .form(let dictionary):
                     try container.encode(BodyType.form, forKey: .bodyType)
-                    try container.encode(DictionaryValue.InnerDictionary(dictionary: dictionary), forKey: .formValues)
+                    try container.encode(OuterDictionary(dictionary: dictionary), forKey: .formValues)
                 case .file(let variable):
                     try container.encode(BodyType.file, forKey: .bodyType)
                     try container.encode(variable, forKey: .requestVariable)

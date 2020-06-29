@@ -3,6 +3,7 @@ import Foundation
 public struct InterpolatedText: Hashable {
     public let string: String
     public let variablesByRange: [Range<String.Index>: Variable]
+    var allowsEncodingAsPlainString = true
 }
 
 extension InterpolatedText: ExpressibleByStringInterpolation {
@@ -66,7 +67,7 @@ extension InterpolatedText: Encodable {
     }
 
     public func encode(to encoder: Encoder) throws {
-        if variablesByRange.isEmpty {
+        if variablesByRange.isEmpty && allowsEncodingAsPlainString {
             var container = encoder.singleValueContainer()
             try container.encode(string)
         } else {

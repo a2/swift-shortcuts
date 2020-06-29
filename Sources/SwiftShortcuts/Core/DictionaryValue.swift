@@ -2,112 +2,16 @@ import Foundation
 
 public enum DictionaryValue {
     case string(InterpolatedText)
-    case number(Number)
-    case boolean(Bool)
+    case number(InterpolatedText)
+    case boolean(BooleanVariable)
     case dictionary([(key: InterpolatedText, value: DictionaryValue)])
     case array([DictionaryValue])
 }
 
 extension DictionaryValue: Encodable {
-    enum ItemType: Int, Encodable {
-        case string = 0
-        case dictionary = 1
-        case array = 2
-        case number = 3
-        case boolean = 4
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case itemType = "WFItemType"
-        case value = "WFValue"
-    }
-
-    enum NestedCodingKeys: String, CodingKey {
-        case serializationType = "WFSerializationType"
-        case value = "Value"
-    }
-
-    enum DictionaryCodingKeys: String, CodingKey {
-        case value = "Value"
-    }
-
-    enum DictionaryValueCodingKeys: String, CodingKey {
-        case items = "WFDictionaryFieldValueItems"
-    }
-
-    enum SerializationType: String, Encodable {
-        case arrayParameterState = "WFArrayParameterState"
-        case dictionaryFieldValue = "WFDictionaryFieldValue"
-        case numberSubstitutableState = "WFNumberSubstitutableState"
-    }
-
-    struct KeyValue: Encodable {
-        enum CodingKeys: String, CodingKey {
-            case key = "WFKey"
-        }
-
-        let key: InterpolatedText
-        let value: DictionaryValue
-
-        func encode(to encoder: Encoder) throws {
-            try value.encode(to: encoder)
-
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(key, forKey: .key)
-        }
-    }
-
-    struct InnerDictionary: Encodable {
-        enum CodingKeys: String, CodingKey {
-            case value = "Value"
-            case serializationType = "WFSerializationType"
-        }
-
-        enum NestedCodingKeys: String, CodingKey {
-            case items = "WFDictionaryFieldValueItems"
-        }
-
-        let dictionary: [(key: InterpolatedText, value: DictionaryValue)]
-
-        func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(SerializationType.dictionaryFieldValue, forKey: .serializationType)
-
-            if dictionary.isEmpty {
-                _ = container.nestedUnkeyedContainer(forKey: .value)
-            } else {
-                var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .value)
-                try nestedContainer.encode(dictionary.map(KeyValue.init), forKey: .items)
-            }
-        }
-    }
-
     public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-
-        switch self {
-        case .string(let interpolatedText):
-            try container.encode(ItemType.string, forKey: .itemType)
-            try container.encode(interpolatedText, forKey: .value)
-        case .number(let number):
-            try container.encode(ItemType.number, forKey: .itemType)
-            try container.encode(InterpolatedText("\(literal: number)"), forKey: .value)
-        case .boolean(let bool):
-            try container.encode(ItemType.boolean, forKey: .itemType)
-
-            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .value)
-            try nestedContainer.encode(SerializationType.numberSubstitutableState, forKey: .serializationType)
-            try nestedContainer.encode(bool, forKey: .value)
-        case .array(let array):
-            try container.encode(ItemType.array, forKey: .itemType)
-
-            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .value)
-            try nestedContainer.encode(SerializationType.arrayParameterState, forKey: .serializationType)
-            try nestedContainer.encode(array, forKey: .value)
-        case .dictionary(let dictionary):
-            try container.encode(ItemType.dictionary, forKey: .itemType)
-            try container.encode(InnerDictionary(dictionary: dictionary), forKey: .value)
-        }
+        var container = encoder.singleValueContainer()
+        try container.encode(KeyedDictionaryValue(key: nil, value: self))
     }
 }
 
@@ -119,7 +23,7 @@ extension DictionaryValue: ExpressibleByArrayLiteral {
 
 extension DictionaryValue: ExpressibleByBooleanLiteral {
     public init(booleanLiteral value: Bool) {
-        self = .boolean(value)
+        self = .boolean(value ? .true : .false)
     }
 }
 
@@ -131,13 +35,13 @@ extension DictionaryValue: ExpressibleByDictionaryLiteral {
 
 extension DictionaryValue: ExpressibleByIntegerLiteral {
     public init(integerLiteral value: Int) {
-        self = .number(Number(value))
+        self = .number("\(literal: value)")
     }
 }
 
 extension DictionaryValue: ExpressibleByFloatLiteral {
     public init(floatLiteral value: Double) {
-        self = .number(Number(value))
+        self = .number("\(literal: value)")
     }
 }
 
@@ -150,5 +54,125 @@ extension DictionaryValue: ExpressibleByStringLiteral {
 extension DictionaryValue: ExpressibleByStringInterpolation {
     public init(stringInterpolation: InterpolatedText.StringInterpolation) {
         self = .string(InterpolatedText(stringInterpolation: stringInterpolation))
+    }
+}
+
+struct KeyedDictionaryValue: Encodable {
+    enum ItemType: Int, Encodable {
+        case string = 0
+        case dictionary = 1
+        case array = 2
+        case number = 3
+        case boolean = 4
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case key = "WFKey"
+        case itemType = "WFItemType"
+        case value = "WFValue"
+    }
+
+    enum NestedCodingKeys: String, CodingKey {
+        case serializationType = "WFSerializationType"
+        case value = "Value"
+    }
+
+    enum SerializationType: String, Encodable {
+        case arrayParameterState = "WFArrayParameterState"
+        case dictionaryFieldValue = "WFDictionaryFieldValue"
+        case numberSubstitutableState = "WFNumberSubstitutableState"
+    }
+
+    let key: InterpolatedText?
+    let value: DictionaryValue
+    var encodesPlainStringsAsInterpolatedText = true
+
+    init(key: InterpolatedText?, value: DictionaryValue) {
+        self.key = key
+        self.value = value
+    }
+
+    func encode(to encoder: Encoder) throws {
+        precondition(key == nil || encodesPlainStringsAsInterpolatedText)
+
+        if var key = key {
+            key.allowsEncodingAsPlainString = false
+
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(key, forKey: .key)
+        }
+
+        switch value {
+        case .string(var interpolatedText):
+            if !encodesPlainStringsAsInterpolatedText && interpolatedText.variablesByRange.isEmpty {
+                var container = encoder.singleValueContainer()
+                try container.encode(interpolatedText)
+                return
+            }
+
+            interpolatedText.allowsEncodingAsPlainString = false
+
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(ItemType.string, forKey: .itemType)
+            try container.encode(interpolatedText, forKey: .value)
+        case .number(var interpolatedText):
+            interpolatedText.allowsEncodingAsPlainString = false
+
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(ItemType.number, forKey: .itemType)
+            try container.encode(interpolatedText, forKey: .value)
+        case .boolean(let bool):
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(ItemType.boolean, forKey: .itemType)
+
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .value)
+            try nestedContainer.encode(bool, forKey: .value)
+            try nestedContainer.encode(SerializationType.numberSubstitutableState, forKey: .serializationType)
+        case .array(let array):
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(ItemType.array, forKey: .itemType)
+
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .value)
+            try nestedContainer.encode(SerializationType.arrayParameterState, forKey: .serializationType)
+
+            var unkeyedContainer = nestedContainer.nestedUnkeyedContainer(forKey: .value)
+            for value in array {
+                var keyedValue = KeyedDictionaryValue(key: nil, value: value)
+                keyedValue.encodesPlainStringsAsInterpolatedText = false
+                try unkeyedContainer.encode(keyedValue)
+            }
+        case .dictionary(let dictionary):
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(ItemType.dictionary, forKey: .itemType)
+
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .value)
+            try nestedContainer.encode(OuterDictionary(dictionary: dictionary), forKey: .value)
+            try nestedContainer.encode(SerializationType.dictionaryFieldValue, forKey: .serializationType)
+        }
+    }
+}
+
+struct OuterDictionary: Encodable {
+    enum CodingKeys: String, CodingKey {
+        case value = "Value"
+        case serializationType = "WFSerializationType"
+    }
+
+    enum ValueCodingKeys: String, CodingKey {
+        case items = "WFDictionaryFieldValueItems"
+    }
+
+    enum SerializationType: String, Encodable {
+        case dictionaryFieldValue = "WFDictionaryFieldValue"
+    }
+
+    let dictionary: [(key: InterpolatedText, value: DictionaryValue)]
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(SerializationType.dictionaryFieldValue, forKey: .serializationType)
+
+        var valueContainer = container.nestedContainer(keyedBy: ValueCodingKeys.self, forKey: .value)
+        try valueContainer.encode(dictionary.map(KeyedDictionaryValue.init), forKey: .items)
     }
 }
