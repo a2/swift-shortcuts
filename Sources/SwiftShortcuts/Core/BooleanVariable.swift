@@ -3,6 +3,10 @@ public enum BooleanVariable: Encodable {
     case `false`
     case askEachTime
 
+    public init(_ value: Bool) {
+        self = value ? .true : .false
+    }
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
 
@@ -19,6 +23,6 @@ public enum BooleanVariable: Encodable {
 
 extension BooleanVariable: ExpressibleByBooleanLiteral {
     public init(booleanLiteral value: Bool) {
-        self = value ? .true : .false
+        self.init(value)
     }
 }
