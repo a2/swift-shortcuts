@@ -28,13 +28,6 @@ struct KeyedValue: Encodable {
         case value = "Value"
     }
 
-    enum SerializationType: String, Encodable {
-        case arrayParameterState = "WFArrayParameterState"
-        case dictionaryFieldValue = "WFDictionaryFieldValue"
-        case numberSubstitutableState = "WFNumberSubstitutableState"
-        case tokenAttachmentParameterState = "WFTokenAttachmentParameterState"
-    }
-
     let key: InterpolatedText?
     let value: EncodableValue
     var encodesPlainStringsAsInterpolatedText = true

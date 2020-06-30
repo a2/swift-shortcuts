@@ -62,10 +62,6 @@ extension InterpolatedText: Encodable {
         case attachments = "attachmentsByRange"
     }
 
-    enum SerializationType: String, Encodable {
-        case textTokenString = "WFTextTokenString"
-    }
-
     public func encode(to encoder: Encoder) throws {
         if variablesByRange.isEmpty && allowsEncodingAsPlainString {
             var container = encoder.singleValueContainer()

@@ -1,10 +1,6 @@
 import Foundation
 
 public class Variable {
-    enum SerializationType: String, Hashable, Encodable {
-        case textTokenAttachment = "WFTextTokenAttachment"
-    }
-
     let value: Attachment
     let serializationType = SerializationType.textTokenAttachment
 

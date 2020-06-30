@@ -34,10 +34,6 @@ extension FilterFiles {
             case input = "WFContentItemInputParameter"
         }
 
-        enum SerializationType: String, Encodable {
-            case contentPredicateTableTemplate = "WFContentPredicateTableTemplate"
-        }
-
         enum ContentItemFilterCodingKeys: String, CodingKey {
             case value = "Value"
             case serializationType = "WFSerializationType"

@@ -8,10 +8,6 @@ struct OuterDictionary: Encodable {
         case items = "WFDictionaryFieldValueItems"
     }
 
-    enum SerializationType: String, Encodable {
-        case dictionaryFieldValue = "WFDictionaryFieldValue"
-    }
-
     let items: [KeyedValue]
 
     init(dictionary: [(key: InterpolatedText, value: KeyedValue.EncodableValue)]) {
