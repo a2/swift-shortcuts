@@ -23,6 +23,11 @@ final class ShortcutTests: XCTestCase {
         assertSnapshot(matching: shortcut, as: .shortcut)
     }
 
+    func testLogWaterShortcut() {
+        let shortcut = LogWaterShortcut(makeUUID: UUID.incrementing)
+        assertSnapshot(matching: shortcut, as: .shortcut)
+    }
+
     func testRepeatWithCalculationResultShortcut() {
         let shortcut = RepeatWithCalculationResultShortcut(makeUUID: UUID.incrementing)
         assertSnapshot(matching: shortcut, as: .shortcut)
@@ -38,6 +43,7 @@ final class ShortcutTests: XCTestCase {
         ("testBatteryLevelWithResultShortcut", testBatteryLevelWithResultShortcut),
         ("testClapAlongShortcut", testClapAlongShortcut),
         ("testDictionaryShortcut", testDictionaryShortcut),
+        ("testLogWaterShortcut", testLogWaterShortcut),
         ("testRepeatWithCalculationResultShortcut", testRepeatWithCalculationResultShortcut),
         ("testShortenWithSmallCatShortcut", testShortenWithSmallCatShortcut),
     ]
