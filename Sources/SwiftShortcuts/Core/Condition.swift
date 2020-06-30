@@ -15,6 +15,37 @@ public enum Condition {
     case isLessThan(Variable, ConditionNumberOperand)
     case isLessThanOrEqualTo(Variable, ConditionNumberOperand)
     case isBetween(Variable, ConditionNumberOperand, ConditionNumberOperand)
+
+    var conditionType: ConditionType {
+        switch self {
+        case .is:
+            return .is
+        case .isNot:
+            return .isNot
+        case .hasAnyValue:
+            return .hasAnyValue
+        case .doesNotHaveAnyValue:
+            return .doesNotHaveAnyValue
+        case .contains:
+            return .contains
+        case .doesNotContain:
+            return .doesNotContain
+        case .beginsWith:
+            return .beginsWith
+        case .endsWith:
+            return .endsWith
+        case .isGreaterThan:
+            return .isGreaterThan
+        case .isGreaterThanOrEqualTo:
+            return .isGreaterThanOrEqualTo
+        case .isLessThan:
+            return .isLessThan
+        case .isLessThanOrEqualTo:
+            return .isLessThanOrEqualTo
+        case .isBetween:
+            return .isBetween
+        }
+    }
 }
 
 extension Condition: Encodable {
@@ -30,7 +61,7 @@ extension Condition: Encodable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(ConditionOperand.variable(lhs), forKey: .input)
-        try container.encode(operation, forKey: .condition)
+        try container.encode(conditionType, forKey: .condition)
 
         switch self {
         case .is(_, let rhs),
@@ -75,37 +106,6 @@ extension Condition: Encodable {
              .isLessThanOrEqualTo(let variable, _),
              .isBetween(let variable, _, _):
             return variable
-        }
-    }
-
-    var operation: Int {
-        switch self {
-        case .`is`:
-            return 4
-        case .isNot:
-            return 5
-        case .hasAnyValue:
-            return 100
-        case .doesNotHaveAnyValue:
-            return 101
-        case .contains:
-            return 99
-        case .doesNotContain:
-            return 999
-        case .beginsWith:
-            return 8
-        case .endsWith:
-            return 9
-        case .isGreaterThan:
-            return 2
-        case .isGreaterThanOrEqualTo:
-            return 3
-        case .isLessThan:
-            return 0
-        case .isLessThanOrEqualTo:
-            return 1
-        case .isBetween:
-            return 1003
         }
     }
 }
