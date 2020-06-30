@@ -28,14 +28,14 @@ public enum HTTPMethod: Encodable {
 
 public enum RequestBody {
     case json([(key: InterpolatedText, value: DictionaryValue)])
-    case form([(key: InterpolatedText, value: DictionaryValue)]) // FIXME: key = Interpolatedtext, value: InterpolatedText | File
+    case form([(key: InterpolatedText, value: MultipartFormValue)])
     case file(Variable)
 
     public static func json(_ payload: KeyValuePairs<InterpolatedText, DictionaryValue>) -> RequestBody {
         .json(Array(payload))
     }
 
-    public static func form(_ payload: KeyValuePairs<InterpolatedText, DictionaryValue>) -> RequestBody {
+    public static func form(_ payload: KeyValuePairs<InterpolatedText, MultipartFormValue>) -> RequestBody {
         .form(Array(payload))
     }
 }
