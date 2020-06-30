@@ -1,9 +1,23 @@
 public enum DictionaryValue {
     case string(InterpolatedText)
     case number(InterpolatedText)
-    case boolean(BooleanVariable)
+    case boolean(VariableValue<Bool>)
     case dictionary([(key: InterpolatedText, value: DictionaryValue)])
     case array([DictionaryValue])
+}
+
+extension DictionaryValue {
+    public static func boolean(_ variable: Variable) -> DictionaryValue {
+        .boolean(VariableValue(variable))
+    }
+
+    public static func boolean(_ value: Bool) -> DictionaryValue {
+        .boolean(VariableValue(value))
+    }
+
+    public static func number(_ value: Number) -> DictionaryValue {
+        .number("\(literal: value)")
+    }
 }
 
 extension DictionaryValue: Encodable {
@@ -21,7 +35,7 @@ extension DictionaryValue: ExpressibleByArrayLiteral {
 
 extension DictionaryValue: ExpressibleByBooleanLiteral {
     public init(booleanLiteral value: Bool) {
-        self = .boolean(value ? .true : .false)
+        self = .boolean(.init(value))
     }
 }
 

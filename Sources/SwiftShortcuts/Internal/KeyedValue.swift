@@ -11,7 +11,7 @@ struct KeyedValue: Encodable {
     enum EncodableValue {
         case string(InterpolatedText)
         case number(InterpolatedText)
-        case boolean(BooleanVariable)
+        case boolean(VariableValue<Bool>)
         case dictionary([(key: InterpolatedText, value: DictionaryValue)])
         case array([DictionaryValue])
         case file(Variable)

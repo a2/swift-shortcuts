@@ -30,7 +30,7 @@ struct DictionaryShortcut: Shortcut {
             "empty_dict": [:],
             "true": true,
             "false": false,
-            "bool_ask": .boolean(.askEachTime),
+            "bool_ask": .boolean(Variable.askEachTime),
         ])
     }
 }
