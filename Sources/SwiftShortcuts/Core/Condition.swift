@@ -1,19 +1,33 @@
+/// Represents a value that can be evaluated by an `If` shortcut.
 public enum Condition {
+    /// This condition evaluates to true if the variable equals the condition operand.
     case `is`(Variable, ConditionOperand)
+    /// This condition evaluates to true if the variable does not equal the condition operand.
     case isNot(Variable, ConditionOperand)
 
+    /// This condition evaluates to true if the variable has any value.
     case hasAnyValue(Variable)
+    /// This condition evaluates to true if the variable does not have any value.
     case doesNotHaveAnyValue(Variable)
 
+    /// This condition evaluates to true if the variable contains the specified interpolated text..
     case contains(Variable, InterpolatedText)
+    /// This condition evaluates to true if the variable does not contain the specified interpolated text.
     case doesNotContain(Variable, InterpolatedText)
+    /// This condition evaluates to true if the variable begins with the specified interpolated text.
     case beginsWith(Variable, InterpolatedText)
+    /// This condition evaluates to true if the variable ends with the specified interpolated text.
     case endsWith(Variable, InterpolatedText)
 
+    /// This condition evaluates to true if the variable is greater than the condition operand.
     case isGreaterThan(Variable, ConditionNumberOperand)
+    /// This condition evaluates to true if the variable is greater than or equal to the condition operand.
     case isGreaterThanOrEqualTo(Variable, ConditionNumberOperand)
+    /// This condition evaluates to true if the variable is less than the condition operand.
     case isLessThan(Variable, ConditionNumberOperand)
+    /// This condition evaluates to true if the variable is less than or equal to the condition operand.
     case isLessThanOrEqualTo(Variable, ConditionNumberOperand)
+    /// This condition evaluates to true if the variable is between the two condition operands.
     case isBetween(Variable, ConditionNumberOperand, ConditionNumberOperand)
 
     var conditionType: ConditionType {
@@ -110,6 +124,8 @@ extension Condition: Encodable {
     }
 }
 
+// MARK: - Making a Condition
+
 public func == (lhs: Variable, rhs: ConditionOperandConvertible) -> Condition {
     .is(lhs, rhs.conditionOperand)
 }
@@ -143,15 +159,25 @@ public func ~= (lhs: Variable, rhs: (lowerBound: ConditionNumberOperandConvertib
 }
 
 extension Variable {
+    /// - Returns: A condition that evaluates to true if this variable has any value.
     public func hasAnyValue() -> Condition { .hasAnyValue(self) }
 
+    /// - Returns: A condition that evaluates to true if this variable does not have any value.
     public func doesNotHaveAnyValue() -> Condition { .doesNotHaveAnyValue(self) }
 
+    /// - Parameter text: A substring to search for.
+    /// - Returns: A condition that evaluates to true if this variable contains the specified text.
     public func contains(_ text: InterpolatedText) -> Condition { .contains(self, text) }
 
+    /// - Parameter text: A substring to search for.
+    /// - Returns: A condition that evaluates to true if this variable does not contain the specified text.
     public func doesNotContain(_ text: InterpolatedText) -> Condition { .doesNotContain(self, text) }
 
+    /// - Parameter text: A prefix to search for.
+    /// - Returns: A condition that evaluates to true if this variable contains the specified text as a prefix.
     public func hasPrefix(_ text: InterpolatedText) -> Condition { .beginsWith(self, text) }
 
+    /// - Parameter text: A prefix to search for.
+    /// - Returns: A condition that evaluates to true if this variable contains the specified text as a suffix.
     public func hasSuffix(_ text: InterpolatedText) -> Condition { .endsWith(self, text) }
 }

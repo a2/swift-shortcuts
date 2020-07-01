@@ -18,13 +18,18 @@ public struct FilterFiles: Shortcut {
     }
 }
 
+/// Represents one or many filter-convertible values that combine to reduce a set of files.
 public enum FilterSet {
+    /// A file must satisfy every filter in the array.
     case all([FileFilterConvertible])
+
+    /// A file must satisfy any filter in the array.
     case any([FileFilterConvertible])
 
-    public static func single(_ value: FileFilterConvertible) -> FilterSet {
-        .all([value])
-    }
+    /// A file must satisfy a single filter.
+    /// - Parameter value: The value to filter on.
+    /// - Returns: A filter set with a single value.
+    public static func single(_ value: FileFilterConvertible) -> FilterSet { .all([value]) }
 }
 
 extension FilterFiles {

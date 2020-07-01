@@ -1,16 +1,24 @@
+/// Represents a property that can be used to filter a collection of files.
 public protocol FileFilterProperty {
+    /// The type of value that such a property represents.
     associatedtype Value
 
+    /// The name of the property as used in the Shortcuts app.
     static var propertyName: String { get }
 }
 
+/// A value that can be converted to a `FileFilter`.
 public protocol FileFilterConvertible {
+    /// The inner `FileFilter` represented by this value.
     var fileFilter: FileFilter { get }
 }
 
+/// Represents a `FileFilterConvertible` value by means of a property on such a file.
 public struct FileFiltering<Property>: FileFilterConvertible where Property: FileFilterProperty {
+    /// The inner `FileFilter` represented by this value.
     public let fileFilter: FileFilter
 
+    /// This initializer is internal to enforce type safety.
     init(fileFilter: FileFilter) {
         self.fileFilter = fileFilter
     }

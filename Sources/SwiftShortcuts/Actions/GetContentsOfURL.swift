@@ -1,20 +1,35 @@
+/// Represents an HTTP method. See `GetContentsOfURL` for usage.
 public enum HTTPMethod: String, Encodable {
+    /// Represents a GET request. Request bodies are not supported.
     case GET = "GET"
+    /// Represents a POST request.
     case POST = "POST"
+    /// Represents a PUT request.
     case PUT = "PUT"
+    /// Represents a PATCH request.
     case PATCH = "PATCH"
+    /// Represents a DELETE request.
     case DELETE = "DELETE"
 }
 
+/// Represents a request body used in the `GetContentsOfURL` shortcut.
 public enum RequestBody {
     case json([(key: InterpolatedText, value: DictionaryValue)])
     case form([(key: InterpolatedText, value: MultipartFormValue)])
     case file(Variable)
 
+    // MARK: - Convenience Constructors
+    
+    /// This convenience constructor converts the ordered KeyValuePairs collection into an Array of tuples.
+    /// - Parameter payload: The payload of the request body, expressed as a dictionary literal.
+    /// - Returns: A JSON request body.
     public static func json(_ payload: KeyValuePairs<InterpolatedText, DictionaryValue>) -> RequestBody {
         .json(Array(payload))
     }
 
+    /// This convenience constructor converts the ordered KeyValuePairs collection into an Array of tuples.
+    /// - Parameter payload: The payload of the request body, expressed as a dictionary literal.
+    /// - Returns: A multipart form request body.
     public static func form(_ payload: KeyValuePairs<InterpolatedText, MultipartFormValue>) -> RequestBody {
         .form(Array(payload))
     }

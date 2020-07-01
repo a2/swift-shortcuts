@@ -1,3 +1,4 @@
+/// Get Type: Returns the type of every item passed as input. For example, if a URL is passed, this action will return "URL".
 public struct GetType: Shortcut {
     let input: Variable
 
@@ -5,6 +6,7 @@ public struct GetType: Shortcut {
         Action(identifier: "is.workflow.actions.getitemtype", parameters: Parameters(base: self))
     }
 
+    /// - Parameter input: A variable whose type to return.
     public init(input: Variable) {
         self.input = input
     }

@@ -1,15 +1,24 @@
-public enum SortOrder: Encodable {
+/// Represents a method by which to sort a collecton of values.
+public enum SortOrder {
+    /// Sorts values by file size, either smallest first or biggest first.
+    case fileSize(ascending: Bool)
+    /// Sorts values by file extension, either A to Z or Z to A.
+    case fileExtension(ascending: Bool)
+    /// Sorts values by creation date, either oldest first or latest first.
+    case creationDate(ascending: Bool)
+    /// Sorts values by last modified date, either oldest first or latest first.
+    case lastModifiedDate(ascending: Bool)
+    /// Sorts values by name, either A to Z or Z to A.
+    case name(ascending: Bool)
+    /// A sort order that shuffles values.
+    case random
+}
+
+extension SortOrder: Encodable {
     enum CodingKeys: String, CodingKey {
         case sortOrder = "WFContentItemSortOrder"
         case sortProperty = "WFContentItemSortProperty"
     }
-
-    case fileSize(ascending: Bool)
-    case fileExtension(ascending: Bool)
-    case creationDate(ascending: Bool)
-    case lastModifiedDate(ascending: Bool)
-    case name(ascending: Bool)
-    case random
 
     public func encode(to encoder: Encoder) throws {
         var nestedContainer = encoder.container(keyedBy: CodingKeys.self)

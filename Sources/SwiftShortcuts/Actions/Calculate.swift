@@ -92,6 +92,8 @@ extension Variable: CalculationOperandConvertible {
     public var calculationOperand: CalculationOperand { .variable(self) }
 }
 
+// MARK: - Making a Calculation
+
 public func + (lhs: CalculationOperandConvertible, rhs: CalculationOperandConvertible) -> Calculation {
     .add(rhs.calculationOperand, rhs.calculationOperand)
 }

@@ -1,3 +1,4 @@
+/// The "Change Case" shortcut.
 public struct ChangeCase: Shortcut {
     let text: InterpolatedText
     let target: VariableValue<TextCase>
@@ -6,11 +7,17 @@ public struct ChangeCase: Shortcut {
         Action(identifier: "is.workflow.actions.text.changecase", parameters: Parameters(base: self))
     }
 
+    /// - Parameters:
+    ///   - text: The text whose case to change.
+    ///   - target: The target text case, or a variable like `Variable.askEachTime`.
     public init(text: InterpolatedText, target: VariableValue<TextCase>) {
         self.target = target
         self.text = text
     }
 
+    /// - Parameters:
+    ///   - text: The variable representing text whose case to change.
+    ///   - target: The target text case, or a variable like `Variable.askEachTime`.
     public init(variable: Variable, target: VariableValue<TextCase>) {
         self.target = target
         self.text = "\(variable)"

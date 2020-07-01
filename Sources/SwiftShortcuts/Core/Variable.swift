@@ -1,5 +1,6 @@
 import Foundation
 
+/// A variable is a container used to label and store content such as text, images, a webpage, or a dictionary of data.
 public class Variable {
     let value: Attachment
     let serializationType = SerializationType.textTokenAttachment
@@ -63,6 +64,8 @@ extension Variable: Encodable {
     }
 }
 
+// MARK: - Global Variables
+
 extension Variable {
     public class var askEachTime: Variable {
         Variable(value: Attachment(type: .askEachTime))
@@ -78,15 +81,5 @@ extension Variable {
 
     public class var shortcutInput: Variable {
         Variable(value: Attachment(type: .shortcutInput))
-    }
-}
-
-@propertyWrapper public struct OutputVariable {
-    public let wrappedValue: Variable
-
-    public var projectedValue: OutputVariable { self }
-
-    public init(wrappedValue: Variable = Variable()) {
-        self.wrappedValue = wrappedValue
     }
 }

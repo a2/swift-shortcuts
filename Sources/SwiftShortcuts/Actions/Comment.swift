@@ -1,10 +1,12 @@
+/// The "Comment" shortcut.
 public struct Comment: Shortcut {
+    let text: String
+
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.comment", parameters: Parameters(base: self))
     }
 
-    let text: String
-
+    /// - Parameter text: The text content of the comment.
     public init(_ text: String) {
         self.text = text
     }

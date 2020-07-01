@@ -1,0 +1,140 @@
+module: SwiftShortcuts
+author: Alexsander Akers
+author_url: https://a2.io
+github_url: https://github.com/a2/swift-shortcuts
+
+output: docs/
+exclude:
+- Sources/SwiftShortcuts/Core/ConditionalContent.swift
+- Sources/SwiftShortcuts/Internal/FromAny.swift
+
+theme: fullwidth
+min_acl: public
+use_safe_filenames: true
+
+custom_categories:
+- name: Core
+  children:
+  - Action
+  - AnyEncodable
+  - AnyShortcut
+  - EmptyParameters
+  - EmptyShortcut
+  - ForEach
+  - InterpolatedText
+  - Number
+  - Shortcut
+  - ResultShortcut
+  - SavedOutputShortcut
+  - ShortcutBuilder
+  - ShortcutGroup
+  - TupleShortcut
+
+- name: Shortcuts
+  children:
+  - Ask
+  - BatteryLevel
+  - Calculate
+  - ChangeCase
+  - ChooseFromList
+  - ChooseFromMenu
+  - Comment
+  - CopyToClipboard
+  - FilterFiles
+  - GetClipboard
+  - GetContentsOfURL
+  - GetDictionary
+  - GetType
+  - GetURLsFromInput
+  - GetVariable
+  - If
+  - List
+  - LogHealthSample
+  - MakeHTMLFromRichText
+  - Nothing
+  - Repeat
+  - ReplaceText
+  - SetLowPowerMode
+  - SetVariable
+  - Share
+  - ShowAlert
+  - ShowResult
+  - Text
+  - URLEncode 
+
+- name: Calculations
+  children:
+  - Calculation
+  - CalculationOperand
+  - CalculationOperandConvertible
+  - +(_:_:)
+  - -(_:_:)
+  - "*(_:_:)"
+  - /(_:_:)
+
+- name: Conditions
+  children:
+  - Condition
+  - ConditionNumberOperand
+  - ConditionNumberOperandConvertible
+  - ConditionOperand
+  - ConditionOperandConvertible
+  - ConditionTextOperand
+  - ConditionTextOperandConvertible
+  - ==(_:_:)
+  - "!=(_:_:)"
+  - <(_:_:)
+  - <=(_:_:)
+  - ">(_:_:)"
+  - ">=(_:_:)"
+  - ~=(_:_:)
+
+- name: Filtering
+  children:
+  - ByteCountUnit
+  - CreationDateFilter
+  - CreationDateProperty
+  - FileExtensionFilter
+  - FileExtensionProperty
+  - FileFilter
+  - FileFilterConvertible
+  - FileFiltering
+  - FileFilterProperty
+  - FileSize
+  - FileSizeFilter
+  - FileSizeProperty
+  - FilterSet
+  - LastModifiedDateFilter
+  - LastModifiedDateProperty
+  - NameFilter
+  - NameProperty
+  - SortOrder
+  - TimeSpanValue
+  - VariableDateValueConvertible
+
+- name: Health
+  children:
+  - HealthSampleType
+  - HealthSampleUnit
+  - HealthSampleValue
+
+- name: Networking
+  children:
+  - DictionaryValue
+  - HTTPMethod
+  - MultipartFormValue
+  - RequestBody
+
+- name: Variables
+  children:
+  - Variable
+  - VariableValue
+  - OutputVariable
+
+- name: Variable-Related
+  children:
+  - CoercionItemClass
+  - DateFormatStyle
+  - PropertyName
+  - PropertyUserInfo
+  - TimeFormatStyle

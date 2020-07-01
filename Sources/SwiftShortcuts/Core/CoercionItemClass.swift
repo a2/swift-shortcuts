@@ -1,3 +1,4 @@
+/// Represents available content types that a Variable can be convered to.
 public enum CoercionItemClass: Hashable, Encodable {
     case anything
     case appStoreApp

@@ -1,3 +1,4 @@
+/// Ask for Input: Prompts the user to enter a piece of information. Returns: Text
 public struct Ask: Shortcut {
     let prompt: InterpolatedText
     let defaultAnswer: InterpolatedText?
