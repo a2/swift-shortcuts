@@ -13,7 +13,7 @@ struct ClapAlongShortcut: Shortcut {
             Comment("This Shortcut was generated in Swift.")
             Ask(prompt: "WHAT 👏 DO 👏 YOU 👏 WANT 👏 TO 👏 SAY")
                 .usingResult(uuid: makeUUID()) { providedInput in
-                    ChangeCase(variable: providedInput, target: .caseType(.uppercase))
+                    ChangeCase(variable: providedInput, target: .value(.uppercase))
                 }
                 .usingResult(uuid: makeUUID()) { changedCaseText in
                     ReplaceText(variable: changedCaseText, target: "[\\s]", replacement: " 👏 ", isRegularExpression: true)

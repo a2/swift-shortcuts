@@ -1,35 +1,19 @@
 public struct ChangeCase: Shortcut {
-    public enum Target: Encodable {
-        case caseType(TextCase)
-        case askEachTime
-
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.singleValueContainer()
-
-            switch self {
-            case .caseType(let caseType):
-                try container.encode(caseType)
-            case .askEachTime:
-                try container.encode(Variable.askEachTime)
-            }
-        }
-    }
-
-    let text: TextInput
-    let target: Target
+    let text: InterpolatedText
+    let target: VariableValue<TextCase>
 
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.text.changecase", parameters: Parameters(base: self))
     }
 
-    public init(text: InterpolatedText, target: Target) {
+    public init(text: InterpolatedText, target: VariableValue<TextCase>) {
         self.target = target
-        self.text = .interpolatedText(text)
+        self.text = text
     }
 
-    public init(variable: Variable, target: Target) {
+    public init(variable: Variable, target: VariableValue<TextCase>) {
         self.target = target
-        self.text = .variable(variable)
+        self.text = "\(variable)"
     }
 }
 
@@ -44,8 +28,14 @@ extension ChangeCase {
 
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(base.text, forKey: .text)
             try container.encode(base.target, forKey: .caseType)
+
+            if base.text.string.count == 1 && base.text.variablesByRange.count == 1 {
+                let variable = base.text.variablesByRange[base.text.variablesByRange.startIndex].value
+                try container.encode(variable, forKey: .text)
+            } else {
+                try container.encode(base.text, forKey: .text)
+            }
         }
     }
 }

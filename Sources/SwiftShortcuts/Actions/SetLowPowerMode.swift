@@ -1,25 +1,28 @@
 public struct SetLowPowerMode: Shortcut {
     public enum Operation {
-        case set(Bool)
+        case turnOn
+        case turnOff
         case toggle
-        case askEachTime
     }
 
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.lowpowermode.set", parameters: Parameters(base: self))
     }
 
-    let operation: Operation
+    let operation: VariableValue<Operation>
 
-    public init(operation: Operation) {
+    public init(operation: VariableValue<Operation>) {
         self.operation = operation
     }
 
+    public init(operation: Operation) {
+        self.init(operation: .value(operation))
+    }
+
     public init(_ onValue: Bool = true) {
-        self.operation = .set(onValue)
+        self.init(operation: .value(onValue ? .turnOn : .turnOff))
     }
 }
-
 
 extension SetLowPowerMode {
     enum OperationType: String, Encodable {
@@ -39,13 +42,16 @@ extension SetLowPowerMode {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             switch base.operation {
-            case .set(let onValue):
+            case .value(.turnOn):
                 try container.encode(OperationType.set, forKey: .operation)
-                try container.encode(onValue, forKey: .onValue)
-            case .toggle:
+                try container.encode(true, forKey: .onValue)
+            case .value(.turnOff):
+                try container.encode(OperationType.set, forKey: .operation)
+                try container.encode(false, forKey: .onValue)
+            case .value(.toggle):
                 try container.encode(OperationType.toggle, forKey: .operation)
-            case .askEachTime:
-                try container.encode(Variable.askEachTime, forKey: .operation)
+            case .variable(let variable):
+                try container.encode(variable, forKey: .operation)
             }
         }
     }

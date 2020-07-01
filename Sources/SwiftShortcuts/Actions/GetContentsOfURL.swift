@@ -1,29 +1,9 @@
-public enum HTTPMethod: Encodable {
-    case GET
-    case POST
-    case PUT
-    case PATCH
-    case DELETE
-    case askEachTime
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-
-        switch self {
-        case .GET:
-            try container.encode("GET")
-        case .POST:
-            try container.encode("POST")
-        case .PUT:
-            try container.encode("PUT")
-        case .PATCH:
-            try container.encode("PATCH")
-        case .DELETE:
-            try container.encode("DELETE")
-        case .askEachTime:
-            try container.encode(Variable.askEachTime)
-        }
-    }
+public enum HTTPMethod: String, Encodable {
+    case GET = "GET"
+    case POST = "POST"
+    case PUT = "PUT"
+    case PATCH = "PATCH"
+    case DELETE = "DELETE"
 }
 
 public enum RequestBody {
@@ -41,7 +21,7 @@ public enum RequestBody {
 }
 
 public struct GetContentsOfURL: Shortcut {
-    let method: HTTPMethod
+    let method: VariableValue<HTTPMethod>
     let url: InterpolatedText
     let headers: [(key: InterpolatedText, value: InterpolatedText)]
     let requestBody: RequestBody?
@@ -50,11 +30,15 @@ public struct GetContentsOfURL: Shortcut {
         Action(identifier: "is.workflow.actions.downloadurl", parameters: Parameters(base: self))
     }
 
-    public init(method: HTTPMethod, url: InterpolatedText, headers: KeyValuePairs<InterpolatedText, InterpolatedText> = [:], body: RequestBody?) {
+    public init(method: VariableValue<HTTPMethod>, url: InterpolatedText, headers: KeyValuePairs<InterpolatedText, InterpolatedText> = [:], body: RequestBody?) {
         self.method = method
         self.url = url
         self.headers = Array(headers)
         self.requestBody = body
+    }
+
+    public init(method: HTTPMethod, url: InterpolatedText, headers: KeyValuePairs<InterpolatedText, InterpolatedText> = [:], body: RequestBody?) {
+        self.init(method: .value(method), url: url, headers: headers, body: body)
     }
 }
 
