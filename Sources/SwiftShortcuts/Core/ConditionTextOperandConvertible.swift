@@ -13,3 +13,7 @@ extension Variable: ConditionTextOperandConvertible {
 extension InterpolatedText: ConditionTextOperandConvertible {
     public var conditionTextOperand: ConditionTextOperand { .interpolatedText(self) }
 }
+
+extension String: ConditionTextOperandConvertible {
+    public var conditionTextOperand: ConditionTextOperand { .interpolatedText(InterpolatedText(self)) }
+}

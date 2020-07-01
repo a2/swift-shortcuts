@@ -29,6 +29,18 @@ public enum ConditionOperand: Encodable {
     }
 }
 
+extension ConditionOperand: ExpressibleByFloatLiteral {
+    public init(floatLiteral value: Double) {
+        self = .number(Number(value))
+    }
+}
+
+extension ConditionOperand: ExpressibleByIntegerLiteral {
+    public init(integerLiteral value: Int64) {
+        self = .number(Number(value))
+    }
+}
+
 extension ConditionOperand: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
         self = .interpolatedText(InterpolatedText(value))

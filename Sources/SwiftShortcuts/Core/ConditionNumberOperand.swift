@@ -12,14 +12,14 @@ public enum ConditionNumberOperand {
     }
 }
 
-public protocol ConditionNumberOperandConvertible {
-    var conditionNumberOperand: ConditionNumberOperand { get }
+extension ConditionNumberOperand: ExpressibleByFloatLiteral {
+    public init(floatLiteral value: Double) {
+        self = .number(Number(value))
+    }
 }
 
-extension Number: ConditionNumberOperandConvertible {
-    public var conditionNumberOperand: ConditionNumberOperand { .number(self) }
-}
-
-extension Variable: ConditionNumberOperandConvertible {
-    public var conditionNumberOperand: ConditionNumberOperand { .variable(self) }
+extension ConditionNumberOperand: ExpressibleByIntegerLiteral {
+    public init(integerLiteral value: Int64) {
+        self = .number(Number(value))
+    }
 }
