@@ -17,8 +17,11 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "SwiftShortcuts",
+            name: "CSymbols",
             dependencies: []),
+        .target(
+            name: "SwiftShortcuts",
+            dependencies: ["CSymbols"]),
         .testTarget(
             name: "SwiftShortcutsTests",
             dependencies: ["SwiftShortcuts", "SnapshotTesting"],

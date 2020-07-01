@@ -1,4 +1,4 @@
-import Foundation
+import CSymbols
 
 // MARK: - AnyShortcut from Any
 
@@ -47,9 +47,7 @@ public func _makeAnyShortcut<S: Shortcut>(from shortcut: S) -> AnyShortcut {
 private typealias AnyShortcutFunction = @convention(thin) (UnsafeRawPointer, ProtocolConformanceRecord) -> AnyShortcut
 
 private let makeAnyShortcut: AnyShortcutFunction = {
-    let symbolName = "_swift_shortcuts_makeAnyShortcut"
-    let handle = dlopen(nil, RTLD_GLOBAL)
-    let pointer = dlsym(handle, symbolName)
+    let pointer = SwiftShortcutsGetAddressForSymbol(SwiftShortcutsSymbolMakeAnyShortcut)
     return unsafeBitCast(pointer, to: AnyShortcutFunction.self)
 }()
 
@@ -85,9 +83,7 @@ public func _decompose<S: Shortcut>(shortcut: S) -> [Action] {
 private typealias DecomposeFunction = @convention(thin) (UnsafeRawPointer, ProtocolConformanceRecord) -> [Action]
 
 private let decompose: DecomposeFunction = {
-    let symbolName = "_swift_shortcuts_decompose"
-    let handle = dlopen(nil, RTLD_GLOBAL)
-    let pointer = dlsym(handle, symbolName)
+    let pointer = SwiftShortcutsGetAddressForSymbol(SwiftShortcutsSymbolDecompose)
     return unsafeBitCast(pointer, to: DecomposeFunction.self)
 }()
 
