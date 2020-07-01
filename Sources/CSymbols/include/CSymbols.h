@@ -1,13 +1,7 @@
 #ifndef CSymbols_h
 #define CSymbols_h
 
-#include <stdio.h>
-
-typedef enum {
-    SwiftShortcutsSymbolMakeAnyShortcut,
-    SwiftShortcutsSymbolDecompose,
-} SwiftShortcutsSymbol;
-
-void *SwiftShortcutsGetAddressForSymbol(SwiftShortcutsSymbol symbol);
+void *_Nonnull makeAnyShortcutSymbol(void);
+void *_Nonnull decomposeIntoActionsSymbol(void);
 
 #endif /* CSymbols_h */

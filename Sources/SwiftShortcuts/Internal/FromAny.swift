@@ -40,16 +40,13 @@ extension AnyShortcutConvertible {
 }
 
 @_silgen_name("_swift_shortcuts_makeAnyShortcut")
-public func _makeAnyShortcut<S: Shortcut>(from shortcut: S) -> AnyShortcut {
+@available(*, unavailable)
+public func makeAnyShortcut<S: Shortcut>(from shortcut: S) -> AnyShortcut {
     return AnyShortcut(shortcut)
 }
 
-private typealias AnyShortcutFunction = @convention(thin) (UnsafeRawPointer, ProtocolConformanceRecord) -> AnyShortcut
-
-private let makeAnyShortcut: AnyShortcutFunction = {
-    let pointer = SwiftShortcutsGetAddressForSymbol(SwiftShortcutsSymbolMakeAnyShortcut)
-    return unsafeBitCast(pointer, to: AnyShortcutFunction.self)
-}()
+private typealias ShortcutToAnyShortcutFunction = @convention(thin) (UnsafeRawPointer, ProtocolConformanceRecord) -> AnyShortcut
+private let makeAnyShortcut = unsafeBitCast(makeAnyShortcutSymbol(), to: ShortcutToAnyShortcutFunction.self)
 
 // MARK: - [ActionComponent] from Any
 
@@ -62,12 +59,17 @@ extension ActionsConvertible {
         }
 
         let conformanceRecord = ProtocolConformanceRecord(type: Self.self, witnessTable: Int(bitPattern: witnessTable))
-        return withUnsafePointer(to: shortcut as! Self) { pointer in decompose(pointer, conformanceRecord) }
+        return withUnsafePointer(to: shortcut as! Self) { pointer in decomposeIntoActions(pointer, conformanceRecord) }
     }
 }
 
-@_silgen_name("_swift_shortcuts_decompose")
-public func _decompose<S: Shortcut>(shortcut: S) -> [Action] {
+@_silgen_name("_swift_shortcuts_decomposeIntoActions")
+@available(*, unavailable)
+public func decomposeIntoActions<S: Shortcut>(shortcut: S) -> [Action] {
+    _decomposeIntoActions(shortcut: shortcut)
+}
+
+private func _decomposeIntoActions<S: Shortcut>(shortcut: S) -> [Action] {
     if S.Body.self == Never.self {
         return shortcut.decompose()
     }
@@ -76,16 +78,12 @@ public func _decompose<S: Shortcut>(shortcut: S) -> [Action] {
     if let component = body as? Action {
         return [component]
     } else {
-        return _decompose(shortcut: body)
+        return _decomposeIntoActions(shortcut: body)
     }
 }
 
-private typealias DecomposeFunction = @convention(thin) (UnsafeRawPointer, ProtocolConformanceRecord) -> [Action]
-
-private let decompose: DecomposeFunction = {
-    let pointer = SwiftShortcutsGetAddressForSymbol(SwiftShortcutsSymbolDecompose)
-    return unsafeBitCast(pointer, to: DecomposeFunction.self)
-}()
+private typealias ShortcutToActionsFunction = @convention(thin) (UnsafeRawPointer, ProtocolConformanceRecord) -> [Action]
+private let decomposeIntoActions = unsafeBitCast(decomposeIntoActionsSymbol(), to: ShortcutToActionsFunction.self)
 
 func actionComponents(from value: Any) -> [Action]? {
     // Synthesize a fake protocol conformance record to ActionStepsConvertible
