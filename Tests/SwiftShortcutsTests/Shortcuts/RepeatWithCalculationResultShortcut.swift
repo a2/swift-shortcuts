@@ -9,7 +9,7 @@ struct RepeatWithCalculationResultShortcut: Shortcut {
         self.makeUUID = makeUUID
     }
 
-    @OutputVariable var calculationResult
+    @OutputVariable var calculationResult: Variable
 
     var body: some Shortcut {
         ShortcutGroup {

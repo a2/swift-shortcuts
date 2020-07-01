@@ -10,18 +10,18 @@ struct ShortenWithSmallCatShortcut: Shortcut {
         self._expiry = OutputVariable(wrappedValue: Variable(uuid: makeUUID()))
     }
 
-    @OutputVariable var url
-    @OutputVariable var expiry
+    @OutputVariable var url: Variable
+    @OutputVariable var expiry: Variable
 
     var body: some Shortcut {
         ShortcutGroup {
             GetType(input: .shortcutInput)
                 .usingResult(uuid: makeUUID()) { type in
-                    If(type == "URL", groupingIdentifier: makeUUID()) {
+                    If(type == "URL", groupingIdentifier: makeUUID(), then: {
                         GetVariable(variable: type)
-                    } else: {
+                    }, else: {
                         GetClipboard()
-                    }
+                    })
                 }
                 .usingResult(uuid: makeUUID()) { ifResult in
                     URLEncode(input: "\(ifResult)")

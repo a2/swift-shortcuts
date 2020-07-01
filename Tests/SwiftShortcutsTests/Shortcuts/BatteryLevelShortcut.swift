@@ -9,19 +9,19 @@ struct BatteryLevelShortcut: Shortcut {
         self._batteryLevel = OutputVariable(wrappedValue: Variable(uuid: makeUUID()))
     }
 
-    @OutputVariable var batteryLevel
+    @OutputVariable var batteryLevel: Variable
 
     var body: some Shortcut {
         ShortcutGroup {
             Comment("This Shortcut was generated in Swift.")
             BatteryLevel()
                 .savingOutput(to: $batteryLevel)
-            If(batteryLevel < Number(20), groupingIdentifier: makeUUID()) {
+            If(batteryLevel < Number(20), groupingIdentifier: makeUUID(), then: {
                 SetLowPowerMode(true)
                 ShowResult("Your battery level is \(batteryLevel)%; you might want to charge soon.")
-            } else: {
+            }, else: {
                 ShowResult("Your battery level is \(batteryLevel)%; you're probably fine for now.")
-            }
+            })
         }
     }
 }
