@@ -14,10 +14,10 @@ extension Variable: ConditionOperandConvertible {
     public var conditionOperand: ConditionOperand { .variable(self) }
 }
 
-extension InterpolatedText: ConditionOperandConvertible {
-    public var conditionOperand: ConditionOperand { .interpolatedText(self) }
+extension Text: ConditionOperandConvertible {
+    public var conditionOperand: ConditionOperand { .text(self) }
 }
 
 extension String: ConditionOperandConvertible {
-    public var conditionOperand: ConditionOperand { .interpolatedText(InterpolatedText(self)) }
+    public var conditionOperand: ConditionOperand { .text(Text(self)) }
 }

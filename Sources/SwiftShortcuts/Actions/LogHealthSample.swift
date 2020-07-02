@@ -3,13 +3,13 @@ import Foundation
 public struct LogHealthSample: Shortcut {
     let type: HealthSampleType
     let value: HealthSampleValue
-    let date: InterpolatedText
+    let date: Text
 
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.health.quantity.log", parameters: Parameters(base: self))
     }
 
-    public init(type: HealthSampleType, value: HealthSampleValue, date: InterpolatedText = "") {
+    public init(type: HealthSampleType, value: HealthSampleValue, date: Text = "") {
         self.type = type
         self.value = value
         self.date = date

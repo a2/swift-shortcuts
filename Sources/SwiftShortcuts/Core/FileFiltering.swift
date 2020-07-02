@@ -24,34 +24,34 @@ public struct FileFiltering<Property>: FileFilterConvertible where Property: Fil
     }
 }
 
-extension FileFiltering where Property.Value == InterpolatedText? {
-    public init(is text: InterpolatedText?) {
-        let values = InterpolatedTextWrapper(text: text ?? "")
+extension FileFiltering where Property.Value == Text? {
+    public init(is text: Text?) {
+        let values = TextWrapper(text: text ?? "")
         self.fileFilter = FileFilter(operator: .is, values: values, isRemovable: true, property: Property.propertyName)
     }
 
-    public init(isNot text: InterpolatedText?) {
-        let values = InterpolatedTextWrapper(text: text ?? "")
+    public init(isNot text: Text?) {
+        let values = TextWrapper(text: text ?? "")
         self.fileFilter = FileFilter(operator: .isNot, values: values, isRemovable: true, property: Property.propertyName)
     }
 
-    public init(contains text: InterpolatedText?) {
-        let values = InterpolatedTextWrapper(text: text ?? "")
+    public init(contains text: Text?) {
+        let values = TextWrapper(text: text ?? "")
         self.fileFilter = FileFilter(operator: .contains, values: values, isRemovable: true, property: Property.propertyName)
     }
 
-    public init(doesNotContain text: InterpolatedText?) {
-        let values = InterpolatedTextWrapper(text: text ?? "")
+    public init(doesNotContain text: Text?) {
+        let values = TextWrapper(text: text ?? "")
         self.fileFilter = FileFilter(operator: .doesNotContain, values: values, isRemovable: true, property: Property.propertyName)
     }
 
-    public init(beginsWith text: InterpolatedText?) {
-        let values = InterpolatedTextWrapper(text: text ?? "")
+    public init(beginsWith text: Text?) {
+        let values = TextWrapper(text: text ?? "")
         self.fileFilter = FileFilter(operator: .beginsWith, values: values, isRemovable: true, property: Property.propertyName)
     }
 
-    public init(endsWith text: InterpolatedText?) {
-        let values = InterpolatedTextWrapper(text: text ?? "")
+    public init(endsWith text: Text?) {
+        let values = TextWrapper(text: text ?? "")
         self.fileFilter = FileFilter(operator: .endsWith, values: values, isRemovable: true, property: Property.propertyName)
     }
 }

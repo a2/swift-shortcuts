@@ -1,11 +1,11 @@
 public struct GetDictionary: Shortcut {
-    let value: [(key: InterpolatedText, value: DictionaryValue)]
+    let value: [(key: Text, value: DictionaryValue)]
 
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.dictionary", parameters: Parameters(base: self))
     }
 
-    public init(_ value: KeyValuePairs<InterpolatedText, DictionaryValue>) {
+    public init(_ value: KeyValuePairs<Text, DictionaryValue>) {
         self.value = Array(value)
     }
 }

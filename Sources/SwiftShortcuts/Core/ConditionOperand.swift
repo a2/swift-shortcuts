@@ -12,7 +12,7 @@ public enum ConditionOperand: Encodable {
 
     case variable(Variable)
     case number(Number)
-    case interpolatedText(InterpolatedText)
+    case text(Text)
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -23,8 +23,8 @@ public enum ConditionOperand: Encodable {
             try container.encode(variable, forKey: .variable)
         case .number(let number):
             try container.encode(number, forKey: .numberValue)
-        case .interpolatedText(let interpolatedText):
-            try container.encode(interpolatedText, forKey: .conditionalActionString)
+        case .text(let text):
+            try container.encode(text, forKey: .conditionalActionString)
         }
     }
 }
@@ -43,12 +43,12 @@ extension ConditionOperand: ExpressibleByIntegerLiteral {
 
 extension ConditionOperand: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
-        self = .interpolatedText(InterpolatedText(value))
+        self = .text(Text(value))
     }
 }
 
 extension ConditionOperand: ExpressibleByStringInterpolation {
-    public init(stringInterpolation: InterpolatedText.StringInterpolation) {
-        self = .interpolatedText(InterpolatedText(stringInterpolation: stringInterpolation))
+    public init(stringInterpolation: Text.StringInterpolation) {
+        self = .text(Text(stringInterpolation: stringInterpolation))
     }
 }

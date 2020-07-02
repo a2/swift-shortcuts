@@ -1,11 +1,11 @@
 public struct ShowResult: Shortcut {
-    let text: InterpolatedText
+    let text: Text
 
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.showresult", parameters: Parameters(base: self))
     }
 
-    public init(_ text: InterpolatedText) {
+    public init(_ text: Text) {
         self.text = text
     }
 }

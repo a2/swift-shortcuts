@@ -7,13 +7,13 @@ extension ConditionTextOperand: ConditionTextOperandConvertible {
 }
 
 extension Variable: ConditionTextOperandConvertible {
-    public var conditionTextOperand: ConditionTextOperand { .interpolatedText("\(self)") }
+    public var conditionTextOperand: ConditionTextOperand { .text("\(self)") }
 }
 
-extension InterpolatedText: ConditionTextOperandConvertible {
-    public var conditionTextOperand: ConditionTextOperand { .interpolatedText(self) }
+extension Text: ConditionTextOperandConvertible {
+    public var conditionTextOperand: ConditionTextOperand { .text(self) }
 }
 
 extension String: ConditionTextOperandConvertible {
-    public var conditionTextOperand: ConditionTextOperand { .interpolatedText(InterpolatedText(self)) }
+    public var conditionTextOperand: ConditionTextOperand { .text(Text(self)) }
 }

@@ -1,13 +1,13 @@
 /// Ask for Input: Prompts the user to enter a piece of information. Returns: Text
 public struct Ask: Shortcut {
-    let prompt: InterpolatedText
-    let defaultAnswer: InterpolatedText?
+    let prompt: Text
+    let defaultAnswer: Text?
 
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.ask", parameters: Parameters(base: self))
     }
 
-    public init(prompt: InterpolatedText, defaultAnswer: InterpolatedText? = nil) {
+    public init(prompt: Text, defaultAnswer: Text? = nil) {
         self.prompt = prompt
         self.defaultAnswer = defaultAnswer
     }

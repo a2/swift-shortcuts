@@ -1,15 +1,15 @@
 public struct List: Shortcut {
-    let items: [InterpolatedText]
+    let items: [Text]
 
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.list", parameters: Parameters(base: self))
     }
 
-    public init(_ items: [InterpolatedText]) {
+    public init(_ items: [Text]) {
         self.items = items
     }
 
-    public init(_ items: InterpolatedText...) {
+    public init(_ items: Text...) {
         self.items = items
     }
 }

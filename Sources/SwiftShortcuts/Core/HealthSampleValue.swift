@@ -1,8 +1,8 @@
 public struct HealthSampleValue {
-    public var magnitude: InterpolatedText
+    public var magnitude: Text
     public var unit: HealthSampleUnit
 
-    public init(magnitude: InterpolatedText, unit: HealthSampleUnit) {
+    public init(magnitude: Text, unit: HealthSampleUnit) {
         self.magnitude = magnitude
         self.unit = unit
     }

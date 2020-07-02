@@ -1,8 +1,8 @@
 public enum DictionaryValue {
-    case string(InterpolatedText)
-    case number(InterpolatedText)
+    case string(Text)
+    case number(Text)
     case boolean(VariableValue<Bool>)
-    case dictionary([(key: InterpolatedText, value: DictionaryValue)])
+    case dictionary([(key: Text, value: DictionaryValue)])
     case array([DictionaryValue])
 }
 
@@ -40,7 +40,7 @@ extension DictionaryValue: ExpressibleByBooleanLiteral {
 }
 
 extension DictionaryValue: ExpressibleByDictionaryLiteral {
-    public init(dictionaryLiteral elements: (InterpolatedText, DictionaryValue)...) {
+    public init(dictionaryLiteral elements: (Text, DictionaryValue)...) {
         self = .dictionary(elements)
     }
 }
@@ -59,12 +59,12 @@ extension DictionaryValue: ExpressibleByFloatLiteral {
 
 extension DictionaryValue: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
-        self = .string(InterpolatedText(value))
+        self = .string(Text(value))
     }
 }
 
 extension DictionaryValue: ExpressibleByStringInterpolation {
-    public init(stringInterpolation: InterpolatedText.StringInterpolation) {
-        self = .string(InterpolatedText(stringInterpolation: stringInterpolation))
+    public init(stringInterpolation: Text.StringInterpolation) {
+        self = .string(Text(stringInterpolation: stringInterpolation))
     }
 }

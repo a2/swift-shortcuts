@@ -1,16 +1,16 @@
 public enum MultipartFormValue {
-    case string(InterpolatedText)
+    case string(Text)
     case file(Variable)
 }
 
 extension MultipartFormValue: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
-        self = .string(InterpolatedText(value))
+        self = .string(Text(value))
     }
 }
 
 extension MultipartFormValue: ExpressibleByStringInterpolation {
-    public init(stringInterpolation: InterpolatedText.StringInterpolation) {
-        self = .string(InterpolatedText(stringInterpolation: stringInterpolation))
+    public init(stringInterpolation: Text.StringInterpolation) {
+        self = .string(Text(stringInterpolation: stringInterpolation))
     }
 }

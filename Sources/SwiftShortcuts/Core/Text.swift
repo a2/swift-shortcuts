@@ -1,12 +1,12 @@
 import Foundation
 
-public struct InterpolatedText: Hashable {
+public struct Text: Hashable {
     public let string: String
     public let variablesByRange: [Range<String.Index>: Variable]
-    var allowsEncodingAsPlainString = true
+    var allowsEncodingAsRawString = true
 }
 
-extension InterpolatedText: ExpressibleByStringInterpolation {
+extension Text: ExpressibleByStringInterpolation {
     public struct StringInterpolation: StringInterpolationProtocol {
         static var objectReplacementCharacter = "\u{fffc}"
 
@@ -51,7 +51,7 @@ extension InterpolatedText: ExpressibleByStringInterpolation {
     }
 }
 
-extension InterpolatedText: Encodable {
+extension Text: Encodable {
     enum CodingKeys: String, CodingKey {
         case value = "Value"
         case serializationType = "WFSerializationType"
@@ -63,7 +63,7 @@ extension InterpolatedText: Encodable {
     }
 
     public func encode(to encoder: Encoder) throws {
-        if variablesByRange.isEmpty && allowsEncodingAsPlainString {
+        if variablesByRange.isEmpty && allowsEncodingAsRawString {
             var container = encoder.singleValueContainer()
             try container.encode(string)
         } else {

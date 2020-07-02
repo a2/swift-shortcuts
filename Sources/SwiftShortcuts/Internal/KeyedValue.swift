@@ -9,10 +9,10 @@ struct KeyedValue: Encodable {
     }
 
     enum EncodableValue {
-        case string(InterpolatedText)
-        case number(InterpolatedText)
+        case string(Text)
+        case number(Text)
         case boolean(VariableValue<Bool>)
-        case dictionary([(key: InterpolatedText, value: DictionaryValue)])
+        case dictionary([(key: Text, value: DictionaryValue)])
         case array([DictionaryValue])
         case file(Variable)
     }
@@ -28,16 +28,16 @@ struct KeyedValue: Encodable {
         case value = "Value"
     }
 
-    let key: InterpolatedText?
+    let key: Text?
     let value: EncodableValue
-    var encodesPlainStringsAsInterpolatedText = true
+    var alwaysDirectlyEncodesText = true
 
-    init(key: InterpolatedText?, value: EncodableValue) {
+    init(key: Text?, value: EncodableValue) {
         self.key = key
         self.value = value
     }
 
-    init(key: InterpolatedText?, value: DictionaryValue) {
+    init(key: Text?, value: DictionaryValue) {
         self.key = key
 
         switch value {
@@ -54,7 +54,7 @@ struct KeyedValue: Encodable {
         }
     }
 
-    init(key: InterpolatedText?, value: MultipartFormValue) {
+    init(key: Text?, value: MultipartFormValue) {
         self.key = key
 
         switch value {
@@ -66,34 +66,32 @@ struct KeyedValue: Encodable {
     }
 
     func encode(to encoder: Encoder) throws {
-        precondition(key == nil || encodesPlainStringsAsInterpolatedText)
-
         if var key = key {
-            key.allowsEncodingAsPlainString = false
+            key.allowsEncodingAsRawString = false
 
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(key, forKey: .key)
         }
 
         switch value {
-        case .string(var interpolatedText):
-            if !encodesPlainStringsAsInterpolatedText && interpolatedText.variablesByRange.isEmpty {
+        case .string(var text):
+            if !alwaysDirectlyEncodesText && text.variablesByRange.isEmpty {
                 var container = encoder.singleValueContainer()
-                try container.encode(interpolatedText)
+                try container.encode(text)
                 return
             }
 
-            interpolatedText.allowsEncodingAsPlainString = false
+            text.allowsEncodingAsRawString = false
 
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(ItemType.string, forKey: .itemType)
-            try container.encode(interpolatedText, forKey: .value)
-        case .number(var interpolatedText):
-            interpolatedText.allowsEncodingAsPlainString = false
+            try container.encode(text, forKey: .value)
+        case .number(var text):
+            text.allowsEncodingAsRawString = false
 
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(ItemType.number, forKey: .itemType)
-            try container.encode(interpolatedText, forKey: .value)
+            try container.encode(text, forKey: .value)
         case .boolean(let bool):
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(ItemType.boolean, forKey: .itemType)
@@ -111,7 +109,7 @@ struct KeyedValue: Encodable {
             var unkeyedContainer = nestedContainer.nestedUnkeyedContainer(forKey: .value)
             for value in array {
                 var keyedValue = KeyedValue(key: nil, value: value)
-                keyedValue.encodesPlainStringsAsInterpolatedText = false
+                keyedValue.alwaysDirectlyEncodesText = false
                 try unkeyedContainer.encode(keyedValue)
             }
         case .dictionary(let dictionary):

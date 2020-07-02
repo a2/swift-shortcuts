@@ -14,8 +14,8 @@ public enum HTTPMethod: String, Encodable {
 
 /// Represents a request body used in the `GetContentsOfURL` shortcut.
 public enum RequestBody {
-    case json([(key: InterpolatedText, value: DictionaryValue)])
-    case form([(key: InterpolatedText, value: MultipartFormValue)])
+    case json([(key: Text, value: DictionaryValue)])
+    case form([(key: Text, value: MultipartFormValue)])
     case file(Variable)
 
     // MARK: - Convenience Constructors
@@ -23,36 +23,36 @@ public enum RequestBody {
     /// This convenience constructor converts the ordered KeyValuePairs collection into an Array of tuples.
     /// - Parameter payload: The payload of the request body, expressed as a dictionary literal.
     /// - Returns: A JSON request body.
-    public static func json(_ payload: KeyValuePairs<InterpolatedText, DictionaryValue>) -> RequestBody {
+    public static func json(_ payload: KeyValuePairs<Text, DictionaryValue>) -> RequestBody {
         .json(Array(payload))
     }
 
     /// This convenience constructor converts the ordered KeyValuePairs collection into an Array of tuples.
     /// - Parameter payload: The payload of the request body, expressed as a dictionary literal.
     /// - Returns: A multipart form request body.
-    public static func form(_ payload: KeyValuePairs<InterpolatedText, MultipartFormValue>) -> RequestBody {
+    public static func form(_ payload: KeyValuePairs<Text, MultipartFormValue>) -> RequestBody {
         .form(Array(payload))
     }
 }
 
 public struct GetContentsOfURL: Shortcut {
     let method: VariableValue<HTTPMethod>
-    let url: InterpolatedText
-    let headers: [(key: InterpolatedText, value: InterpolatedText)]
+    let url: Text
+    let headers: [(key: Text, value: Text)]
     let requestBody: RequestBody?
 
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.downloadurl", parameters: Parameters(base: self))
     }
 
-    public init(method: VariableValue<HTTPMethod>, url: InterpolatedText, headers: KeyValuePairs<InterpolatedText, InterpolatedText> = [:], body: RequestBody?) {
+    public init(method: VariableValue<HTTPMethod>, url: Text, headers: KeyValuePairs<Text, Text> = [:], body: RequestBody?) {
         self.method = method
         self.url = url
         self.headers = Array(headers)
         self.requestBody = body
     }
 
-    public init(method: HTTPMethod, url: InterpolatedText, headers: KeyValuePairs<InterpolatedText, InterpolatedText> = [:], body: RequestBody?) {
+    public init(method: HTTPMethod, url: Text, headers: KeyValuePairs<Text, Text> = [:], body: RequestBody?) {
         self.init(method: .value(method), url: url, headers: headers, body: body)
     }
 }

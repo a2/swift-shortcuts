@@ -1,13 +1,13 @@
 public struct ShowAlert: Shortcut {
-    let title: InterpolatedText
-    let message: InterpolatedText
+    let title: Text
+    let message: Text
     let showsCancelButton: Bool
 
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.alert", parameters: Parameters(base: self))
     }
 
-    public init(title: InterpolatedText = "", message: InterpolatedText, showsCancelButton: Bool = true) {
+    public init(title: Text = "", message: Text, showsCancelButton: Bool = true) {
         self.title = title
         self.message = message
         self.showsCancelButton = showsCancelButton

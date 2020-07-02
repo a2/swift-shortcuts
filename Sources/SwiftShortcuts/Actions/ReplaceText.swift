@@ -1,7 +1,7 @@
 public struct ReplaceText: Shortcut {
-    let text: InterpolatedText
-    let target: InterpolatedText
-    let replacement: InterpolatedText
+    let text: Text
+    let target: Text
+    let replacement: Text
     let isCaseSensitive: Bool
     let isRegularExpression: Bool
 
@@ -9,7 +9,7 @@ public struct ReplaceText: Shortcut {
         Action(identifier: "is.workflow.actions.text.replace", parameters: Parameters(base: self))
     }
 
-    public init(text: InterpolatedText, target: InterpolatedText, replacement: InterpolatedText, isCaseSensitive: Bool = true, isRegularExpression: Bool = false) {
+    public init(text: Text, target: Text, replacement: Text, isCaseSensitive: Bool = true, isRegularExpression: Bool = false) {
         self.text = text
         self.target = target
         self.replacement = replacement
@@ -17,7 +17,7 @@ public struct ReplaceText: Shortcut {
         self.isRegularExpression = isRegularExpression
     }
 
-    public init(variable: Variable, target: InterpolatedText, replacement: InterpolatedText, isCaseSensitive: Bool = true, isRegularExpression: Bool = false) {
+    public init(variable: Variable, target: Text, replacement: Text, isCaseSensitive: Bool = true, isRegularExpression: Bool = false) {
         self.init(text: "\(variable)", target: target, replacement: replacement, isCaseSensitive: isCaseSensitive, isRegularExpression: isRegularExpression)
     }
 }

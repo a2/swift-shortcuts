@@ -10,32 +10,32 @@ public struct FileSize: Encodable {
         case unit = "ByteCountUnit"
     }
 
-    /// A floating-point number represented as optional interpolated text. When nil, represents "anything" in the Shortcuts app.
-    public var number: InterpolatedText?
+    /// A floating-point number represented as optional text. When nil, represents "anything" in the Shortcuts app.
+    public var number: Text?
 
     /// A unit of information or a variable like `Variable.askEachTime`.
     public var unit: VariableValue<ByteCountUnit>
 
     /// - Parameters:
-    ///   - number: A floating-point number represented as optional interpolated text. When nil, represents "anything" in the Shortcuts app.
+    ///   - number: A floating-point number represented as optional text. When nil, represents "anything" in the Shortcuts app.
     ///   - unit: A unit of information or a variable like `Variable.askEachTime`.
-    public init(number: InterpolatedText?, unit: VariableValue<ByteCountUnit>) {
+    public init(number: Text?, unit: VariableValue<ByteCountUnit>) {
         self.number = number
         self.unit = unit
     }
 
     /// - Parameters:
-    ///   - number: A floating-point number represented as optional interpolated text. When nil, represents "anything" in the Shortcuts app.
+    ///   - number: A floating-point number represented as optional text. When nil, represents "anything" in the Shortcuts app.
     ///   - unit: A unit of information.
-    public init(number: InterpolatedText?, unit: ByteCountUnit) {
+    public init(number: Text?, unit: ByteCountUnit) {
         self.number = number
         self.unit = .value(unit)
     }
 
     /// - Parameters:
-    ///   - number: A floating-point number represented as optional interpolated text. When nil, represents "anything" in the Shortcuts app.
+    ///   - number: A floating-point number represented as optional text. When nil, represents "anything" in the Shortcuts app.
     ///   - unit: A variable like `Variable.askEachTime`.
-    public init(number: InterpolatedText?, unit: Variable) {
+    public init(number: Text?, unit: Variable) {
         self.number = number
         self.unit = .variable(unit)
     }

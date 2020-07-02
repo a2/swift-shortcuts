@@ -101,12 +101,12 @@ extension FilterFiles {
     }
 }
 
-struct InterpolatedTextWrapper: Encodable {
+struct TextWrapper: Encodable {
     enum CodingKeys: String, CodingKey {
         case text = "String"
     }
 
-    let text: InterpolatedText
+    let text: Text
 }
 
 struct DateValues: Encodable {
@@ -156,7 +156,7 @@ public struct FileFilter: Encodable {
 }
 
 public struct NameProperty: FileFilterProperty {
-    public typealias Value = InterpolatedText?
+    public typealias Value = Text?
 
     public static let propertyName = "Name"
 }
@@ -164,7 +164,7 @@ public struct NameProperty: FileFilterProperty {
 public typealias NameFilter = FileFiltering<NameProperty>
 
 public struct FileExtensionProperty: FileFilterProperty {
-    public typealias Value = InterpolatedText?
+    public typealias Value = Text?
 
     public static let propertyName = "File Extension"
 }

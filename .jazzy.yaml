@@ -21,13 +21,13 @@ custom_categories:
   - EmptyParameters
   - EmptyShortcut
   - ForEach
-  - InterpolatedText
   - Number
-  - Shortcut
   - ResultShortcut
   - SavedOutputShortcut
+  - Shortcut
   - ShortcutBuilder
   - ShortcutGroup
+  - Text
   - TupleShortcut
 
 - name: Shortcuts
@@ -59,7 +59,6 @@ custom_categories:
   - Share
   - ShowAlert
   - ShowResult
-  - Text
   - URLEncode 
 
 - name: Calculations

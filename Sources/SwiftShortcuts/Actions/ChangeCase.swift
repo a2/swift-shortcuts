@@ -1,6 +1,6 @@
 /// The "Change Case" shortcut.
 public struct ChangeCase: Shortcut {
-    let text: InterpolatedText
+    let text: Text
     let target: VariableValue<TextCase>
 
     public var body: some Shortcut {
@@ -10,7 +10,7 @@ public struct ChangeCase: Shortcut {
     /// - Parameters:
     ///   - text: The text whose case to change.
     ///   - target: The target text case, or a variable like `Variable.askEachTime`.
-    public init(text: InterpolatedText, target: VariableValue<TextCase>) {
+    public init(text: Text, target: VariableValue<TextCase>) {
         self.target = target
         self.text = text
     }

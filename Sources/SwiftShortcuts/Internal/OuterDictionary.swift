@@ -10,15 +10,15 @@ struct OuterDictionary: Encodable {
 
     let items: [KeyedValue]
 
-    init(dictionary: [(key: InterpolatedText, value: KeyedValue.EncodableValue)]) {
+    init(dictionary: [(key: Text, value: KeyedValue.EncodableValue)]) {
         self.items = dictionary.map(KeyedValue.init)
     }
 
-    init(dictionary: [(key: InterpolatedText, value: DictionaryValue)]) {
+    init(dictionary: [(key: Text, value: DictionaryValue)]) {
         self.items = dictionary.map(KeyedValue.init)
     }
 
-    init(dictionary: [(key: InterpolatedText, value: MultipartFormValue)]) {
+    init(dictionary: [(key: Text, value: MultipartFormValue)]) {
         self.items = dictionary.map(KeyedValue.init)
     }
 

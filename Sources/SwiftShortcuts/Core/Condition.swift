@@ -10,14 +10,14 @@ public enum Condition {
     /// This condition evaluates to true if the variable does not have any value.
     case doesNotHaveAnyValue(Variable)
 
-    /// This condition evaluates to true if the variable contains the specified interpolated text..
-    case contains(Variable, InterpolatedText)
-    /// This condition evaluates to true if the variable does not contain the specified interpolated text.
-    case doesNotContain(Variable, InterpolatedText)
-    /// This condition evaluates to true if the variable begins with the specified interpolated text.
-    case beginsWith(Variable, InterpolatedText)
-    /// This condition evaluates to true if the variable ends with the specified interpolated text.
-    case endsWith(Variable, InterpolatedText)
+    /// This condition evaluates to true if the variable contains the specified text.
+    case contains(Variable, Text)
+    /// This condition evaluates to true if the variable does not contain the specified text.
+    case doesNotContain(Variable, Text)
+    /// This condition evaluates to true if the variable begins with the specified text.
+    case beginsWith(Variable, Text)
+    /// This condition evaluates to true if the variable ends with the specified text.
+    case endsWith(Variable, Text)
 
     /// This condition evaluates to true if the variable is greater than the condition operand.
     case isGreaterThan(Variable, ConditionNumberOperand)
@@ -89,7 +89,7 @@ extension Condition: Encodable {
              .doesNotContain(_, let rhs),
              .beginsWith(_, let rhs),
              .endsWith(_, let rhs):
-            let operand = ConditionOperand.interpolatedText(rhs)
+            let operand = ConditionOperand.text(rhs)
             try operand.encode(to: encoder)
 
         case .isGreaterThan(_, let rhs),
@@ -167,17 +167,17 @@ extension Variable {
 
     /// - Parameter text: A substring to search for.
     /// - Returns: A condition that evaluates to true if this variable contains the specified text.
-    public func contains(_ text: InterpolatedText) -> Condition { .contains(self, text) }
+    public func contains(_ text: Text) -> Condition { .contains(self, text) }
 
     /// - Parameter text: A substring to search for.
     /// - Returns: A condition that evaluates to true if this variable does not contain the specified text.
-    public func doesNotContain(_ text: InterpolatedText) -> Condition { .doesNotContain(self, text) }
+    public func doesNotContain(_ text: Text) -> Condition { .doesNotContain(self, text) }
 
     /// - Parameter text: A prefix to search for.
     /// - Returns: A condition that evaluates to true if this variable contains the specified text as a prefix.
-    public func hasPrefix(_ text: InterpolatedText) -> Condition { .beginsWith(self, text) }
+    public func hasPrefix(_ text: Text) -> Condition { .beginsWith(self, text) }
 
     /// - Parameter text: A prefix to search for.
     /// - Returns: A condition that evaluates to true if this variable contains the specified text as a suffix.
-    public func hasSuffix(_ text: InterpolatedText) -> Condition { .endsWith(self, text) }
+    public func hasSuffix(_ text: Text) -> Condition { .endsWith(self, text) }
 }

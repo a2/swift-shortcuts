@@ -4,19 +4,19 @@ public struct URLEncode: Shortcut {
         case decode = "Decode"
     }
 
-    let input: InterpolatedText
+    let input: Text
     let operation: VariableValue<Operation>
 
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.urlencode", parameters: Parameters(base: self))
     }
 
-    public init(input: InterpolatedText, operation: VariableValue<Operation>) {
+    public init(input: Text, operation: VariableValue<Operation>) {
         self.operation = operation
         self.input = input
     }
 
-    public init(input: InterpolatedText, operation: Operation = .encode) {
+    public init(input: Text, operation: Operation = .encode) {
         self.init(input: input, operation: .value(operation))
     }
 }
