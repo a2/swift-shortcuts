@@ -1,3 +1,4 @@
+/// A custom parameter attribute that constructs shortcuts from closures.
 @_functionBuilder public enum ShortcutBuilder {}
 
 extension ShortcutBuilder {

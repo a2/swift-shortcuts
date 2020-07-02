@@ -1,8 +1,9 @@
-/// An smallest representable unit of a shortcut, made of an identifier and some encodable parameters.
+/// An smallest representable unit of a shortcut, consistent of an identifier and encodable parameters.
 public struct Action: Shortcut {
     let identifier: String
     let parameters: AnyEncodable
 
+    /// This action has empty parameters.
     /// - Parameter identifier: The identifier of the action as used by the Shortcuts app.
     public init(identifier: String) {
         self.init(identifier: identifier, parameters: EmptyParameters())

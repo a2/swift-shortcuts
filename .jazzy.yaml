@@ -4,10 +4,6 @@ author_url: https://a2.io
 github_url: https://github.com/a2/swift-shortcuts
 
 output: docs/
-exclude:
-- Sources/SwiftShortcuts/Core/ConditionalContent.swift
-- Sources/SwiftShortcuts/Internal/FromAny.swift
-
 theme: fullwidth
 min_acl: public
 use_safe_filenames: true
@@ -59,7 +55,7 @@ custom_categories:
   - Share
   - ShowAlert
   - ShowResult
-  - URLEncode 
+  - URLEncode
 
 - name: Calculations
   children:
