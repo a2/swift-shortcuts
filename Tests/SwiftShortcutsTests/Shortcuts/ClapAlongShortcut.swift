@@ -11,7 +11,7 @@ struct ClapAlongShortcut: Shortcut {
     var body: some Shortcut {
         ShortcutGroup {
             Comment("This Shortcut was generated in Swift.")
-            Ask(prompt: "WHAT 👏 DO 👏 YOU 👏 WANT 👏 TO 👏 SAY")
+            AskForInput(prompt: "WHAT 👏 DO 👏 YOU 👏 WANT 👏 TO 👏 SAY")
                 .usingResult(uuid: makeUUID()) { providedInput in
                     ChangeCase(variable: providedInput, target: .value(.uppercase))
                 }

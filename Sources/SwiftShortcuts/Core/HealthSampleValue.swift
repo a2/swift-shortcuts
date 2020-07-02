@@ -1,12 +1,26 @@
+/// A value that can be logged to the Health app.
+///
+/// - See Also: `LogHealthSample`
 public struct HealthSampleValue {
+    /// The size of the Health sample, represented as `Text`.
     public var magnitude: Text
+
+    /// The unit of the Health sample.
     public var unit: HealthSampleUnit
 
+    /// Initializes the value.
+    /// - Parameters:
+    ///   - magnitude: The size of the Health sample.
+    ///   - unit: The unit of the Health sample.
     public init(magnitude: Text, unit: HealthSampleUnit) {
         self.magnitude = magnitude
         self.unit = unit
     }
 
+    /// Initializes the value.
+    /// - Parameters:
+    ///   - magnitude: The size of the Health sample, as a `Variable`.
+    ///   - unit: The unit of the Health sample.
     public init(magnitude: Variable, unit: HealthSampleUnit) {
         self.magnitude = "\(magnitude)"
         self.unit = unit
@@ -24,6 +38,9 @@ extension HealthSampleValue: Encodable {
         case unit = "Unit"
     }
 
+    /// Encodes this value into the given encoder.
+    /// - Parameter encoder: The encoder to write data to.
+    /// - Throws: This function throws an error if any values are invalid for the given encoder's format.
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(SerializationType.quantityFieldValue, forKey: .serializationType)
@@ -31,8 +48,7 @@ extension HealthSampleValue: Encodable {
         var valueContainer = container.nestedContainer(keyedBy: ValueCodingKeys.self, forKey: .value)
         try valueContainer.encode(unit, forKey: .unit)
 
-        if magnitude.string.count == 1 && magnitude.variablesByRange.count == 1 {
-            let variable = magnitude.variablesByRange[magnitude.variablesByRange.startIndex].value
+        if let variable = magnitude.singleVariable {
             try valueContainer.encode(variable.value, forKey: .magnitude)
         } else {
             try valueContainer.encode(magnitude, forKey: .magnitude)

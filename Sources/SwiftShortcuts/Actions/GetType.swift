@@ -2,10 +2,12 @@
 public struct GetType: Shortcut {
     let input: Variable
 
+    /// The contents of the shortcut.
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.getitemtype", parameters: Parameters(base: self))
     }
 
+    /// Initializes the shortcut.
     /// - Parameter input: A variable whose type to return.
     public init(input: Variable) {
         self.input = input

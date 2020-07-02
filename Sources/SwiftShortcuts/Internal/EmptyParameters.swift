@@ -1,0 +1,3 @@
+struct EmptyParameters: Encodable {
+    init() {}
+}

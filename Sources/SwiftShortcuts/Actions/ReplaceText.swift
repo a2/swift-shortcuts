@@ -1,3 +1,8 @@
+/// Replaces some text with other text.
+///
+/// **Input:** Text
+///
+/// **Result:** Text
 public struct ReplaceText: Shortcut {
     let text: Text
     let target: Text
@@ -5,10 +10,18 @@ public struct ReplaceText: Shortcut {
     let isCaseSensitive: Bool
     let isRegularExpression: Bool
 
+    /// The contents of the shortcut.
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.text.replace", parameters: Parameters(base: self))
     }
 
+    /// Initializes the shortcut.
+    /// - Parameters:
+    ///   - text: The text within which to search and replace.
+    ///   - target: The text to be replaced.
+    ///   - replacement: The text with which to replace all occurrences.
+    ///   - isCaseSensitive: When disabled, the capitalization of letters is ignored.
+    ///   - isRegularExpression: When enabled, the target is treated as a regular expression.
     public init(text: Text, target: Text, replacement: Text, isCaseSensitive: Bool = true, isRegularExpression: Bool = false) {
         self.text = text
         self.target = target
@@ -17,6 +30,13 @@ public struct ReplaceText: Shortcut {
         self.isRegularExpression = isRegularExpression
     }
 
+    /// Initializes the shortcut.
+    /// - Parameters:
+    ///   - variable: The variable in whose content to search and replace.
+    ///   - target: The text to be replaced.
+    ///   - replacement: The text with which to replace all occurrences.
+    ///   - isCaseSensitive: When disabled, the capitalization of letters is ignored.
+    ///   - isRegularExpression: When enabled, the target is treated as a regular expression.
     public init(variable: Variable, target: Text, replacement: Text, isCaseSensitive: Bool = true, isRegularExpression: Bool = false) {
         self.init(text: "\(variable)", target: target, replacement: replacement, isCaseSensitive: isCaseSensitive, isRegularExpression: isRegularExpression)
     }

@@ -1,15 +1,27 @@
 import Foundation
 
+/// Given a list of files, this action returns the files that match the given criteria.
+///
+/// **Input:** (Files) The files to filter through
+///
+/// **Result:** (Files) The files that match the criteria.
 public struct FilterFiles: Shortcut {
     let input: Variable
     let filters: FilterSet?
     let sortOrder: SortOrder?
     let limit: Int?
 
+    /// The contents of the shortcut.
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.filter.files", parameters: Parameters(base: self))
     }
 
+    /// Initializes the shortcut.
+    /// - Parameters:
+    ///   - input: The files to filter through.
+    ///   - filters: A collection of filers to apply to the content.
+    ///   - sortOrder: The order to sort the files in.
+    ///   - limit: Whether or not to limit the number of files that are passed as output.
     public init(input: Variable, filters: FilterSet? = nil, sortOrder: SortOrder? = nil, limit: Int? = nil) {
         self.input = input
         self.filters = filters
@@ -20,7 +32,7 @@ public struct FilterFiles: Shortcut {
 
 /// Represents one or many filter-convertible values that combine to reduce a set of files.
 public enum FilterSet {
-    /// A file must satisfy every filter in the array.
+    /// A file must satisfy each filter in the array.
     case all([FileFilterConvertible])
 
     /// A file must satisfy any filter in the array.
@@ -126,6 +138,7 @@ struct DateValues: Encodable {
 
 // MARK: - Filters
 
+/// A filter that can be applied to a file.
 public struct FileFilter: Encodable {
     enum CodingKeys: String, CodingKey {
         case `operator` = "Operator"
@@ -146,6 +159,9 @@ public struct FileFilter: Encodable {
         self.property = property
     }
 
+    /// Encodes this value into the given encoder.
+    /// - Parameter encoder: The encoder to write data to.
+    /// - Throws: This function throws an error if any values are invalid for the given encoder's format.
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(`operator`, forKey: .`operator`)
@@ -155,42 +171,52 @@ public struct FileFilter: Encodable {
     }
 }
 
+/// The "Name" file-filterable property
 public struct NameProperty: FileFilterProperty {
     public typealias Value = Text?
 
     public static let propertyName = "Name"
 }
 
+/// A "Name" file filter
 public typealias NameFilter = FileFiltering<NameProperty>
 
+/// The "File Extension" file-filterable property
 public struct FileExtensionProperty: FileFilterProperty {
     public typealias Value = Text?
 
     public static let propertyName = "File Extension"
 }
 
+/// A "File Extension" file filter
 public typealias FileExtensionFilter = FileFiltering<FileExtensionProperty>
 
+/// The "File Size" file-filterable property
 public struct FileSizeProperty: FileFilterProperty {
     public typealias Value = FileSize
 
     public static let propertyName = "File Size"
 }
 
+/// A "File Size" file filter
 public typealias FileSizeFilter = FileFiltering<FileSizeProperty>
 
+/// The "Creation Date" file-filterable property
 public struct CreationDateProperty: FileFilterProperty {
     public typealias Value = VariableDateValueConvertible
 
     public static let propertyName = "Creation Date"
 }
 
+/// A "Creation Date" file filter
 public typealias CreationDateFilter = FileFiltering<CreationDateProperty>
 
+/// The "Last Modified Date" file-filterable property
 public struct LastModifiedDateProperty: FileFilterProperty {
     public typealias Value = VariableDateValueConvertible
 
     public static let propertyName = "Last Modified Date"
 }
 
+/// A "Last Modified Date" file filter
 public typealias LastModifiedDateFilter = FileFiltering<LastModifiedDateProperty>

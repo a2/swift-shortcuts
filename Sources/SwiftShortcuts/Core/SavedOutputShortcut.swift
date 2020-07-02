@@ -12,6 +12,7 @@ public struct SavedOutputShortcut<Base>: Shortcut where Base: Shortcut {
     let base: Base
     let variable: Variable
 
+    /// The contents of the shortcut.
     public var body: some Shortcut {
         var decomposed = base.decompose()
         guard !decomposed.isEmpty else {
@@ -23,7 +24,7 @@ public struct SavedOutputShortcut<Base>: Shortcut where Base: Shortcut {
         let newLast = Action(identifier: last.identifier, parameters: newParameters)
         decomposed[decomposed.count - 1] = newLast
 
-        return AnyShortcut(ForEach(decomposed, builder: { $0 }))
+        return AnyShortcut(ForEach(decomposed))
     }
 
     init(base: Base, variable: Variable) {

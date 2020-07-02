@@ -1,6 +1,6 @@
 import Foundation
 
-/// A wrapper for a numeric type supported by the Shortcuts app.
+/// A wrapper for numeric types supported by the Shortcuts app.
 public struct Number: Hashable {
     enum Storage: Hashable {
         case signed(Int64)
@@ -97,12 +97,17 @@ public struct Number: Hashable {
         self.storage = .float(value)
     }
 
+    /// Hashes the essential components of this value by feeding them into the given hasher.
+    /// - Parameter hasher: The hasher to use when combining the components of this instance.
     public func hash(into hasher: inout Hasher) {
         hasher.combine(number)
     }
 }
 
 extension Number: Encodable {
+    /// Encodes this value into the given encoder.
+    /// - Parameter encoder: The encoder to write data to.
+    /// - Throws: This function throws an error if any values are invalid for the given encoder's format.
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
 
@@ -120,18 +125,29 @@ extension Number: Encodable {
 }
 
 extension Number: ExpressibleByFloatLiteral {
+    /// Creates an instance initialized to the specified floating-point value.
+    ///
+    /// - Attention: Do not call this initializer directly. Instead, initialize a variable or constant using a floating-point literal.
+    ///
+    /// - Parameter value: The value of the new instance.
     public init(floatLiteral value: Double) {
         self.storage = .double(value)
     }
 }
 
 extension Number: ExpressibleByIntegerLiteral {
+    /// Creates an instance initialized to the specified integer value.
+    ///
+    /// - Attention: Do not call this initializer directly. Instead, initialize a variable or constant using an integer literal.
+    ///
+    /// - Parameter value: The value of the new instance.
     public init(integerLiteral value: Int64) {
         self.storage = .signed(value)
     }
 }
 
 extension Number: CustomStringConvertible {
+    /// A textual representation of this instance.
     public var description: String {
         switch storage {
         case .signed(let value):
@@ -147,12 +163,25 @@ extension Number: CustomStringConvertible {
 }
 
 extension Number: Comparable {
+    /// Returns a Boolean value indicating whether the value of the first argument is less than that of the second argument.
+    ///
+    /// - Parameters:
+    ///   - lhs: A value to compare.
+    ///   - rhs: Another value to compare.
+    /// - Returns: True the value of the first argument is less than that of the second argument, false otherwise.
     public static func < (lhs: Number, rhs: Number) -> Bool {
         return lhs.number.compare(rhs.number) == .orderedAscending
     }
 }
 
 extension Number: Equatable {
+    /// Returns a Boolean value indicating whether two values are equal.
+    ///
+    /// - Parameters:
+    ///   - lhs: A value to compare.
+    ///   - rhs: Another value to compare.
+    ///
+    /// - Returns: True if the two values are equal, false otherwise.
     public static func == (lhs: Number, rhs: Number) -> Bool {
         return lhs.number == rhs.number
     }

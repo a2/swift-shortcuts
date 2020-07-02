@@ -1,9 +1,13 @@
+/// An affordance for grouping shortcut content.
 public struct ShortcutGroup: Shortcut {
     let content: AnyShortcut
 
+    /// The contents of the shortcut.
     public var body: some Shortcut { content }
 
-    public init<Content>(@ShortcutBuilder builder: () -> Content) where Content: Shortcut {
-        self.content = AnyShortcut(builder())
+    /// Initializes the shortcut group with the specified content.
+    /// - Parameter content: The shortcut builder that creates shortcuts.
+    public init<Content>(@ShortcutBuilder content: () -> Content) where Content: Shortcut {
+        self.content = AnyShortcut(content())
     }
 }

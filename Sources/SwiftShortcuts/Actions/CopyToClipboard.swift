@@ -1,12 +1,23 @@
+/// Copies content to the clipboard.
+///
+/// **Input:** Anything
+///
+/// **Result:** (Anything) The input
 public struct CopyToClipboard: Shortcut {
     let content: Variable
     let isLocalOnly: Bool
     let expiration: String
 
+    /// The contents of the shortcut.
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.setclipboard", parameters: Parameters(base: self))
     }
 
+    /// Initializes the shortcut.
+    /// - Parameters:
+    ///   - content: The content to copy.
+    ///   - isLocalOnly: When enabled, the input will only be copied locally, and will not be shared to other devices via Handoff.
+    ///   - expiration: When set, the clipboard contents will expire and be automatically deleted at the specified time.
     public init(content: Variable, isLocalOnly: Bool = false, expiration: String = "") {
         self.content = content
         self.isLocalOnly = isLocalOnly

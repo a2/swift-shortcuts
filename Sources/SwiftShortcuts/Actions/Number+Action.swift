@@ -1,4 +1,5 @@
 extension Number: Shortcut {
+    /// The contents of the shortcut.
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.number", parameters: Parameters(base: self))
     }

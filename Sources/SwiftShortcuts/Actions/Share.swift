@@ -1,10 +1,18 @@
+/// Prompts to share the input.
+///
+/// **Input:** Anything
+///
+/// **Result:** (Anything) The input
 public struct Share: Shortcut {
+    let input: Variable
+
+    /// The contents of the shortcut.
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.share", parameters: Parameters(base: self))
     }
 
-    let input: Variable
-
+    /// Initializes the shortcut.
+    /// - Parameter input: The content to share.
     public init(input: Variable) {
         self.input = input
     }

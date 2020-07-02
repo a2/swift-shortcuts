@@ -18,7 +18,7 @@ struct ShortenWithSmallCatShortcut: Shortcut {
             GetType(input: .shortcutInput)
                 .usingResult(uuid: makeUUID()) { type in
                     If(type == "URL", groupingIdentifier: makeUUID(), then: {
-                        GetVariable(variable: type)
+                        Text("\(.shortcutInput)")
                     }, else: {
                         GetClipboard()
                     })

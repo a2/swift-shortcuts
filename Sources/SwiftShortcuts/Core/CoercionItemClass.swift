@@ -1,31 +1,83 @@
 /// Represents available content types that a Variable can be convered to.
 public enum CoercionItemClass: Hashable, Encodable {
+    /// Anything
     case anything
+
+    /// App Store app
     case appStoreApp
+
+    /// Article
     case article
+
+    /// Boolean
     case boolean
+
+    /// Contact
     case contact
+
+    /// Date
     case date
+
+    /// Dictionary
     case dictionary
+
+    /// Email address
     case emailAddress
+
+    /// File
     case file
+
+    /// Image
     case image
+
+    /// iTunes media
     case iTunesMedia
+
+    /// iTunes product
     case iTunesProduct
+
+    /// Location
     case location
+
+    /// Maps link
     case mapsLink
+
+    /// Media
     case media
+
+    /// Number
     case number
+
+    /// PDF
     case pdf
+
+    /// Phone number
     case phoneNumber
+
+    /// Photo media
     case photoMedia
+
+    /// Place
     case place
+
+    /// Rich text
     case richText
+
+    /// Safari web page
     case safariWebPage
+
+    /// Text
     case text
+
+    /// URL
     case url
+
+    /// vCard
     case vCard
 
+    /// Encodes this value into the given encoder.
+    /// - Parameter encoder: The encoder to write data to.
+    /// - Throws: This function throws an error if any values are invalid for the given encoder's format.
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
 

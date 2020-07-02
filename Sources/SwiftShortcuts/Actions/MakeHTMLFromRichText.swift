@@ -1,11 +1,17 @@
+/// Converts the rich text passed in to HTML text.
 public struct MakeHTMLFromRichText: Shortcut {
     let input: Variable
     let makeFullDocument: Bool
 
+    /// The contents of the shortcut.
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.gethtmlfromrichtext", parameters: Parameters(base: self))
     }
 
+    /// Initializes the shortcut.
+    /// - Parameters:
+    ///   - input: The rich text input.
+    ///   - makeFullDocument: This indicates whether or not this action writes out an entire HTML document. When false, partial HTML will be returned if possible.
     public init(input: Variable, makeFullDocument: Bool = false) {
         self.input = input
         self.makeFullDocument = makeFullDocument

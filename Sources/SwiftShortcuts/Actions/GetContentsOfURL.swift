@@ -1,21 +1,33 @@
-/// Represents an HTTP method. See `GetContentsOfURL` for usage.
+/// An HTTP method used by `GetContentsOfURL`.
 public enum HTTPMethod: String, Encodable {
     /// Represents a GET request. Request bodies are not supported.
     case GET = "GET"
+
     /// Represents a POST request.
     case POST = "POST"
+
     /// Represents a PUT request.
     case PUT = "PUT"
+
     /// Represents a PATCH request.
     case PATCH = "PATCH"
+
     /// Represents a DELETE request.
     case DELETE = "DELETE"
 }
 
-/// Represents a request body used in the `GetContentsOfURL` shortcut.
+/// The data sent as the message body of a request, such as for an HTTP POST request.
+/// - See Also: `GetContentsOfURL`
 public enum RequestBody {
+    /// A JSON request body.
+    ///
+    /// - Attention: `null` values are not supported by the Shortcuts app.
     case json([(key: Text, value: DictionaryValue)])
+
+    /// A multipart form request body.
     case form([(key: Text, value: MultipartFormValue)])
+
+    /// A raw data payload.
     case file(Variable)
 
     // MARK: - Convenience Constructors
@@ -35,16 +47,28 @@ public enum RequestBody {
     }
 }
 
+/// Gets the contents of URLs passed into the action. Useful for downloading files and web content, or for making API requests.
+///
+/// **Input:** URLs
+///
+/// **Result:** (Files) The fetched data
 public struct GetContentsOfURL: Shortcut {
     let method: VariableValue<HTTPMethod>
     let url: Text
     let headers: [(key: Text, value: Text)]
     let requestBody: RequestBody?
 
+    /// The contents of the shortcut.
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.downloadurl", parameters: Parameters(base: self))
     }
 
+    /// Initializes the shortcut.
+    /// - Parameters:
+    ///   - method: The HTTP method to use, or a Variable representing one.
+    ///   - url: The URL to fetch.
+    ///   - headers: Custom request headers to send, if any.
+    ///   - body: The requset body. Unsupposed for GET requests.
     public init(method: VariableValue<HTTPMethod>, url: Text, headers: KeyValuePairs<Text, Text> = [:], body: RequestBody?) {
         self.method = method
         self.url = url
@@ -52,6 +76,12 @@ public struct GetContentsOfURL: Shortcut {
         self.requestBody = body
     }
 
+    /// Initializes the shortcut.
+    /// - Parameters:
+    ///   - method: The HTTP method to use.
+    ///   - url: The URL to fetch.
+    ///   - headers: Custom request headers to send, if any.
+    ///   - body: The requset body. Unsupposed for GET requests.
     public init(method: HTTPMethod, url: Text, headers: KeyValuePairs<Text, Text> = [:], body: RequestBody?) {
         self.init(method: .value(method), url: url, headers: headers, body: body)
     }

@@ -1,14 +1,25 @@
 import Foundation
 
+/// Sets the value of the specified variable to the input of this action.
+///
+/// **Input:** Anything
+///
+/// **Result:** (Anything) The input
 public struct SetVariable: Shortcut {
     let name: String
     let input: Variable
     let output: Variable
 
+    /// The contents of the shortcut.
     public var body: some Shortcut {
-        EmptyShortcut()
+        Action(identifier: "is.workflow.actions.setvariable", parameters: Parameters(base: self))
     }
 
+    /// Initializes the shortcut.
+    /// - Parameters:
+    ///   - name: The new name of the variable.
+    ///   - uuid: The internal UUID of the variable, useful for building deterministic output.
+    ///   - variable: The contents of the new variable.
     public init(name: String, uuid: UUID = UUID(), variable: Variable) {
         self.name = name
         self.input = variable

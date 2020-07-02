@@ -3,12 +3,13 @@ public struct Action: Shortcut {
     let identifier: String
     let parameters: AnyEncodable
 
-    /// This action has empty parameters.
+    /// Initalizes the shortcut with empty parameters.
     /// - Parameter identifier: The identifier of the action as used by the Shortcuts app.
     public init(identifier: String) {
         self.init(identifier: identifier, parameters: EmptyParameters())
     }
 
+    /// Initializes the shortcut.
     /// - Parameters:
     ///   - identifier: The identifier of the action as used by the Shortcuts app.
     ///   - parameters: The encodable parameter payload as used by the Shortcuts app.

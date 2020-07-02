@@ -2,7 +2,7 @@ enum Aggrandizement: Hashable {
     case coercion(class: CoercionItemClass)
     case dateFormat(DateFormatStyle)
     case dictionaryValue(key: String?)
-    case property(name: PropertyName, userInfo: PropertyUserInfo)
+    case property(name: PropertyName, userInfo: PropertyUserInfo? = nil)
 }
 
 extension Aggrandizement: Encodable {
@@ -94,7 +94,7 @@ extension Aggrandizement: Encodable {
             var container = encoder.container(keyedBy: PropertyCodingKeys.self)
             try container.encode(AggrandizementType.property, forKey: .type)
             try container.encode(name, forKey: .name)
-            try container.encode(userInfo, forKey: .userInfo)
+            try container.encodeIfPresent(userInfo, forKey: .userInfo)
         }
     }
 }

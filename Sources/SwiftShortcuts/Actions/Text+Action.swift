@@ -1,4 +1,5 @@
 extension Text: Shortcut {
+    /// The contents of the shortcut.
     public var body: some Shortcut {
         Action(identifier: "is.workflow.actions.gettext", parameters: Parameters(base: self))
     }
