@@ -1,0 +1,22 @@
+name: Build & Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+    
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: swift build -v
+      - name: Run Tests
+        run: swift test -v 
