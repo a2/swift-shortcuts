@@ -62,7 +62,6 @@ extension FilterFiles {
             case filterOperator = "WFActionParameterFilterPrefix"
             case sortOrder = "WFContentItemSortOrder"
             case sortProperty = "WFContentItemSortProperty"
-            case boundedDate = "WFContentPredicateBoundedDate" // ?
         }
 
         let base: FilterFiles

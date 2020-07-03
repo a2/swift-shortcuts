@@ -31,7 +31,6 @@ extension LogHealthSample {
             case sampleType = "WFQuantitySampleType"
             case sampleDate = "WFQuantitySampleDate"
             case sampleQuantity = "WFQuantitySampleQuantity"
-            case sampleAdditionalQuantity = "WFQuantitySampleAdditionalQuantity" // ?
         }
 
         let base: LogHealthSample
