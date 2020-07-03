@@ -4,6 +4,8 @@ on:
   push:
     branches: [ main ]
     paths: 
+      - .github/workflows/docs.yml
+      - .jazzy.yaml
       - "Sources/**"
 
 jobs:
