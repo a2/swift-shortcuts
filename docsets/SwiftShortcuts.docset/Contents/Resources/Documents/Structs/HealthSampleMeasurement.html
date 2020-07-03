@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>HealthSampleMeasurement Structure Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Struct/HealthSampleMeasurement" class="dashAnchor"></a>
+    <a title="HealthSampleMeasurement Structure Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">SwiftShortcuts Docs</a> (100% documented)</p>
+        <p class="header-right"><a href="https://github.com/a2/swift-shortcuts"><img src="../img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">SwiftShortcuts Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        HealthSampleMeasurement Structure Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Core.html">Core</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/Action.html">Action</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/AnyShortcut.html">AnyShortcut</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/EmptyShortcut.html">EmptyShortcut</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ForEach.html">ForEach</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Number.html">Number</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ResultShortcut.html">ResultShortcut</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SavedOutputShortcut.html">SavedOutputShortcut</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Shortcut.html">Shortcut</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ShortcutBuilder.html">ShortcutBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ShortcutGroup.html">ShortcutGroup</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Text.html">Text</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Text/StringInterpolation.html">– StringInterpolation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TupleShortcut.html">TupleShortcut</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Shortcuts.html">Shortcuts</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/AskForInput.html">AskForInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/BatteryLevel.html">BatteryLevel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Calculate.html">Calculate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ChangeCase.html">ChangeCase</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ChooseFromList.html">ChooseFromList</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ChooseFromList/SelectionMode.html">– SelectionMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ChooseFromMenu.html">ChooseFromMenu</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Comment.html">Comment</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/CopyToClipboard.html">CopyToClipboard</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/FilterFiles.html">FilterFiles</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/GetClipboard.html">GetClipboard</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/GetContentsOfURL.html">GetContentsOfURL</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/GetDictionary.html">GetDictionary</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/GetType.html">GetType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/GetURLsFromInput.html">GetURLsFromInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/If.html">If</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/List.html">List</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/LogHealthSample.html">LogHealthSample</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/MakeHTMLFromRichText.html">MakeHTMLFromRichText</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Nothing.html">Nothing</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Repeat.html">Repeat</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ReplaceText.html">ReplaceText</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SetLowPowerMode.html">SetLowPowerMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SetLowPowerMode/Operation.html">– Operation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SetVariable.html">SetVariable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Share.html">Share</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ShowAlert.html">ShowAlert</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ShowResult.html">ShowResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/URLEncode.html">URLEncode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/URLEncode/Operation.html">– Operation</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Calculations.html">Calculations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/Calculation.html">Calculation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/CalculationOperand.html">CalculationOperand</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/CalculationOperandConvertible.html">CalculationOperandConvertible</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Calculations.html#/s:14SwiftShortcuts1poiyAA11CalculationOAA0C18OperandConvertible_p_AaE_ptF">+(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Calculations.html#/s:14SwiftShortcuts1soiyAA11CalculationOAA0C18OperandConvertible_p_AaE_ptF">-(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Calculations.html#/s:14SwiftShortcuts1moiyAA11CalculationOAA0C18OperandConvertible_p_AaE_ptF">*(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Calculations.html#/s:14SwiftShortcuts1doiyAA11CalculationOAA0C18OperandConvertible_p_AaE_ptF">/(_:_:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Conditions.html">Conditions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/Condition.html">Condition</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ConditionNumberOperand.html">ConditionNumberOperand</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ConditionNumberOperandConvertible.html">ConditionNumberOperandConvertible</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ConditionOperand.html">ConditionOperand</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ConditionOperandConvertible.html">ConditionOperandConvertible</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ConditionTextOperand.html">ConditionTextOperand</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ConditionTextOperandConvertible.html">ConditionTextOperandConvertible</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Conditions.html#/s:14SwiftShortcuts2eeoiyAA9ConditionOAA8VariableC_AA0D18OperandConvertible_ptF">==(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Conditions.html#/s:14SwiftShortcuts2neoiyAA9ConditionOAA8VariableC_AA0D18OperandConvertible_ptF">!=(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Conditions.html#/s:14SwiftShortcuts1loiyAA9ConditionOAA8VariableC_AA0C24NumberOperandConvertible_ptF">&lt;(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Conditions.html#/s:14SwiftShortcuts2leoiyAA9ConditionOAA8VariableC_AA0D24NumberOperandConvertible_ptF">&lt;=(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Conditions.html#/s:14SwiftShortcuts1goiyAA9ConditionOAA8VariableC_AA0C24NumberOperandConvertible_ptF">&gt;(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Conditions.html#/s:14SwiftShortcuts2geoiyAA9ConditionOAA8VariableC_AA0D24NumberOperandConvertible_ptF">&gt;=(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Conditions.html#/s:14SwiftShortcuts2teoiyAA9ConditionOAA8VariableC_SNyAA6NumberVGtF">~=(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Conditions.html#/s:14SwiftShortcuts2teoiyAA9ConditionOAA8VariableC_AA0D24NumberOperandConvertible_p10lowerBound_AaG_p05upperJ0ttF">~=(_:_:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Filtering.html">Filtering</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/ByteCountUnit.html">ByteCountUnit</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Filtering.html#/s:14SwiftShortcuts18CreationDateFiltera">CreationDateFilter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/CreationDateProperty.html">CreationDateProperty</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Filtering.html#/s:14SwiftShortcuts19FileExtensionFiltera">FileExtensionFilter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/FileExtensionProperty.html">FileExtensionProperty</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/FileFilter.html">FileFilter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/FileFilterConvertible.html">FileFilterConvertible</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/FileFiltering.html">FileFiltering</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/FileFilterProperty.html">FileFilterProperty</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/FileSize.html">FileSize</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Filtering.html#/s:14SwiftShortcuts14FileSizeFiltera">FileSizeFilter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/FileSizeProperty.html">FileSizeProperty</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/FilterSet.html">FilterSet</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Filtering.html#/s:14SwiftShortcuts22LastModifiedDateFiltera">LastModifiedDateFilter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/LastModifiedDateProperty.html">LastModifiedDateProperty</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Filtering.html#/s:14SwiftShortcuts10NameFiltera">NameFilter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/NameProperty.html">NameProperty</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SortOrder.html">SortOrder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TimeSpanValue.html">TimeSpanValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/TimeUnit.html">TimeUnit</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/VariableDateValueConvertible.html">VariableDateValueConvertible</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Health.html">Health</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/HealthMeasurement.html">HealthMeasurement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HealthMeasurement.html#/s:14SwiftShortcuts17HealthMeasurementO5CountO">– Count</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HealthMeasurement.html#/s:14SwiftShortcuts17HealthMeasurementO6LiquidO">– Liquid</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Health.html#/s:14SwiftShortcuts21HealthMeasurementTypeP">HealthMeasurementType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HealthSampleMeasurement.html">HealthSampleMeasurement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HealthSampleType.html">HealthSampleType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HealthSampleUnit.html">HealthSampleUnit</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Parameters.html">Parameters</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/MenuItem.html">MenuItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/TextCase.html">TextCase</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Networking.html">Networking</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/DictionaryValue.html">DictionaryValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HTTPMethod.html">HTTPMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/MultipartFormValue.html">MultipartFormValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/RequestBody.html">RequestBody</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Variables.html">Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Variable.html">Variable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/VariableValue.html">VariableValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/OutputVariable.html">OutputVariable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Variable-Related.html">Variable-Related</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/CoercionItemClass.html">CoercionItemClass</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/DateFormatStyle.html">DateFormatStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/PropertyName.html">PropertyName</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/PropertyUserInfo.html">PropertyUserInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/TimeFormatStyle.html">TimeFormatStyle</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Date.html">Date</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Never.html">Never</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String.html">String</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>HealthSampleMeasurement</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">HealthSampleMeasurement</span><span class="o">&lt;</span><span class="kt">MeasurementType</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">MeasurementType</span> <span class="p">:</span> <span class="kt"><a href="../Health.html#/s:14SwiftShortcuts21HealthMeasurementTypeP">HealthMeasurementType</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">HealthSampleMeasurement</span><span class="p">:</span> <span class="kt">Encodable</span></code></pre>
+
+                </div>
+              </div>
+            <p>A value that can be logged to the Health app.</p>
+<div class="aside aside-see">
+    <p class="aside-title">See</p>
+    See Also: <code><a href="../Structs/LogHealthSample.html">LogHealthSample</a></code>
+
+</div>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:14SwiftShortcuts23HealthSampleMeasurementV9magnitudeAA4TextVvp"></a>
+                    <a name="//apple_ref/swift/Property/magnitude" class="dashAnchor"></a>
+                    <a class="token" href="#/s:14SwiftShortcuts23HealthSampleMeasurementV9magnitudeAA4TextVvp">magnitude</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The size of the Health sample, represented as <code><a href="../Structs/Text.html">Text</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">magnitude</span><span class="p">:</span> <span class="kt"><a href="../Structs/Text.html">Text</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:14SwiftShortcuts23HealthSampleMeasurementV4unitAA0cD4UnitVyxGvp"></a>
+                    <a name="//apple_ref/swift/Property/unit" class="dashAnchor"></a>
+                    <a class="token" href="#/s:14SwiftShortcuts23HealthSampleMeasurementV4unitAA0cD4UnitVyxGvp">unit</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The unit of the Health sample.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">unit</span><span class="p">:</span> <span class="kt"><a href="../Structs/HealthSampleUnit.html">HealthSampleUnit</a></span><span class="o">&lt;</span><span class="kt">MeasurementType</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:14SwiftShortcuts23HealthSampleMeasurementV9magnitude4unitACyxGAA4TextV_AA0cD4UnitVyxGtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(magnitude:unit:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:14SwiftShortcuts23HealthSampleMeasurementV9magnitude4unitACyxGAA4TextV_AA0cD4UnitVyxGtcfc">init(magnitude:<wbr>unit:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes the value.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">magnitude</span><span class="p">:</span> <span class="kt"><a href="../Structs/Text.html">Text</a></span><span class="p">,</span> <span class="nv">unit</span><span class="p">:</span> <span class="kt"><a href="../Structs/HealthSampleUnit.html">HealthSampleUnit</a></span><span class="o">&lt;</span><span class="kt">MeasurementType</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>magnitude</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The size of the health sample.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>unit</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The unit of the health sample.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:14SwiftShortcuts23HealthSampleMeasurementV9magnitude4unitACyxGAA8VariableC_AA0cD4UnitVyxGtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(magnitude:unit:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:14SwiftShortcuts23HealthSampleMeasurementV9magnitude4unitACyxGAA8VariableC_AA0cD4UnitVyxGtcfc">init(magnitude:<wbr>unit:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes the value.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">magnitude</span><span class="p">:</span> <span class="kt"><a href="../Classes/Variable.html">Variable</a></span><span class="p">,</span> <span class="nv">unit</span><span class="p">:</span> <span class="kt"><a href="../Structs/HealthSampleUnit.html">HealthSampleUnit</a></span><span class="o">&lt;</span><span class="kt">MeasurementType</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>magnitude</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The size of the health sample, as a <code><a href="../Classes/Variable.html">Variable</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>unit</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The unit of the health sample.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:14SwiftShortcuts23HealthSampleMeasurementV6encode2toys7Encoder_p_tKF"></a>
+                    <a name="//apple_ref/swift/Method/encode(to:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:14SwiftShortcuts23HealthSampleMeasurementV6encode2toys7Encoder_p_tKF">encode(to:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Encodes this value into the given encoder.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    This function throws an error if any values are invalid for the given encoder&rsquo;s format.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">encode</span><span class="p">(</span><span class="n">to</span> <span class="nv">encoder</span><span class="p">:</span> <span class="kt">Encoder</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>encoder</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The encoder to write data to.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2020 <a class="link" href="https://a2.io" target="_blank" rel="external">Alexsander Akers</a>. All rights reserved. (Last updated: 2020-07-03)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.4</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
