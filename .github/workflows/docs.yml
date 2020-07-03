@@ -11,6 +11,11 @@ jobs:
     runs-on: macos-latest
 
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.4.0
+        with:
+          access_token: ${{ github.token }}
+          workflow_id: 1778578
       - uses: actions/checkout@v2
       - name: Publish Jazzy Docs
         uses: steven0351/publish-jazzy-docs@v1.1.2
