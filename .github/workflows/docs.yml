@@ -7,6 +7,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    container: "norionomura/jazzy"
 
     steps:
       - name: Cancel Previous Runs
@@ -15,19 +16,10 @@ jobs:
           access_token: ${{ github.token }}
           workflow_id: 1778578
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-
-      - name: Install Bundler
-        run: |
-          sudo gem install bundler
-          bundle config path vendor/bundle
-          bundle install --jobs 4 --retry 3
+      - name: Run SourceKitten
+        run: sourcekitten doc --spm-module SwiftShortcuts > SwiftShortcuts.json
       - name: Generate Jazzy Docs
-        run: jazzy
+        run: jazzy --sourcekitten-sourcefile SwiftShortcuts.json
       - name: Publish to GitHub Pages
         run: |
           cd docs
