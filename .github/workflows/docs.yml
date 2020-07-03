@@ -3,14 +3,14 @@ name: Documentation
 on:
   push:
     branches: [ main ]
-    paths: 
+    paths:
       - .github/workflows/docs.yml
       - .jazzy.yaml
       - "Sources/**"
 
 jobs:
   deploy:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Cancel Previous Runs
@@ -19,7 +19,19 @@ jobs:
           access_token: ${{ github.token }}
           workflow_id: 1778578
       - uses: actions/checkout@v2
-      - name: Publish Jazzy Docs
-        uses: steven0351/publish-jazzy-docs@v1.1.2
-        with:
-          personal_access_token: ${{ secrets.DOCS_ACCESS_TOKEN }}
+      - uses: actions/setup-ruby@v1
+      - name: Bundler Install
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+      - name: Generate Jazzy Docs
+        run: jazzy
+      - name: Publish to GitHub Pages
+        run: |
+          cd docs
+          git init
+          git config user.name ${{ github.actor }}
+          git config user.email ${{ github.actor }}@users.noreply.github.com
+          git add .
+          git commit -m 'Deploy updated Jazzy docs'
+          git push -f https://${{ secrets.DOCS_ACCESS_TOKEN }}@github.com/${{ github.repository }}.git master:gh-pages
