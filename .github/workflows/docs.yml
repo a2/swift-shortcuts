@@ -19,10 +19,16 @@ jobs:
           access_token: ${{ github.token }}
           workflow_id: 1778578
       - uses: actions/checkout@v2
-      - uses: actions/setup-ruby@v1
-      - name: Bundler Install
+      - uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+      - name: Install Bundler
         run: |
           gem install bundler
+          bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3
       - name: Generate Jazzy Docs
         run: jazzy
