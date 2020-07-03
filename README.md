@@ -2,15 +2,27 @@
 
 An iOS 14 Shortcuts creator written in Swift, inspired by SwiftUI.
 
-## Getting Started
+## Installation
 
-Add the following line to your `Package.swift`:
+SwiftShortcuts is distributed using the [Swift Package Manager](https://swift.org/package-manager/). To install it into a project, add it as a dependency within your `Package.swift` manifest:
 
 ```swift
-.package(url: "https://github.com/a2/swift-shortcuts.git", from: "1.0.0")
+let package = Package(
+    ...
+    dependencies: [
+        .package(url: "https://github.com/a2/swift-shortcuts.git", from: "0.1.0")
+    ],
+    ...
+)
 ```
 
-Then you can import `SwiftShortcuts` in your project.
+Then import SwiftShortcuts in your project wherever you'd like to use it:
+
+```swift
+import SwiftShortcuts
+```
+
+## Getting Started
 
 SwiftShorcuts was inspired by SwiftUI and, just as every SwiftUI `View` is made from other `View` types, so too is every `Shortcut` built from other `Shortcut` types. The only requirement of the `Shortcut` protocol is an instance property named `body` whose type is another `Shortcut`:
 
@@ -187,6 +199,26 @@ struct ShortenWithSmallCatShortcut: Shortcut {
 }
 ```
 
+## Design and Goals
+
+SwiftShortcuts began as the similarly named [ShortcutsSwift](https://github.com/a2/shortcuts-swift) and was originally inspired by [Shortcuts JS](https://github.com/joshfarrant/shortcuts-js). Both SwiftShortcuts, and ShortcutsSwift before it, aimed to be in Swift what Shortcuts JS is for JavaScript.
+
+The goal of this iteration of SwiftShortcuts is to make writing Shortcuts app workflows in Swift as easy as composing `View`s in SwiftUI. As you can see [above](#getting-started), even the base `Shortcut` protocol is heavily inspired by SwiftUI's `View` protocol.
+
+This repository does not contain every possible Shortcuts-supported action or every possible permutation of parametres for those shortcuts. Please feel free to [contribute](#contributions-and-support) missing shortcut types and even test cases.
+
 ## License
 
 SwiftShortcuts is available under the MIT license. See the [LICENSE](LICENSE) file for more info.
+
+## Contributions and Support
+
+*Inspired by the support model behind [Publish](https://github.com/JohnSundell/Publish).*
+
+SwiftShortcuts is developed completely in the open, and your contributions are more than welcome.
+
+This project does not come with GitHub Issues-based support, and users are instead encouraged to become active participants in its continued development — by fixing any bugs that they encounter, or by improving the documentation wherever it's found to be lacking.
+
+If you wish to make a change, [open a Pull Request](https://github.com/a2/swift-shortcuts/compare) — even if it just contains a draft of the changes you're planning, or a test that reproduces an issue — and we can discuss it further from there.
+
+Hope you'll enjoy using SwiftShortcuts!
