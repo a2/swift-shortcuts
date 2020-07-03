@@ -3,9 +3,9 @@ import Foundation
 /// Adds a data point into the Health app. You can log anything that the Health app supports, including your weight, steps taken, running distance, caloric intake and more.
 ///
 /// **Result:** Health sample
-public struct LogHealthSample: Shortcut {
-    let type: HealthSampleType
-    let value: HealthSampleValue
+public struct LogHealthSample<MeasurementType>: Shortcut where MeasurementType: HealthMeasurementType {
+    let type: HealthSampleType<MeasurementType>
+    let value: HealthSampleMeasurement<MeasurementType>
     let date: Text
 
     /// The contents of the shortcut.
@@ -18,9 +18,33 @@ public struct LogHealthSample: Shortcut {
     ///   - type: The type of health sample to log.
     ///   - value: The value of the health sample.
     ///   - date: The date and time of the data point. The current date will be used if you don't provide a date.
-    public init(type: HealthSampleType, value: HealthSampleValue, date: Text = "") {
+    public init(type: HealthSampleType<MeasurementType>, value: HealthSampleMeasurement<MeasurementType>, date: Text = "") {
         self.type = type
         self.value = value
+        self.date = date
+    }
+
+    /// Initializes the shortcut.
+    /// - Parameters:
+    ///   - type: The type of health sample to log.
+    ///   - magnitude: The size of the health sample.
+    ///   - unit: The unit of the health sample.
+    ///   - date: The date and time of the data point. The current date will be used if you don't provide a date.
+    public init(type: HealthSampleType<MeasurementType>, magnitude: Text, unit: HealthSampleUnit<MeasurementType>, date: Text = "") {
+        self.type = type
+        self.value = HealthSampleMeasurement(magnitude: magnitude, unit: unit)
+        self.date = date
+    }
+
+    /// Initializes the shortcut.
+    /// - Parameters:
+    ///   - type: The type of health sample to log.
+    ///   - magnitude: The size of the health sample, as a `Variable`.
+    ///   - unit: The unit of the health sample.
+    ///   - date: The date and time of the data point. The current date will be used if you don't provide a date.
+    public init(type: HealthSampleType<MeasurementType>, magnitude: Variable, unit: HealthSampleUnit<MeasurementType>, date: Text = "") {
+        self.type = type
+        self.value = HealthSampleMeasurement(magnitude: magnitude, unit: unit)
         self.date = date
     }
 }

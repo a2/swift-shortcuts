@@ -1,5 +1,5 @@
 /// The unit of a Health sample, such as "liters" or "fl oz (US)".
-public struct HealthSampleUnit: RawRepresentable, Encodable {
+public struct HealthSampleUnit<MeasurementType>: RawRepresentable, Encodable where MeasurementType: HealthMeasurementType {
     /// The corresponding value of the raw type.
     public let rawValue: String
 
@@ -24,7 +24,12 @@ public struct HealthSampleUnit: RawRepresentable, Encodable {
     }
 }
 
-extension HealthSampleUnit {
+extension HealthSampleUnit where MeasurementType == HealthMeasurement.Count {
+    /// The "count" sample unit in the Health app.
+    public static var count: HealthSampleUnit { HealthSampleUnit("count") }
+}
+
+extension HealthSampleUnit where MeasurementType == HealthMeasurement.Liquid {
     /// The "liters" sample unit in the Health app.
     public static var liters: HealthSampleUnit { HealthSampleUnit("L") }
 }

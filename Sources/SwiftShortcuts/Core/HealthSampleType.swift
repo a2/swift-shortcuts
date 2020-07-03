@@ -1,5 +1,5 @@
 /// The type of a Health sample, such as "Water" or "Vitamin C".
-public struct HealthSampleType: RawRepresentable, Encodable {
+public struct HealthSampleType<MeasurementType>: RawRepresentable, Encodable where MeasurementType: HealthMeasurementType {
     /// The corresponding value of the raw type.
     public let rawValue: String
 
@@ -24,7 +24,12 @@ public struct HealthSampleType: RawRepresentable, Encodable {
     }
 }
 
-extension HealthSampleType {
+extension HealthSampleType where MeasurementType == HealthMeasurement.Count {
+    /// The "Steps" sample type in the Health app.
+    public static var steps: HealthSampleType { HealthSampleType("Steps") }
+}
+
+extension HealthSampleType where MeasurementType == HealthMeasurement.Liquid {
     /// The "Water" sample type in the Health app.
     public static var water: HealthSampleType { HealthSampleType("Water") }
 }

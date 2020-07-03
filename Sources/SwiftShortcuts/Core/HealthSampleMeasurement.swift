@@ -1,33 +1,33 @@
 /// A value that can be logged to the Health app.
 ///
 /// - See Also: `LogHealthSample`
-public struct HealthSampleValue {
+public struct HealthSampleMeasurement<MeasurementType> where MeasurementType: HealthMeasurementType {
     /// The size of the Health sample, represented as `Text`.
     public var magnitude: Text
 
     /// The unit of the Health sample.
-    public var unit: HealthSampleUnit
+    public var unit: HealthSampleUnit<MeasurementType>
 
     /// Initializes the value.
     /// - Parameters:
-    ///   - magnitude: The size of the Health sample.
-    ///   - unit: The unit of the Health sample.
-    public init(magnitude: Text, unit: HealthSampleUnit) {
+    ///   - magnitude: The size of the health sample.
+    ///   - unit: The unit of the health sample.
+    public init(magnitude: Text, unit: HealthSampleUnit<MeasurementType>) {
         self.magnitude = magnitude
         self.unit = unit
     }
 
     /// Initializes the value.
     /// - Parameters:
-    ///   - magnitude: The size of the Health sample, as a `Variable`.
-    ///   - unit: The unit of the Health sample.
-    public init(magnitude: Variable, unit: HealthSampleUnit) {
+    ///   - magnitude: The size of the health sample, as a `Variable`.
+    ///   - unit: The unit of the health sample.
+    public init(magnitude: Variable, unit: HealthSampleUnit<MeasurementType>) {
         self.magnitude = "\(magnitude)"
         self.unit = unit
     }
 }
 
-extension HealthSampleValue: Encodable {
+extension HealthSampleMeasurement: Encodable {
     enum CodingKeys: String, CodingKey {
         case value = "Value"
         case serializationType = "WFSerializationType"
