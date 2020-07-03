@@ -1,0 +1,18 @@
+name: Documentation
+
+on:
+  push:
+    branches: [ main ]
+    paths: 
+      - "Sources/**"
+
+jobs:
+  deploy:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish Jazzy Docs
+        uses: steven0351/publish-jazzy-docs@v1.1.2
+        with:
+          personal_access_token: ${{ secrets.DOCS_ACCESS_TOKEN }}
