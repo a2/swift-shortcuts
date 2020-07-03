@@ -10,7 +10,7 @@ SwiftShortcuts is distributed using the [Swift Package Manager](https://swift.or
 let package = Package(
     ...
     dependencies: [
-        .package(url: "https://github.com/a2/swift-shortcuts.git", from: "0.1.0")
+        .package(url: "https://github.com/a2/swift-shortcuts.git", from: "1.0.0")
     ],
     ...
 )
