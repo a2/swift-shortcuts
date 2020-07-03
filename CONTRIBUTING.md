@@ -6,13 +6,9 @@ The following is a set of guidelines for contributing to _SwiftShortcuts_ on Git
 
 ## I want to report a problem or ask a question
 
-Before submitting a new GitHub issue, please make sure to
+This project does not come with GitHub Issues-based support, and users are instead encouraged to become active participants in its continued development — by fixing any bugs that they encounter, or by improving the documentation wherever it's found to be lacking.
 
-- Check out the documentation.
-- Read the usage guide on [the README](https://github.com/a2/swift-shortcuts).
-- Search for [existing GitHub issues](https://github.com/a2/swift-shortcuts/issues).
-
-If the above doesn't help, please [submit an issue](https://github.com/a2/swift-shortcuts/issues) on GitHub.
+If you have an issue with importing your shortcut into the Shortcuts app, feel free to [open a Pull Request](https://github.com/a2/swift-shortcuts/pull/new) with a new test case.
 
 ## I want to contribute to _SwiftShortcuts_
 
