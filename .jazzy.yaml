@@ -107,9 +107,11 @@ custom_categories:
 
 - name: Health
   children:
+  - HealthMeasurement
+  - HealthMeasurementType
+  - HealthSampleMeasurement
   - HealthSampleType
   - HealthSampleUnit
-  - HealthSampleValue
 
 - name: Parameters
   children:
