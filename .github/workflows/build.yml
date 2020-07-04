@@ -20,21 +20,3 @@ jobs:
         run: swift build -v
       - name: Run Tests
         run: swift test -v 
-
-  undocumented:
-    name: Find Undocumented Symbols
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    container: "norionomura/jazzy"
-
-    steps:
-      - name: Find Undocumented Symbols
-        shell: bash
-        run: |
-          sourcekitten doc --spm-module SwiftShortcuts > SwiftShortcuts.json
-          jazzy --skip-documentation --sourcekitten-sourcefile SwiftShortcuts.json
-      - name: Upload Manifest
-        uses: actions/upload-artifact@v1
-        with:
-          name: undocumented.json
-          path: docs/undocumented.json

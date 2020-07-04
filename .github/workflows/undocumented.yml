@@ -1,0 +1,19 @@
+name: Find Undocumented Symbols
+
+on: [ pull_request ]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    container: "norionomura/jazzy"
+
+    steps:
+      - name: Find Undocumented Symbols
+        run: |
+          sourcekitten doc --spm-module SwiftShortcuts > SwiftShortcuts.json
+          jazzy --skip-documentation --sourcekitten-sourcefile SwiftShortcuts.json
+      - name: Upload Manifest
+        uses: actions/upload-artifact@v1
+        with:
+          name: undocumented.json
+          path: docs/undocumented.json
