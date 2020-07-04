@@ -13,20 +13,8 @@ jobs:
         run: sourcekitten doc --spm-module SwiftShortcuts > SwiftShortcuts.json
       - name: Find Undocumented Symbols
         run: jazzy --skip-documentation --sourcekitten-sourcefile SwiftShortcuts.json
-      - name: Install jq
-        run: |
-          echo "deb http://us.archive.ubuntu.com/ubuntu vivid main universe" >> /etc/apt/sources.list
-          apt-get update
-          apt-get install -y jq
       - name: Emit Comments on PR
-        run: |
-          export SOURCE_DIRECTORY=$(jq -r .source_directory docs/undocumented.json)
-          jq -r 'if (.warnings | length) > 0 then "::error Documentation missing for some symbols" else "" end' docs/undocumented.json
-          jq -r '.warnings | map("\(.file | sub("\(env.SOURCE_DIRECTORY)/"; ""))\t\(.line)\t\(.symbol)") | join("\n")' docs/undocumented.json \
-            | sort -k3,3 -k2n \
-            | uniq -f 2 \
-            | sort -k2n \
-            | sed -E -e "s/^(.*)	(.*)	(.*)$/::error file=\1,line=\2::\3 is undocumented/g"
+        run: cat docs/undocumented.json | ruby -r json -e 'json = JSON.parse(ARGF.read); root = json["source_directory"]; json["warnings"].uniq { |w| w["symbol"] }.each { |w| puts "::warning file=#{w["file"][root.length + 1...]},line=#{w["line"]}::#{w["symbol"]} is undocumented" }; puts "::error Documentation missing for some symbols" if json["warnings"].length > 0'
       - name: Upload Manifest
         uses: actions/upload-artifact@v1
         with:
