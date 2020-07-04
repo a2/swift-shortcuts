@@ -1,0 +1,23 @@
+name: Find Undocumented Symbols
+
+on: [ pull_request ]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    container: "norionomura/jazzy"
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run SourceKitten
+        run: sourcekitten doc --spm-module SwiftShortcuts > SwiftShortcuts.json
+      - name: Find Undocumented Symbols
+        run: jazzy --skip-documentation --sourcekitten-sourcefile SwiftShortcuts.json
+      - name: Emit Comments on PR
+        run: cat docs/undocumented.json | ruby -r json -e 'json = JSON.parse(ARGF.read); root = json["source_directory"]; json["warnings"].uniq { |w| w["symbol"] }.each { |w| puts "::warning file=#{w["file"][root.length + 1..-1]},line=#{w["line"]}::#{w["symbol"]} is undocumented" }; abort "Documentation is missing for some symbols" if json["warnings"].length > 0'
+      - name: Upload Manifest
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: undocumented.json
+          path: docs/undocumented.json
