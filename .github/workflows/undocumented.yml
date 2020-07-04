@@ -8,6 +8,7 @@ jobs:
     container: "norionomura/jazzy"
 
     steps:
+      - uses: actions/checkout@v2
       - name: Find Undocumented Symbols
         run: |
           sourcekitten doc --spm-module SwiftShortcuts > SwiftShortcuts.json
