@@ -13,6 +13,13 @@ jobs:
         run: |
           sourcekitten doc --spm-module SwiftShortcuts > SwiftShortcuts.json
           jazzy --skip-documentation --sourcekitten-sourcefile SwiftShortcuts.json
+          export SOURCE_DIRECTORY=$(jq -r .source_directory docs/undocumented.json)
+          jq -r 'if (.warnings | length) > 0 then "::error Documentation missing for some symbols" else "" end' docs/undocumented.json
+          jq -r '.warnings | map("\(.file | sub("\(env.SOURCE_DIRECTORY)/"; ""))\t\(.line)\t\(.symbol)") | join("\n")' docs/undocumented.json \
+            | sort -k3,3 -k2n \
+            | uniq -f 2 \
+            | sort -k2n \
+            | sed -E -e "s/^(.*)	(.*)	(.*)$/::error file=\1,line=\2::\3 is undocumented/g"
       - name: Upload Manifest
         uses: actions/upload-artifact@v1
         with:
