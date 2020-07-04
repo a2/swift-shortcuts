@@ -9,10 +9,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Run SourceKitten
+        run: sourcekitten doc --spm-module SwiftShortcuts > SwiftShortcuts.json
       - name: Find Undocumented Symbols
+        run: jazzy --skip-documentation --sourcekitten-sourcefile SwiftShortcuts.json
+      - name: Install jq
+        run: sudo apt-get install jq
+      - name: Emit Comments on PR
         run: |
-          sourcekitten doc --spm-module SwiftShortcuts > SwiftShortcuts.json
-          jazzy --skip-documentation --sourcekitten-sourcefile SwiftShortcuts.json
           export SOURCE_DIRECTORY=$(jq -r .source_directory docs/undocumented.json)
           jq -r 'if (.warnings | length) > 0 then "::error Documentation missing for some symbols" else "" end' docs/undocumented.json
           jq -r '.warnings | map("\(.file | sub("\(env.SOURCE_DIRECTORY)/"; ""))\t\(.line)\t\(.symbol)") | join("\n")' docs/undocumented.json \
