@@ -14,7 +14,7 @@ jobs:
       - name: Find Undocumented Symbols
         run: jazzy --skip-documentation --sourcekitten-sourcefile SwiftShortcuts.json
       - name: Install jq
-        run: sudo apt-get install jq
+        run: apt-get install jq
       - name: Emit Comments on PR
         run: |
           export SOURCE_DIRECTORY=$(jq -r .source_directory docs/undocumented.json)
