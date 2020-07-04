@@ -40,7 +40,7 @@ public struct ChooseFromMenu: Shortcut {
     /// The contents of the shortcut.
     public var body: some Shortcut {
         ShortcutGroup {
-            ControlFlowAction(identifier: identifier, groupingIdentifier: groupingIdentifier, mode: .start, userInfo: StartUserInfo(prompt: prompt, menuItems: items.map(\.label)))
+            ControlFlowAction(identifier: identifier, groupingIdentifier: groupingIdentifier, mode: .start, userInfo: StartUserInfo(prompt: prompt, menuItems: items.map({ $0.label })))
 
             ForEach(items) { item in
                 ControlFlowAction(identifier: identifier, groupingIdentifier: groupingIdentifier, mode: .middle, userInfo: MiddleUserInfo(menuItemTitle: item.label))

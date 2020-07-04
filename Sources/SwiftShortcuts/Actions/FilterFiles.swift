@@ -102,10 +102,10 @@ extension FilterFiles {
                 switch filters {
                 case .all(let filters):
                     try valueContainer.encode(1, forKey: .filterOperator)
-                    try valueContainer.encode(filters.map(\.fileFilter), forKey: .filters)
+                    try valueContainer.encode(filters.map({ $0.fileFilter }), forKey: .filters)
                 case .any(let filters):
                     try valueContainer.encode(0, forKey: .filterOperator)
-                    try valueContainer.encode(filters.map(\.fileFilter), forKey: .filters)
+                    try valueContainer.encode(filters.map({ $0.fileFilter }), forKey: .filters)
                 }
             }
         }
