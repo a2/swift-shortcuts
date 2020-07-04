@@ -14,7 +14,7 @@ jobs:
       - name: Find Undocumented Symbols
         run: jazzy --skip-documentation --sourcekitten-sourcefile SwiftShortcuts.json
       - name: Emit Comments on PR
-        run: cat docs/undocumented.json | ruby -r json -e 'json = JSON.parse(ARGF.read); root = json["source_directory"]; json["warnings"].uniq { |w| w["symbol"] }.each { |w| puts "::warning file=#{w["file"][root.length + 1...]},line=#{w["line"]}::#{w["symbol"]} is undocumented" }; puts "::error Documentation missing for some symbols" if json["warnings"].length > 0'
+        run: cat docs/undocumented.json | ruby -r json -e 'json = JSON.parse(ARGF.read); root = json["source_directory"]; json["warnings"].uniq { |w| w["symbol"] }.each { |w| puts "::warning file=#{w["file"][root.length + 1..-1]},line=#{w["line"]}::#{w["symbol"]} is undocumented" }; puts "::error Documentation missing for some symbols" if json["warnings"].length > 0'
       - name: Upload Manifest
         uses: actions/upload-artifact@v1
         with:
