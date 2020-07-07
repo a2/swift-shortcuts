@@ -7,7 +7,7 @@
 		<string>Chapter1.playgroundchapter</string>
 	</array>
 	<key>ContentIdentifier</key>
-	<string>ios.github.a2.swift-shortcuts</string>
+	<string>io.a2.swift-shortcuts</string>
 	<key>ContentVersion</key>
 	<string>1.0</string>
 	<key>DeploymentTarget</key>

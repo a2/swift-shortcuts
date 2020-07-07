@@ -67,7 +67,7 @@ class ShortcutPreviewViewController<S: Shortcut>: UIViewController, UIDragIntera
             )
 
             let outputURL = applicationSupport
-                .appendingPathComponent("io.github.a2.swift-shortcuts", isDirectory: true)
+                .appendingPathComponent("io.a2.swift-shortcuts", isDirectory: true)
                 .appendingPathComponent("\(name).shortcut", isDirectory: false)
 
             // Remove the output directory if it already existed (clean up any old shortcuts)
