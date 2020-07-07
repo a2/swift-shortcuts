@@ -92,8 +92,8 @@ class ShortcutPreviewViewController<S: Shortcut>: UIViewController, UIDragIntera
 
             // Additionally configure iPad popover presentation if it's ever required
             let controller = viewController.popoverPresentationController
-            controller?.sourceRect = sender.frame
-            controller?.sourceView = view
+            controller?.sourceRect = sender.bounds
+            controller?.sourceView = sender
 
             // Present the share sheet
             present(viewController, animated: true, completion: nil)
