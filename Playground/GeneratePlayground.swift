@@ -8,12 +8,12 @@ extension FileManager {
     }
 }
 
-let fileManager = FileManager()
-let isDebuggable: Bool = UserDefaults.standard.bool(forKey: "debug") // use -debug
+let fileManager = FileManager.default
+let isDebuggable = UserDefaults.standard.bool(forKey: "debug") // use -debug
 
 // Get the Playgrounds directory
 let playgroundsDirectory = URL(fileURLWithPath: fileManager.currentDirectoryPath)
-    .appendingPathComponent(CommandLine.arguments.first!)
+    .appendingPathComponent(CommandLine.arguments[0])
     .deletingLastPathComponent()
 
 // Read the version from the arguments
