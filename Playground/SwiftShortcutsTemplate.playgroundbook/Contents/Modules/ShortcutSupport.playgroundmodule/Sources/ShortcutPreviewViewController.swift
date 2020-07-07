@@ -65,30 +65,28 @@ class ShortcutPreviewViewController<S: Shortcut>: UIViewController, UIDragIntera
                 appropriateFor: nil,
                 create: false
             )
-
-            let outputURL = applicationSupport
-                .appendingPathComponent("io.a2.swift-shortcuts", isDirectory: true)
-                .appendingPathComponent("\(name).shortcut", isDirectory: false)
+            let directoryURL = applicationSupport.appendingPathComponent("io.a2.swift-shortcuts", isDirectory: true)
 
             // Remove the output directory if it already existed (clean up any old shortcuts)
-            if fileManager.fileExists(atPath: outputURL.deletingLastPathComponent().path) {
-                try fileManager.removeItem(at: outputURL.deletingLastPathComponent())
+            if fileManager.fileExists(atPath: directoryURL.path) {
+                try fileManager.removeItem(at: directoryURL)
             }
 
             // Create the directory again
             try fileManager.createDirectory(
-                at: outputURL.deletingLastPathComponent(),
+                at: directoryURL,
                 withIntermediateDirectories: true,
                 attributes: nil
             )
 
             // Build the shortcut and write it to disk
-            let data = try shortcut.build()
-            try data.write(to: outputURL)
+            let shortcutURL = directoryURL.appendingPathComponent("\(name).shortcut", isDirectory: false)
+            let sortcutData = try shortcut.build()
+            try sortcutData.write(to: shortcutURL)
 
             // Create an activity view controller pointing to the shortcut
             let viewController = UIActivityViewController(
-                activityItems: [outputURL],
+                activityItems: [shortcutURL],
                 applicationActivities: nil
             )
 
