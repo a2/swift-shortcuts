@@ -4,3 +4,6 @@
 /*.xcodeproj
 xcuserdata/
 /.swiftpm
+
+# Swift Playground generated using GeneratePlayground.swift
+Playground/SwiftShortcuts.playgroundbook

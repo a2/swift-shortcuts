@@ -1,4 +1,8 @@
+#if os(Linux)
 import CSymbols
+#else
+import Foundation
+#endif
 
 // MARK: - AnyShortcut from Any
 
@@ -46,7 +50,17 @@ public func makeAnyShortcut<S: Shortcut>(from shortcut: S) -> AnyShortcut {
 }
 
 private typealias ShortcutToAnyShortcutFunction = @convention(thin) (UnsafeRawPointer, ProtocolConformanceRecord) -> AnyShortcut
+
+#if os(Linux)
 private let makeAnyShortcut = unsafeBitCast(makeAnyShortcutSymbol(), to: ShortcutToAnyShortcutFunction.self)
+#else
+private let makeAnyShortcut: ShortcutToAnyShortcutFunction = {
+    let symbolName = "_swift_shortcuts_makeAnyShortcut"
+    let handle = dlopen(nil, RTLD_GLOBAL)
+    let pointer = dlsym(handle, symbolName)
+    return unsafeBitCast(pointer, to: ShortcutToAnyShortcutFunction.self)
+}()
+#endif
 
 // MARK: - [ActionComponent] from Any
 
@@ -83,7 +97,16 @@ private func _decomposeIntoActions<S: Shortcut>(shortcut: S) -> [Action] {
 }
 
 private typealias ShortcutToActionsFunction = @convention(thin) (UnsafeRawPointer, ProtocolConformanceRecord) -> [Action]
+#if os(Linux)
 private let decomposeIntoActions = unsafeBitCast(decomposeIntoActionsSymbol(), to: ShortcutToActionsFunction.self)
+#else
+private let decomposeIntoActions: ShortcutToActionsFunction = {
+    let symbolName = "_swift_shortcuts_decomposeIntoActions"
+    let handle = dlopen(nil, RTLD_GLOBAL)
+    let pointer = dlsym(handle, symbolName)
+    return unsafeBitCast(pointer, to: ShortcutToActionsFunction.self)
+}()
+#endif
 
 func actionComponents(from value: Any) -> [Action]? {
     // Synthesize a fake protocol conformance record to ActionStepsConvertible

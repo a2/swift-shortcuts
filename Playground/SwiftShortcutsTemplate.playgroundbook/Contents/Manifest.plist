@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Chapters</key>
+	<array>
+		<string>Chapter1.playgroundchapter</string>
+	</array>
+	<key>ContentIdentifier</key>
+	<string>io.a2.swift-shortcuts</string>
+	<key>ContentVersion</key>
+	<string>1.0</string>
+	<key>DeploymentTarget</key>
+	<string>ios-current</string>
+	<key>DevelopmentRegion</key>
+	<string>en</string>
+	<key>SwiftVersion</key>
+	<string>5.1</string>
+	<key>Version</key>
+	<string>7.0</string>
+	<key>UserAutoImportedAuxiliaryModules</key>
+	<array/>
+	<key>UserModuleMode</key>
+	<string>Full</string>
+</dict>
+</plist>
