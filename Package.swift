@@ -14,14 +14,12 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.8.1"),
+        .package(url: "https://github.com/nerdsupremacist/AssociatedTypeRequirementsKit.git", from: "0.2.0"),
     ],
     targets: [
         .target(
-            name: "CSymbols",
-            dependencies: []),
-        .target(
             name: "SwiftShortcuts",
-            dependencies: ["CSymbols"]),
+            dependencies: ["AssociatedTypeRequirementsKit"]),
         .testTarget(
             name: "SwiftShortcutsTests",
             dependencies: ["SwiftShortcuts", "SnapshotTesting"],
