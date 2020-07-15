@@ -41,16 +41,7 @@ private struct ShortcutTypeEraser : ShortcutVisitor {
 private struct ShortcutDecomposer : ShortcutVisitor {
 
     func callAsFunction<S : Shortcut>(_ shortcut: S) -> [Action] {
-        if S.Body.self == Never.self {
-            return shortcut.decompose()
-        }
-
-        let body = shortcut.body
-        if let component = body as? Action {
-            return [component]
-        } else {
-            return self(body)
-        }
+        return shortcut.decompose()
     }
 
 }

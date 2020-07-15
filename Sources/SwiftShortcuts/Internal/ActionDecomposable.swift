@@ -83,6 +83,6 @@ extension Optional: ActionDecomposable where Wrapped: Shortcut {
 extension TupleShortcut: ActionDecomposable {
     func decompose() -> [Action] {
         let mirror = Mirror(reflecting: value)
-        return mirror.children.flatMap { _, value in AnyShortcut(_fromValue: value)!.decompose() }
+        return mirror.children.flatMap { _, value in actionComponents(from: value)! }
     }
 }
