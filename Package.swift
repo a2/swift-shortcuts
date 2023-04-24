@@ -4,7 +4,6 @@ import PackageDescription
 let package = Package(
     name: "SwiftShortcuts",
     platforms: [
-        .iOS(.v13),
         .macOS(.v10_15),
     ],
     products: [
@@ -14,6 +13,7 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.8.1"),
+		.package(url: "https://github.com/kareman/SwiftShell", from: "5.1.0"),
     ],
     targets: [
         .target(
@@ -21,7 +21,7 @@ let package = Package(
             dependencies: []),
         .target(
             name: "SwiftShortcuts",
-            dependencies: ["CSymbols"]),
+            dependencies: ["CSymbols", "SwiftShell"]),
         .testTarget(
             name: "SwiftShortcutsTests",
             dependencies: ["SwiftShortcuts", "SnapshotTesting"],

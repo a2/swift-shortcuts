@@ -58,11 +58,10 @@ To create a file that you can import into the Shortcuts app, call the `build()` 
 // continued from above
 
 let shortcut = HelloWorldShortcut()
-let data = try shortcut.build()
-try data.write(to: URL(fileURLWithPath: "Hello World.shortcut"))
+try shortcut.buildAndSave(atPath: URL(fileURLWithPath: "HelloWorld.shortcut"))
 ```
 
-Now you can share (for example, via AirDrop) the _Hello World.shortcut_ file to your device and it will open in the Shortcuts app. Unfortunately iOS 13 does not support opening serialized `.shortcut` files.
+Now you can share (for example, via AirDrop) the _Hello World.shortcut_ file to your device and it will open in the Shortcuts app.
 
 ## Examples
 
